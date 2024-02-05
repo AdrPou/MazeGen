@@ -451,7 +451,7 @@ public class World1Template extends GridPane {
         rightPanel.pauseClock();
         gameStarted = true;
         time.setGameOver(true);
-        rightPanel.setGameOver(true);
+        rightPanel.setGameOver(true); // använd denna boolean för testing.
         time = null;
         rightPanel.removePickaxe();
 
