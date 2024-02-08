@@ -1,0 +1,29 @@
+.setting {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-spacing: 20px;
+    -fx-alignment: top-center;
+    -fx-padding: 40px;
+}
+.volumeSlider {
+    -fx-pref-width: 400px;
+    -fx-min-width: 400px;
+    -fx-max-width: 400px;
+    -fx-alignment: center;
+
+}
+.volumeSlider .track {
+    -fx-background-color:   linear-gradient(to left, cyan, magenta);
+    -fx-background-radius: 10px;
+    -fx-border-color: #000000;
+    -fx-border-radius: 10px;
+
+}
+
+.volumeSlider .thumb {
+    -fx-background-color:   linear-gradient(to top, royalblue, aquamarine);
+    -fx-pref-height: 30px;
+    -fx-pref-width: 10px;
+    -fx-background-radius: 0px;
+    -fx-border-radius: 10px;
+}
