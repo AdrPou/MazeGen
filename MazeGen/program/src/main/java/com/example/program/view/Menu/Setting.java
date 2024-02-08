@@ -50,7 +50,7 @@ public class Setting extends VBox {
     }
 
     public void setImages(){
-        sound = new Image(getClass().getResource(BASE_PATH + "texts/Help.png").toString(), 200, 80, false, false);
+        sound = new Image(getClass().getResource(BASE_PATH + "texts/volume.png").toString(), 200, 80, false, false);
         soundView = new ImageView(sound);
         soundView.getStyleClass().add("soundView");
     }
