@@ -16,6 +16,9 @@ import com.example.program.model.TotalTime;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -225,8 +228,8 @@ public class World1Template extends GridPane {
         wallView.setFitHeight(squareSize);
         wallView.setFitWidth(squareSize);
         label.setGraphic(wallView);
-        label.setOnMouseEntered(e -> enteredWall(e));
-        label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnMouseEntered(e -> enteredWall(e)); //TODO för keyboard
+        label.setOnMouseExited(e -> exitedLabel(e));  //TODO för keyboard
         return label;
     }
 
@@ -253,8 +256,8 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> enteredWall(e));
-        label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnMouseEntered(e -> enteredWall(e)); //TODO för keyboard
+        label.setOnMouseExited(e -> exitedLabel(e));  //TODO för keyboard
         return label;
     }
 
@@ -268,7 +271,7 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> enteredBreakableWall(e));
+        label.setOnMouseEntered(e -> enteredBreakableWall(e)); //TODO för keyboard
         return label;
     }
 
@@ -282,7 +285,7 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> {
+        label.setOnMouseEntered(e -> { // TODO för keyboard
             try {
                 enteredGoal();
             } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
@@ -302,7 +305,7 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseClicked(e -> startLevel());
+        label.setOnMouseClicked(e -> startLevel()); //TODO dennna kan man ju kanske fortfarande ha som klick, eller kanske genom att bara ställa sig på stegen
         return label;
     }
 
@@ -320,7 +323,7 @@ public class World1Template extends GridPane {
         borderView.setEffect(glow);
         collectible.setStyle("fx-background-color: transparent;");
         collectible.setGraphic(borderView);
-        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
+        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener); //TODO lägg till eventhandler för spel med keyboard
         collectibles.add(collectible);
         return collectible;
     }
@@ -340,7 +343,7 @@ public class World1Template extends GridPane {
         heartCrystal.setStyle("fx-background-color: transparent;");
         heartCrystal.setGraphic(borderView);
         heartCrystal.setOpacity(0.8);
-        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e));
+        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e)); //TODO lägg till eventhandler för spel med keyboard
         return heartCrystal;
     }
 
@@ -350,7 +353,7 @@ public class World1Template extends GridPane {
      * @param e Används för att hitta rätt label.
      */
 
-    private void heartCrystalObtained(MouseEvent e) {
+    private void heartCrystalObtained(MouseEvent e) { //TODO lägg till metod för spel med keyboard
 
         Label label = (Label)e.getSource();
 
@@ -378,7 +381,7 @@ public class World1Template extends GridPane {
         borderView.setEffect(glow);
         pickAxe.setStyle("fx-background-color: transparent;");
         pickAxe.setGraphic(borderView);
-        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
+        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener); //TODO lägg till eventhandler för spel med keyboard
         pickaxes.add(pickAxe);
         return pickAxe;
     }
@@ -389,7 +392,7 @@ public class World1Template extends GridPane {
      * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredWall(MouseEvent e) {
+    public void enteredWall(MouseEvent e) { //TODO ska vi ha samma koncept för spel med keyboard?
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -505,7 +508,7 @@ public class World1Template extends GridPane {
     /**
      * Startar spelrundan och timern.
      */
-    public void startLevel() {
+    public void startLevel() { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
 
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
@@ -536,7 +539,7 @@ public class World1Template extends GridPane {
      * När muspekaren lämnar en label slutar den att highlightas.
      * @param e Används för att hitta rätt label.
      */
-    public void exitedLabel(MouseEvent e) {
+    public void exitedLabel(MouseEvent e) {  //TODO vill vi ha detta på keyboard också eller ska vi skippa det?
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -551,7 +554,7 @@ public class World1Template extends GridPane {
      * Om spelrundan är startad och spelaren inte plockat upp en yxa förlorar hen ett liv vid kollision med väggen.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredBreakableWall(MouseEvent e) {
+    public void enteredBreakableWall(MouseEvent e) { // TODO behöver metod för tangentbord också
 
         Label label = (Label)e.getSource();
         ImageView pathView = new ImageView(path);
@@ -574,7 +577,7 @@ public class World1Template extends GridPane {
     /**
      * En listener som körs när spelaren plockar upp en collectible eller en yxa.
      */
-    private class MouseListener implements EventHandler<MouseEvent> {
+    private class MouseListener implements EventHandler<MouseEvent> { //TODO behöver ha metod för tangentbord också
 
         @Override
         public void handle(MouseEvent e) {
@@ -602,6 +605,25 @@ public class World1Template extends GridPane {
 
             }
         }
+
+
+        private KeyListener keyListener = new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        };
+
     }
 
     private 
