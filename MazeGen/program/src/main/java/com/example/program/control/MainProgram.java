@@ -138,6 +138,9 @@ public class MainProgram extends Application {
         mapTemplate = new MapTemplate(mazeGenerator.getMaze(), this, generateNextLevel);
         mainPaneRandomMaze.setCenter(mapTemplate);
         mainWindow.setScene(randomScene);
+        audioPlayer.playWorldIntroSound();
+        audioPlayer.stopMusic();
+        audioPlayer.playLevelMusic("forest"); //TODO fixa anpassad musik ?
     }
 
     /**
