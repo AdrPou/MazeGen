@@ -38,10 +38,12 @@ public class MainProgram extends Application {
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
+    private Scene settingsScene;
     private Scene chooseDimensionScene;
     private Intro intro;
     private Menu menu;
     private Help help;
+    private Setting setting;
     private ChooseDimension chooseDimension;
     private Scene randomScene;
     private Scene campaignScene;
@@ -77,10 +79,12 @@ public class MainProgram extends Application {
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
+        setting = new Setting(this, audioPlayer);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
+        settingsScene = new Scene(setting, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
@@ -112,6 +116,7 @@ public class MainProgram extends Application {
         campaignScene.setCursor(new ImageCursor(cursorImage));
         chooseDimensionScene.setCursor(new ImageCursor(cursorImage));
         helpScene.setCursor(new ImageCursor(cursorImage));
+        settingsScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
     }
 
@@ -162,6 +167,10 @@ public class MainProgram extends Application {
      */
     public void changeToHelp() {
         mainWindow.setScene(helpScene);
+    }
+
+    public void changeToSettings() {
+        mainWindow.setScene(settingsScene);
     }
 
     /**
