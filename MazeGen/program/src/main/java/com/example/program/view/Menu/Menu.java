@@ -21,6 +21,8 @@ public class Menu extends Pane {
     private Image help;
     private Image helpResize;
     private Image mazegen;
+    private Image settings;
+    private Image settingsResize;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
 
@@ -51,6 +53,8 @@ public class Menu extends Pane {
         randomizeResize = new Image(getClass().getResource("/com/example/program/files/texts/Randomize.png").toString(), 255, 33, false, false);
         help = new Image(getClass().getResource("/com/example/program/files/texts/Help.png").toString(), 250, 30, false, false);
         helpResize = new Image(getClass().getResource("/com/example/program/files/texts/Help.png").toString(), 255, 33, false, false);
+        settings = new Image(getClass().getResource("/com/example/program/files/texts/settings.png").toString(), 250, 30, false, false);
+        settingsResize = new Image(getClass().getResource("/com/example/program/files/texts/settings.png").toString(), 255, 33, false, false);
     }
 
     /**
@@ -118,27 +122,48 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
+        ImageView settingsView = new ImageView(settings);
+        settingsView.setStyle("fx-background-color: transparent;");
+        settingsView.setTranslateX(275);
+        settingsView.setTranslateY(300);
+        settingsView.toFront();
+        settingsView.setOnMouseEntered(e -> {
+            settingsView.setImage(settingsResize);
+            settingsView.setTranslateX(273);
+            settingsView.setTranslateY(297);
+        });
+        settingsView.setOnMouseExited(e -> {
+            settingsView.setImage(settings);
+            settingsView.setTranslateX(275);
+            settingsView.setTranslateY(300);
+        });
+        settingsView.setOnMouseClicked(e -> {
+            mainProgram.changeToSettings();
+            audioPlayer.playButtonSound();
+        });
+
+
         ImageView helpView = new ImageView(help);
         helpView.setStyle("fx-background-color: transparent;");
         helpView.setTranslateX(275);
-        helpView.setTranslateY(300);
+        helpView.setTranslateY(350);
         helpView.toFront();
         helpView.setOnMouseEntered(e -> {
             helpView.setImage(helpResize);
             helpView.setTranslateX(273);
-            helpView.setTranslateY(297);
+            helpView.setTranslateY(347);
         });
         helpView.setOnMouseExited(e -> {
             helpView.setImage(help);
             helpView.setTranslateX(275);
-            helpView.setTranslateY(300);
+            helpView.setTranslateY(350);
         });
         helpView.setOnMouseClicked(e -> {
             mainProgram.changeToHelp();
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,helpView,mazegenView);
+        this.getChildren().addAll(campaignView,randomizeView,helpView, settingsView, mazegenView);
     }
 
 }
