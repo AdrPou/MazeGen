@@ -2,10 +2,12 @@ package com.example.program.view.Campaign;
 
 
 import com.example.program.control.MainProgram;
+import com.example.program.model.KeyboardPlayer;
 import javafx.animation.FadeTransition;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
@@ -16,10 +18,12 @@ import com.example.program.model.TotalTime;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
+import java.security.Key;
 import java.util.ArrayList;
 
 /**
@@ -58,7 +62,6 @@ public class World1Template extends GridPane {
     private boolean totalTimeStarted = false;
     private int world;
     private int seconds = 25;
-
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
     private TimeThread time;
@@ -602,29 +605,7 @@ public class World1Template extends GridPane {
                         }
                     }
                 }
-
             }
         }
-
-
-        private KeyListener keyListener = new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        };
-
     }
-
-    private 
 }

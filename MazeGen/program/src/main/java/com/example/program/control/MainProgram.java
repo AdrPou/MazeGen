@@ -1,5 +1,6 @@
 package com.example.program.control;
 
+import com.example.program.model.KeyboardPlayer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
@@ -57,6 +58,8 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
+    private KeyboardPlayer keyboardPlayer;
+    private KeyBoardCampaign keyboardCampaign;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -156,6 +159,8 @@ public class MainProgram extends Application {
         introAnimation = new WorldIntroAnimation("1");
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
+
+        startKeyboardGame(new Stage());
     }
 
     /**
@@ -198,6 +203,8 @@ public class MainProgram extends Application {
             System.out.println("hello");
             rightPanel.changeLevelCounter("12");
             mainPaneCampaign.setCenter(new World1Template(world1Maps.getLevel12(), 2, heartCrystals, this, rightPanel, 0, audioPlayer, 25));
+            KeyboardPlayer keyboardPlayer = new KeyboardPlayer(100, 100);
+            KeyBoardCampaign keyBoardCampaign = new KeyBoardCampaign(keyboardPlayer);
 
         }
         else if (level == 2) {
@@ -418,6 +425,23 @@ public class MainProgram extends Application {
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel65(), 5, heartCrystals, this, rightPanel, 5, audioPlayer));
         }
     }
+
+
+    public void startKeyboardGame(Stage primaryStage) {
+        KeyboardPlayer player = new KeyboardPlayer(100, 100); // Initial position of the player
+        KeyBoardCampaign campaign = new KeyBoardCampaign(player); // Pass the player to the view
+
+        // Create a scene and add the campaign view to it
+        Scene scene = new Scene(campaign, 400, 400);
+
+        // Set up the stage and show it
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Keyboard Campaign");
+        primaryStage.show();
+    }
+
+
+
 
     /**
      * Main startar programmet.
