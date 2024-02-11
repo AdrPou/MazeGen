@@ -275,4 +275,21 @@ public class AudioPlayer {
     public void stopClockSound() {
         timeLeftMediaPlayer.stop();
     }
+
+    public void setVolume(double volume){
+        currentSongPlayer.setVolume(volume);
+        introMediaPlayer.setVolume(volume);
+        buttonClickedMediaPlayer.setVolume(volume);
+        gameOverMediaPlayer.setVolume(volume);
+        pickAxeMediaPlayer.setVolume(volume);
+        breakableWallPlayer.setVolume(volume);
+        heartPlayer.setVolume(volume);
+        goalPlayer.setVolume(volume);
+        startPlayer.setVolume(volume);
+        deathPlayer.setVolume(volume);
+        diamondPlayer.setVolume(volume);
+        worldIntroMediaPlayer.setVolume(volume);
+        timeLeftMediaPlayer.setVolume(volume);
+        mobSoundMediaPlayer.setVolume(volume);
+    }
 }

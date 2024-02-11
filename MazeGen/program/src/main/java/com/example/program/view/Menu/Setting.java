@@ -68,31 +68,15 @@ public class Setting extends VBox {
         volumeSlider.setBlockIncrement(10);
 
         volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            int volumeLevel = (int) volumeSlider.getValue();
-            setSystemVolume(volumeLevel / 100.0f);
+            double volumeLevel = volumeSlider.getValue();
+            setSystemVolume(volumeLevel / 100);
+
         });
 
     }
 
     public void setSystemVolume(double volume){
-        try {
-            Mixer.Info[] mixerInfo = AudioSystem.getMixerInfo();
-            for (Mixer.Info info : mixerInfo){
-                Mixer mixer = AudioSystem.getMixer(info);
-                if (mixer.isLineSupported(Port.Info.SPEAKER)){
-                    Port port = (Port) mixer.getLine(Port.Info.SPEAKER);
-                    port.open();
-                    if (port.isControlSupported(FloatControl.Type.VOLUME)){
-                        FloatControl volumeControl = (FloatControl) port.getControl(FloatControl.Type.VOLUME);
-                        volumeControl.setValue((float) volume);
-                    }
-                    port.close();
-                }
-            }
-
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
+        audioPlayer.setVolume(volume);
     }
 
     public void pressMouseAnimation() {
