@@ -72,7 +72,7 @@ public class Intro extends Pane {
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                audioPlayer.stopMusic();
+                //audioPlayer.stopMusic();
                 audioPlayer.playButtonSound();
                 mainProgram.changeToMenu();
             }
