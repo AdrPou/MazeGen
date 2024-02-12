@@ -4,31 +4,33 @@ import javafx.scene.image.Image;
 
 public class KeyboardPlayer { //this class will be responsible for controlling the player
 
-    private double x;
-    private double y;
-    // implementera speed här?
+    private int x;
+    private int y;
+    private int speed;
 
-    public KeyboardPlayer(double x, double y){
-        this.x = y;
+    public KeyboardPlayer(int x, int y){
+        this.x = x;
+        this.y = y;
+        this.speed = 1;
+    }
+
+    public void setY(int y) {
         this.y = y;
     }
 
-    //metod för move?
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public void setX(double x) {
+    public void setX(int x) {
        this.x = x;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
 }

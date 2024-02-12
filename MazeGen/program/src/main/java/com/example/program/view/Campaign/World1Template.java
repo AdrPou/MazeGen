@@ -8,6 +8,7 @@ import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
@@ -18,12 +19,7 @@ import com.example.program.model.TotalTime;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.FileNotFoundException;
-import java.security.Key;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +28,6 @@ import java.util.ArrayList;
  */
 
 public class World1Template extends GridPane {
-
 
 
     private MainProgram mainProgram;
@@ -48,6 +43,7 @@ public class World1Template extends GridPane {
     private Image start;
     private Image heart;
     private Image breakableWall;
+    private Image playerImage;
     private boolean startButtonPressed;
     private boolean allCollectiblesObtained;
     private boolean wallDestroyed;
@@ -66,6 +62,10 @@ public class World1Template extends GridPane {
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
+    private KeyboardPlayer player;
+    boolean gameOver = false;
+    private ImageView playerView;
+    private Label playerLabel;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -105,6 +105,12 @@ public class World1Template extends GridPane {
 
         totTime = new TotalTime(false);
         time = null;
+
+        setOnKeyPressed(this::handleKeyPressed);
+        setOnKeyReleased(this::handleKeyReleased);
+
+        // Enable focus traversal keys
+        setFocusTraversable(true);
 
     }
 
@@ -209,6 +215,7 @@ public class World1Template extends GridPane {
         start = new Image(getClass().getResource(BASE_PATH + "" + folder + "/start.png").toString(), squareSize, squareSize, false, false);
         pickAxeImage = new Image(getClass().getResource(BASE_PATH + "items/pickaxe.png").toString(), squareSize, squareSize, false, false);
         heart = new Image(getClass().getResource(BASE_PATH + "items/heart.png").toString(), squareSize, squareSize, false, false);
+        playerImage = new Image(getClass().getResource(BASE_PATH + "playerTest.png").toString(), squareSize, squareSize, false, false); // ta bort sen
         if (value == 3) {
             breakableWall = new Image(getClass().getResource(BASE_PATH + "cloud/breakablewall.png").toString(), squareSize, squareSize, false, false);
         }
@@ -608,4 +615,102 @@ public class World1Template extends GridPane {
             }
         }
     }
+
+    public int getLevel() {
+        return level.length;
+    }
+
+    /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA FLYTTAS TILL ANNAN KLASS /////////////
+
+    public void updatePlayerImage(int x, int y) {
+
+        if(player == null){
+            this.player = new KeyboardPlayer(x, y);
+        }
+
+        Label playerLabel = new Label();
+        ImageView playerView = new ImageView(playerImage);
+
+        playerView.setFitHeight(squareSize);
+        playerView.setFitWidth(squareSize);
+        playerLabel.setGraphic(playerView);
+
+        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
+
+        add(playerLabel, x, y);
+        System.out.println(x + " " + y);
+
+    }
+
+    private void handleKeyPressed(javafx.scene.input.KeyEvent event) {
+
+            KeyCode keyCode = event.getCode();
+            int newX = 0;
+            int newY = 0;
+
+            switch (keyCode) {
+                case UP:
+                    newY = player.getY() - player.getSpeed();
+                    newX = player.getX();
+                    if(hitWall(newX, newY)) {
+                        player.setY(player.getY() - player.getSpeed());
+                    }
+                    break;
+
+                case DOWN:
+                    newY = player.getY() + player.getSpeed();
+                    newX = player.getX();
+                    if(hitWall(newX, newY)) {
+                        player.setY(player.getY() + player.getSpeed());
+                    }
+                    break;
+
+                case LEFT:
+                    newX = player.getX() - player.getSpeed();
+                    newY = player.getY();
+                    if(hitWall(newX, newY)) {
+                        player.setX(player.getX() - player.getSpeed());
+                    }
+                    break;
+
+                case RIGHT:
+                    newX = player.getX() + player.getSpeed();
+                    newY = player.getY();
+                    if(hitWall(newX, newY)) {
+                        player.setX(player.getX() + player.getSpeed());
+                    }
+                    break;
+
+                default:
+                    // Lägg till ljud för fel knapp här?
+                    break;
+            }
+
+            newX = player.getX();
+            newY = player.getY();
+
+            updatePlayerImage(newX, newY);
+    }
+
+    private void handleKeyReleased(KeyEvent event) {
+        System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
+    }
+
+    public boolean hitWall(int newX, int newY){
+
+        //kolla om spelaren försöker gå utanför banan
+        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1) {
+            System.out.println("cant go there");
+            return false; // lägg till sound för fel och ta bort liv
+        }
+
+        else {
+            return true; // om allt funkar som det ska
+        }
+    }
+
+
+
+
+
 }

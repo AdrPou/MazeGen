@@ -58,7 +58,7 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
-    private KeyboardPlayer keyboardPlayer;
+    private KeyboardPlayer player;
     private KeyBoardCampaign keyboardCampaign;
 
     private static final String BASE_PATH = "/com/example/program/files/";
@@ -160,7 +160,8 @@ public class MainProgram extends Application {
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
 
-        startKeyboardGame(new Stage());
+
+        world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
     }
 
     /**
@@ -204,7 +205,7 @@ public class MainProgram extends Application {
             rightPanel.changeLevelCounter("12");
             mainPaneCampaign.setCenter(new World1Template(world1Maps.getLevel12(), 2, heartCrystals, this, rightPanel, 0, audioPlayer, 25));
             KeyboardPlayer keyboardPlayer = new KeyboardPlayer(100, 100);
-            KeyBoardCampaign keyBoardCampaign = new KeyBoardCampaign(keyboardPlayer);
+            KeyBoardCampaign keyBoardCampaign = new KeyBoardCampaign(keyboardPlayer, world1Template);
 
         }
         else if (level == 2) {
@@ -428,16 +429,13 @@ public class MainProgram extends Application {
 
 
     public void startKeyboardGame(Stage primaryStage) {
-        KeyboardPlayer player = new KeyboardPlayer(100, 100); // Initial position of the player
-        KeyBoardCampaign campaign = new KeyBoardCampaign(player); // Pass the player to the view
+        player = new KeyboardPlayer(100, 100);
+        keyboardCampaign = new KeyBoardCampaign(player, world1Template);
 
-        // Create a scene and add the campaign view to it
-        Scene scene = new Scene(campaign, 400, 400);
-
-        // Set up the stage and show it
+        Scene scene = new Scene(keyboardCampaign, 100, 100);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Keyboard Campaign");
         primaryStage.show();
+
     }
 
 
