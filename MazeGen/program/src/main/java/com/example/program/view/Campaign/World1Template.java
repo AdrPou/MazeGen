@@ -3,6 +3,7 @@ package com.example.program.view.Campaign;
 
 import com.example.program.control.MainProgram;
 import com.example.program.model.KeyboardPlayer;
+import com.example.program.model.Maps.World1Maps;
 import javafx.animation.FadeTransition;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -66,6 +67,7 @@ public class World1Template extends GridPane {
     boolean gameOver = false;
     private ImageView playerView;
     private Label playerLabel;
+    private World1Maps world1Maps;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -102,15 +104,23 @@ public class World1Template extends GridPane {
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
 
-
         totTime = new TotalTime(false);
         time = null;
 
-        setOnKeyPressed(this::handleKeyPressed);
-        setOnKeyReleased(this::handleKeyReleased);
 
-        // Enable focus traversal keys
-        setFocusTraversable(true);
+        setOnKeyPressed(event -> {
+            try {
+                handleKeyPressed(event);
+            } catch (FileNotFoundException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
+        //setOnKeyPressed(this::handleKeyPressed); //flytta till enbart keyboardcampaign sen
+        setOnKeyReleased(this::handleKeyReleased); // flytta till enbart keyboardcampaign sen
+
+
+        setFocusTraversable(true); //flytta till enbart keyboardcampaign sen?
 
     }
 
@@ -266,8 +276,8 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> enteredWall(e)); //TODO för keyboard
-        label.setOnMouseExited(e -> exitedLabel(e));  //TODO för keyboard
+        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
 
@@ -622,11 +632,13 @@ public class World1Template extends GridPane {
 
     /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA FLYTTAS TILL ANNAN KLASS /////////////
 
-    public void updatePlayerImage(int x, int y) {
+    public void updatePlayerImage(int x, int y) { // sker varje gång spelaren går ett steg
 
         if(player == null){
             this.player = new KeyboardPlayer(x, y);
         }
+
+        startLevelKeyboard(x, y);
 
         Label playerLabel = new Label();
         ImageView playerView = new ImageView(playerImage);
@@ -638,11 +650,9 @@ public class World1Template extends GridPane {
         getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
 
         add(playerLabel, x, y);
-        System.out.println(x + " " + y);
-
     }
 
-    private void handleKeyPressed(javafx.scene.input.KeyEvent event) {
+    private void handleKeyPressed(javafx.scene.input.KeyEvent event) throws FileNotFoundException, InterruptedException {
 
             KeyCode keyCode = event.getCode();
             int newX = 0;
@@ -652,7 +662,7 @@ public class World1Template extends GridPane {
                 case UP:
                     newY = player.getY() - player.getSpeed();
                     newX = player.getX();
-                    if(hitWall(newX, newY)) {
+                    if(!hitWall(newX, newY)) {
                         player.setY(player.getY() - player.getSpeed());
                     }
                     break;
@@ -660,7 +670,7 @@ public class World1Template extends GridPane {
                 case DOWN:
                     newY = player.getY() + player.getSpeed();
                     newX = player.getX();
-                    if(hitWall(newX, newY)) {
+                    if(!hitWall(newX, newY)) {
                         player.setY(player.getY() + player.getSpeed());
                     }
                     break;
@@ -668,7 +678,7 @@ public class World1Template extends GridPane {
                 case LEFT:
                     newX = player.getX() - player.getSpeed();
                     newY = player.getY();
-                    if(hitWall(newX, newY)) {
+                    if(!hitWall(newX, newY)) {
                         player.setX(player.getX() - player.getSpeed());
                     }
                     break;
@@ -676,7 +686,7 @@ public class World1Template extends GridPane {
                 case RIGHT:
                     newX = player.getX() + player.getSpeed();
                     newY = player.getY();
-                    if(hitWall(newX, newY)) {
+                    if(!hitWall(newX, newY)) {
                         player.setX(player.getX() + player.getSpeed());
                     }
                     break;
@@ -690,27 +700,128 @@ public class World1Template extends GridPane {
             newY = player.getY();
 
             updatePlayerImage(newX, newY);
+            checkCollectibles(newX, newY);
+            checkReachedGoal(newX, newY);
     }
 
     private void handleKeyReleased(KeyEvent event) {
         System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
     }
 
-    public boolean hitWall(int newX, int newY){
+    public boolean hitWall(int newX, int newY){ // lägg till förlorat liv
 
-        //kolla om spelaren försöker gå utanför banan
-        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1) {
-            System.out.println("cant go there");
-            return false; // lägg till sound för fel och ta bort liv
+        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
+
+            FadeTransition fade = new FadeTransition();
+            fade.setDuration(Duration.seconds(0.3));
+            fade.setFromValue(10);
+            fade.setToValue(0.6);
+            fade.play();
+
+            heartCrystals--;
+            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+
+            if (heartCrystals == 0) {
+                gameOver();
+            }
+            audioPlayer.playDeathSound();
+
+            return true; // lägg till sound för fel
         }
-
         else {
-            return true; // om allt funkar som det ska
+            return false; // om allt funkar som det ska
         }
     }
 
+    public void checkCollectibles(int x, int y) {
+
+        if(level[y - 1][x - 1] == 4) { //fixa senare. plocka upp collectible
+
+            for (Label label: collectibles) {
+
+                int labelX = GridPane.getColumnIndex(label);
+                int labelY = GridPane.getRowIndex(label);
+
+                if (labelX == x && labelY == y) {
+                    audioPlayer.playCollectibleSound();
+                    label.setVisible(false);
+                    collectiblesObtained++;
+                    if (collectiblesObtained == collectibles.size()) {
+                        allCollectiblesObtained = true;
+                    }
+                }
+            }
 
 
 
+        } else if (level[y - 1][x - 1] == 5) { // fixa senare. plocka upp pickaxe
+            for (Label label : pickaxes){
 
+                int labelX = GridPane.getColumnIndex(label);
+                int labelY = GridPane.getRowIndex(label);
+
+                if (labelX == x && labelY == y){
+                    audioPlayer.playPickAxeSound();
+                    label.setVisible(false);
+                    pickaxeObtained = true;
+                    rightPanel.addPickaxe();
+                }
+            }
+        }
+    }
+
+    public void checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
+        if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
+            audioPlayer.stopClockSound();
+            audioPlayer.playGoalSound();
+            nextLevelKeyboard(x, y);
+            rightPanel.pauseClock();
+            rightPanel.setTheTime(seconds);
+            gameStarted = true;
+            time.setGameOver(true);
+            time = null;
+        }
+    }
+
+    public void nextLevelKeyboard(int x, int y) throws FileNotFoundException, InterruptedException {
+        if (world == 0) {
+            mainProgram.nextWorld1Level(currentLevel, heartCrystals);
+        } else if (world == 1) {
+            mainProgram.nextWorld2Level(currentLevel, heartCrystals);
+        } else if (world == 2) {
+            mainProgram.nextWorld3Level(currentLevel, heartCrystals);
+        } else if (world == 3) {
+            mainProgram.nextWorld4Level(currentLevel, heartCrystals);
+        } else if (world == 4) {
+            mainProgram.nextWorld5Level(currentLevel, heartCrystals);
+        } else if (world == 5) {
+            mainProgram.nextWorld6Level(currentLevel, heartCrystals);
+        }
+
+
+       // updatePlayerImage(x, y);
+    }
+
+
+    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
+
+        if (!totalTimeStarted){
+            rightPanel.startTotalTimer();
+            rightPanel.setTimerIsStarted(true);
+        }
+
+        if (!gameStarted){
+            rightPanel.resumeClock();
+            gameStarted = true;
+            time = new TimeThread(seconds, rightPanel);
+            time.setGameOver(false);
+            time.start();
+
+        }
+
+        totalTimeStarted = true;
+        //startNotClickedOnce = false;
+        audioPlayer.playStartSound();
+        startButtonPressed = true;
+    }
 }

@@ -153,6 +153,8 @@ public class MainProgram extends Application {
     public void changeToCampaign() throws FileNotFoundException {
 
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
+        // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
+
 
         mainPaneCampaign.setCenter(world1Template);
         mainWindow.setScene(campaignScene);
@@ -162,6 +164,7 @@ public class MainProgram extends Application {
 
 
         world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
+        //TODO: samma här för både vanlig och keyboard
     }
 
     /**
@@ -204,8 +207,6 @@ public class MainProgram extends Application {
             System.out.println("hello");
             rightPanel.changeLevelCounter("12");
             mainPaneCampaign.setCenter(new World1Template(world1Maps.getLevel12(), 2, heartCrystals, this, rightPanel, 0, audioPlayer, 25));
-            KeyboardPlayer keyboardPlayer = new KeyboardPlayer(100, 100);
-            KeyBoardCampaign keyBoardCampaign = new KeyBoardCampaign(keyboardPlayer, world1Template);
 
         }
         else if (level == 2) {
@@ -426,20 +427,6 @@ public class MainProgram extends Application {
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel65(), 5, heartCrystals, this, rightPanel, 5, audioPlayer));
         }
     }
-
-
-    public void startKeyboardGame(Stage primaryStage) {
-        player = new KeyboardPlayer(100, 100);
-        keyboardCampaign = new KeyBoardCampaign(player, world1Template);
-
-        Scene scene = new Scene(keyboardCampaign, 100, 100);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
-    }
-
-
-
 
     /**
      * Main startar programmet.
