@@ -14,15 +14,6 @@ import java.io.FileNotFoundException;
 
 public class Menu extends Pane {
     private MainProgram mainProgram;
-
-    public Image getCampaign() {
-        return campaign;
-    }
-
-    public Image getRandomize() {
-        return randomize;
-    }
-
     private Image campaign;
     private Image campaignResize;
     private Image randomize;
@@ -30,11 +21,6 @@ public class Menu extends Pane {
     private Image help;
     private Image helpResize;
     private Image mazegen;
-
-    public Image getSettings() {
-        return settings;
-    }
-
     private Image settings;
     private Image settingsResize;
     private AudioPlayer audioPlayer;
