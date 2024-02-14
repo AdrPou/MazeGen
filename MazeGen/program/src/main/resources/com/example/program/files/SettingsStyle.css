@@ -27,3 +27,8 @@
     -fx-background-radius: 0px;
     -fx-border-radius: 10px;
 }
+
+.backView {
+   -fx-spacing: 50px;
+
+}
