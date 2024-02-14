@@ -68,6 +68,7 @@ public class World1Template extends GridPane {
     private ImageView playerView;
     private Label playerLabel;
     private World1Maps world1Maps;
+    private KeyBoardCampaign keyBoardCampaign;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -105,7 +106,10 @@ public class World1Template extends GridPane {
         rightPanel.resetTimerLabel();
 
         totTime = new TotalTime(false);
-        time = null;
+        //time = null;
+        startLevelKeyboard(1, 1);
+        //keyBoardCampaign = new KeyBoardCampaign(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, seconds);
+
 
 
         setOnKeyPressed(event -> {
@@ -121,6 +125,8 @@ public class World1Template extends GridPane {
 
 
         setFocusTraversable(true); //flytta till enbart keyboardcampaign sen?
+
+
 
     }
 
@@ -168,6 +174,7 @@ public class World1Template extends GridPane {
                 }
                 else if (level[i][j] == 2){
                     add(getStart(),j + 1,i + 1);
+                    setPlayerOnStart(j + 1, i + 1);
                 }
                 else if (level[i][j] == 3){
                     add(getGoal(),j + 1,i + 1);
@@ -638,7 +645,7 @@ public class World1Template extends GridPane {
             this.player = new KeyboardPlayer(x, y);
         }
 
-        startLevelKeyboard(x, y);
+        //startLevelKeyboard(x, y);
 
         Label playerLabel = new Label();
         ImageView playerView = new ImageView(playerImage);
@@ -770,20 +777,27 @@ public class World1Template extends GridPane {
         }
     }
 
+    public void setPlayerOnStart(int x, int y) {
+        if (level[y - 1][x - 1] == 2) {
+            updatePlayerImage(x, y);
+        }
+    }
+
     public void checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
         if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
-            nextLevelKeyboard(x, y);
             rightPanel.pauseClock();
             rightPanel.setTheTime(seconds);
             gameStarted = true;
             time.setGameOver(true);
             time = null;
+            nextLevelKeyboard(x, y);
         }
     }
 
     public void nextLevelKeyboard(int x, int y) throws FileNotFoundException, InterruptedException {
+
         if (world == 0) {
             mainProgram.nextWorld1Level(currentLevel, heartCrystals);
         } else if (world == 1) {
@@ -798,19 +812,23 @@ public class World1Template extends GridPane {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
         }
 
-        updatePlayerImage(x, y);
+        //updatePlayerImage(x, y);
 
     }
 
 
     public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
 
+        gameStarted = true;
+
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
             rightPanel.setTimerIsStarted(true);
         }
+        System.out.println(gameStarted);
 
-        if (!gameStarted){
+        if (gameStarted){
+            System.out.println("this method is running");
             rightPanel.resumeClock();
             gameStarted = true;
             time = new TimeThread(seconds, rightPanel);

@@ -98,7 +98,8 @@ public class KeyBoardCampaign extends GridPane {
         rightPanel.resetTimerLabel();
 
         totTime = new TotalTime(false);
-        time = null;
+        //time = null;
+        //startLevelKeyboard(1, 1);
 
         setOnKeyPressed(event -> {
             try {
@@ -157,6 +158,7 @@ public class KeyBoardCampaign extends GridPane {
                 }
                 else if (level[i][j] == 2){
                     add(getStart(),j + 1,i + 1);
+                    setPlayerOnStart(j + 1, i + 1);
                 }
                 else if (level[i][j] == 3){
                     add(getGoal(),j + 1,i + 1);
@@ -474,12 +476,14 @@ public class KeyBoardCampaign extends GridPane {
      */
     public void startLevel() { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
 
+        gameStarted = true;
+
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
             rightPanel.setTimerIsStarted(true);
         }
 
-        if (!gameStarted){
+        if (gameStarted){
             rightPanel.resumeClock();
             gameStarted = true;
             time = new TimeThread(seconds, rightPanel);
@@ -534,7 +538,7 @@ public class KeyBoardCampaign extends GridPane {
             this.player = new KeyboardPlayer(x, y);
         }
 
-        startLevelKeyboard(x, y);
+        //startLevelKeyboard(x, y);
 
         Label playerLabel = new Label();
         ImageView playerView = new ImageView(playerImage);
@@ -719,5 +723,11 @@ public class KeyBoardCampaign extends GridPane {
         startButtonPressed = true;
 
         updatePlayerImage(x, y);
+    }
+
+    public void setPlayerOnStart(int x, int y) {
+        if (level[y - 1][x - 1] == 2) {
+            updatePlayerImage(x, y);
+        }
     }
 }

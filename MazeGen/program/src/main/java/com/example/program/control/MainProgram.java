@@ -156,6 +156,7 @@ public class MainProgram extends Application {
         // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
 
 
+        audioPlayer.stopMusic();
         mainPaneCampaign.setCenter(world1Template);
         mainWindow.setScene(campaignScene);
         introAnimation = new WorldIntroAnimation("1");
