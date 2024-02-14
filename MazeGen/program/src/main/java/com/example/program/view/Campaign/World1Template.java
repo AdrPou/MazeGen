@@ -798,8 +798,8 @@ public class World1Template extends GridPane {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
         }
 
+        updatePlayerImage(x, y);
 
-       // updatePlayerImage(x, y);
     }
 
 
