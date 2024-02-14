@@ -1,8 +1,10 @@
 package com.example.program.view.Randomize;
 
 
+import com.example.program.model.KeyboardPlayer;
 import com.example.program.model.MazeGeneration.GenerateNextLevel;
 import com.example.program.control.MainProgram;
+import com.example.program.model.TimeThread;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.scene.effect.Glow;
@@ -57,7 +59,8 @@ public class MapTemplate extends GridPane {
     private MediaPlayer startPlayer = new MediaPlayer(new Media(getClass().getResource(SOUND_BASE_PATH + "MazegenStart.mp3").toString()));
     private MediaPlayer goalPlayer = new MediaPlayer(new Media(getClass().getResource(SOUND_BASE_PATH + "MazegenGoal.mp3").toString()));
 
-
+    private KeyboardPlayer player;
+    private Image playerImage;
 
 
 
@@ -331,4 +334,43 @@ public class MapTemplate extends GridPane {
             }
         }
     }
+
+    /////////////////ALLT HÄR UNDER ÄR FÖR KEYBOARD //////////
+        /*
+    public void updatePlayerImage(int x, int y) { // sker varje gång spelaren går ett steg
+
+        if(player == null){
+            this.player = new KeyboardPlayer(x, y);
+        }
+
+        startLevelKeyboard(x, y);
+
+        Label playerLabel = new Label();
+        ImageView playerView = new ImageView(playerImage);
+
+        playerView.setFitHeight(squareSize);
+        playerView.setFitWidth(squareSize);
+        playerLabel.setGraphic(playerView);
+
+        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
+
+        add(playerLabel, x, y);
+    }
+    
+         */
+
+        /*
+    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
+
+        if (!gameStarted){
+            gameStarted = true;
+            audioPlayer.playStartSound();
+            startButtonPressed = true;
+        }
+    }
+
+         */
+
+
+
 }
