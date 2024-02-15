@@ -334,43 +334,4 @@ public class MapTemplate extends GridPane {
             }
         }
     }
-
-    /////////////////ALLT HÄR UNDER ÄR FÖR KEYBOARD //////////
-        /*
-    public void updatePlayerImage(int x, int y) { // sker varje gång spelaren går ett steg
-
-        if(player == null){
-            this.player = new KeyboardPlayer(x, y);
-        }
-
-        startLevelKeyboard(x, y);
-
-        Label playerLabel = new Label();
-        ImageView playerView = new ImageView(playerImage);
-
-        playerView.setFitHeight(squareSize);
-        playerView.setFitWidth(squareSize);
-        playerLabel.setGraphic(playerView);
-
-        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
-
-        add(playerLabel, x, y);
-    }
-    
-         */
-
-        /*
-    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
-
-        if (!gameStarted){
-            gameStarted = true;
-            audioPlayer.playStartSound();
-            startButtonPressed = true;
-        }
-    }
-
-         */
-
-
-
 }

@@ -50,7 +50,7 @@ public class KeyBoardCampaign extends GridPane {
     private Image pickAxeImage;
     private boolean pickaxeObtained;
     private boolean gameStarted;
-    private boolean startNotClickedOnce = true;
+    // private boolean startNotClickedOnce = true;
     private boolean totalTimeStarted = false;
     private int world;
     private int seconds = 25;
@@ -99,7 +99,7 @@ public class KeyBoardCampaign extends GridPane {
 
         totTime = new TotalTime(false);
         //time = null;
-        //startLevelKeyboard(1, 1);
+        startLevelKeyboard(1, 1);
 
         setOnKeyPressed(event -> {
             try {
@@ -344,26 +344,6 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     /**
-     * När en användare vidrör en label av typen heartCrystal körs denna metod.
-     * Om spelaren har mindre än tre återstående liv inkrementeras variabeln heartCrystals.
-     * @param e Används för att hitta rätt label.
-     */
-
-    private void heartCrystalObtained(MouseEvent e) { //TODO lägg till i collectible-metod keyboard
-
-        Label label = (Label)e.getSource();
-
-        if (startButtonPressed) {
-            audioPlayer.playHeartSound();
-            label.setVisible(false);
-            if(heartCrystals<3){
-                heartCrystals++;
-                rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-            }
-        }
-    }
-
-    /**
      * En metod som skapar ett objekt av label som representerar en yxa.
      * @return Returnerar en label.
      */
@@ -379,36 +359,6 @@ public class KeyBoardCampaign extends GridPane {
         pickAxe.setGraphic(borderView);
         pickaxes.add(pickAxe);
         return pickAxe;
-    }
-
-    /**
-     * Om en spelare vidrör ett spöke med muspekaren körs denna metod.
-     * Om spelrundan är aktiverad förlorar spelaren ett liv.
-     * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
-     * @param e
-     */
-    public void enteredGhost(MouseEvent e){ //TODO lägg till check för detta
-        ImageView view = (ImageView) e.getSource();
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(view);
-        fade.setDuration(Duration.seconds(1));
-        fade.setFromValue(10);
-        fade.setToValue(0.6);
-        fade.setToValue(10);
-        fade.play();
-
-
-        if (startButtonPressed) {
-            audioPlayer.playMobSound();
-            audioPlayer.playDeathSound();
-            heartCrystals--;
-            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-
-            if (heartCrystals == 0) {
-                gameOver();
-            }
-            startButtonPressed = false;
-        }
     }
 
     /**
@@ -468,63 +418,6 @@ public class KeyBoardCampaign extends GridPane {
         }
         else if (world == 5) {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
-        }
-    }
-
-    /**
-     * Startar spelrundan och timern.
-     */
-    public void startLevel() { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
-
-        gameStarted = true;
-
-        if (!totalTimeStarted){
-            rightPanel.startTotalTimer();
-            rightPanel.setTimerIsStarted(true);
-        }
-
-        if (gameStarted){
-            rightPanel.resumeClock();
-            gameStarted = true;
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
-
-        }else if (startNotClickedOnce){
-            rightPanel.runClock();
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
-
-        }
-        totalTimeStarted = true;
-        startNotClickedOnce = false;
-        audioPlayer.playStartSound();
-        startButtonPressed = true;
-    }
-
-    /**
-     * Om spelrundan är startad och spelaren har plockat upp en yxa går det att förstöra väggen.
-     * Om spelrundan är startad och spelaren inte plockat upp en yxa förlorar hen ett liv vid kollision med väggen.
-     * @param e Används för att hitta rätt label.
-     */
-    public void enteredBreakableWall(MouseEvent e) { // TODO behöver metod för tangentbord också
-
-        Label label = (Label)e.getSource();
-        ImageView pathView = new ImageView(path);
-
-        if (startButtonPressed) {
-
-            if (pickaxeObtained) {
-                label.setGraphic(pathView);
-                pickaxeObtained = false;
-                rightPanel.removePickaxe();
-                wallDestroyed = true;
-                audioPlayer.playBreakableWallSound();
-            }
-            else if (!wallDestroyed) {
-                //enteredWall(e);
-            }
         }
     }
 
@@ -608,7 +501,7 @@ public class KeyBoardCampaign extends GridPane {
         System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
     }
 
-    public boolean hitWall(int newX, int newY){ // lägg till förlorat liv
+    public boolean hitWall(int newX, int newY){ //TODO lägg till if-sats för breakable wall
 
         if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
 
@@ -633,7 +526,7 @@ public class KeyBoardCampaign extends GridPane {
         }
     }
 
-    public void checkCollectibles(int x, int y) {
+    public void checkCollectibles(int x, int y) { //TODO ska kunna plocka upp hjärtan
 
         if(level[y - 1][x - 1] == 4) { //fixa senare. plocka upp collectible
 
@@ -652,8 +545,6 @@ public class KeyBoardCampaign extends GridPane {
                 }
             }
 
-
-
         } else if (level[y - 1][x - 1] == 5) { // fixa senare. plocka upp pickaxe
             for (Label label : pickaxes){
 
@@ -670,20 +561,27 @@ public class KeyBoardCampaign extends GridPane {
         }
     }
 
+    public void setPlayerOnStart(int x, int y) {
+        if (level[y - 1][x - 1] == 2) {
+            updatePlayerImage(x, y);
+        }
+    }
+
     public void checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
         if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
-            nextLevelKeyboard();
             rightPanel.pauseClock();
             rightPanel.setTheTime(seconds);
             gameStarted = true;
             time.setGameOver(true);
             time = null;
+            nextLevelKeyboard(x, y);
         }
     }
 
-    public void nextLevelKeyboard() throws FileNotFoundException, InterruptedException {
+    public void nextLevelKeyboard(int x, int y) throws FileNotFoundException, InterruptedException {
+
         if (world == 0) {
             mainProgram.nextWorld1Level(currentLevel, heartCrystals);
         } else if (world == 1) {
@@ -697,18 +595,20 @@ public class KeyBoardCampaign extends GridPane {
         } else if (world == 5) {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
         }
-
     }
 
-
     public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
+
+        gameStarted = true;
 
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
             rightPanel.setTimerIsStarted(true);
         }
+        System.out.println(gameStarted);
 
-        if (!gameStarted){
+        if (gameStarted){
+            System.out.println("this method is running");
             rightPanel.resumeClock();
             gameStarted = true;
             time = new TimeThread(seconds, rightPanel);
@@ -718,16 +618,8 @@ public class KeyBoardCampaign extends GridPane {
         }
 
         totalTimeStarted = true;
-        //startNotClickedOnce = false;
         audioPlayer.playStartSound();
         startButtonPressed = true;
-
-        updatePlayerImage(x, y);
     }
 
-    public void setPlayerOnStart(int x, int y) {
-        if (level[y - 1][x - 1] == 2) {
-            updatePlayerImage(x, y);
-        }
-    }
 }

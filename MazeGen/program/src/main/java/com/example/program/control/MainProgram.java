@@ -1,6 +1,7 @@
 package com.example.program.control;
 
 import com.example.program.model.KeyboardPlayer;
+import com.example.program.view.Randomize.TemplateKeyboard;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
@@ -60,6 +61,7 @@ public class MainProgram extends Application {
     private Image cursorImage;
     private KeyboardPlayer player;
     private KeyBoardCampaign keyboardCampaign;
+    private TemplateKeyboard templateKeyboard;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -139,11 +141,13 @@ public class MainProgram extends Application {
         mazeGenerator = new MazeGenerator(dimension, true);
         generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
         mapTemplate = new MapTemplate(mazeGenerator.getMaze(), this, generateNextLevel);
+        //templateKeyboard = new TemplateKeyboard(mazeGenerator.getMaze(), this, generateNextLevel);
         mainPaneRandomMaze.setCenter(mapTemplate);
+        //mainPaneRandomMaze.setCenter(templateKeyboard);
         mainWindow.setScene(randomScene);
         audioPlayer.playWorldIntroSound();
         audioPlayer.stopMusic();
-        audioPlayer.playLevelMusic("forest"); //TODO fixa anpassad musik ?
+        audioPlayer.playLevelMusic("forest"); //TODO fixa anpassad musik för banorna?
     }
 
     /**
@@ -154,7 +158,7 @@ public class MainProgram extends Application {
 
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
         // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
-
+        //keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
 
         audioPlayer.stopMusic();
         mainPaneCampaign.setCenter(world1Template);
@@ -164,8 +168,9 @@ public class MainProgram extends Application {
         introAnimation.setDisable(true);
 
 
-        world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
+       world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
         //TODO: samma här för både vanlig och keyboard
+        //keyboardCampaign.updatePlayerImage(1, 8); // Sätter spelaren på pos
     }
 
     /**

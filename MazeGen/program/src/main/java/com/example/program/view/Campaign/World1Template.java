@@ -110,8 +110,6 @@ public class World1Template extends GridPane {
         startLevelKeyboard(1, 1);
         //keyBoardCampaign = new KeyBoardCampaign(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, seconds);
 
-
-
         setOnKeyPressed(event -> {
             try {
                 handleKeyPressed(event);
@@ -120,13 +118,9 @@ public class World1Template extends GridPane {
             }
         });
 
-        //setOnKeyPressed(this::handleKeyPressed); //flytta till enbart keyboardcampaign sen
         setOnKeyReleased(this::handleKeyReleased); // flytta till enbart keyboardcampaign sen
 
-
         setFocusTraversable(true); //flytta till enbart keyboardcampaign sen?
-
-
 
     }
 
@@ -255,8 +249,8 @@ public class World1Template extends GridPane {
         wallView.setFitHeight(squareSize);
         wallView.setFitWidth(squareSize);
         label.setGraphic(wallView);
-        label.setOnMouseEntered(e -> enteredWall(e)); //TODO för keyboard
-        label.setOnMouseExited(e -> exitedLabel(e));  //TODO för keyboard
+        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
 
@@ -312,7 +306,7 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> { // TODO för keyboard
+        label.setOnMouseEntered(e -> {
             try {
                 enteredGoal();
             } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
@@ -332,7 +326,7 @@ public class World1Template extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseClicked(e -> startLevel()); //TODO dennna kan man ju kanske fortfarande ha som klick, eller kanske genom att bara ställa sig på stegen
+        label.setOnMouseClicked(e -> startLevel());
         return label;
     }
 
@@ -350,7 +344,7 @@ public class World1Template extends GridPane {
         borderView.setEffect(glow);
         collectible.setStyle("fx-background-color: transparent;");
         collectible.setGraphic(borderView);
-        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener); //TODO lägg till eventhandler för spel med keyboard
+        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
         collectibles.add(collectible);
         return collectible;
     }
@@ -370,7 +364,7 @@ public class World1Template extends GridPane {
         heartCrystal.setStyle("fx-background-color: transparent;");
         heartCrystal.setGraphic(borderView);
         heartCrystal.setOpacity(0.8);
-        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e)); //TODO lägg till eventhandler för spel med keyboard
+        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e));
         return heartCrystal;
     }
 
@@ -408,7 +402,7 @@ public class World1Template extends GridPane {
         borderView.setEffect(glow);
         pickAxe.setStyle("fx-background-color: transparent;");
         pickAxe.setGraphic(borderView);
-        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener); //TODO lägg till eventhandler för spel med keyboard
+        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
         pickaxes.add(pickAxe);
         return pickAxe;
     }
@@ -419,7 +413,7 @@ public class World1Template extends GridPane {
      * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredWall(MouseEvent e) { //TODO ska vi ha samma koncept för spel med keyboard?
+    public void enteredWall(MouseEvent e) {
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -535,7 +529,7 @@ public class World1Template extends GridPane {
     /**
      * Startar spelrundan och timern.
      */
-    public void startLevel() { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
+    public void startLevel() {
 
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
@@ -566,7 +560,7 @@ public class World1Template extends GridPane {
      * När muspekaren lämnar en label slutar den att highlightas.
      * @param e Används för att hitta rätt label.
      */
-    public void exitedLabel(MouseEvent e) {  //TODO vill vi ha detta på keyboard också eller ska vi skippa det?
+    public void exitedLabel(MouseEvent e) {
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -581,7 +575,7 @@ public class World1Template extends GridPane {
      * Om spelrundan är startad och spelaren inte plockat upp en yxa förlorar hen ett liv vid kollision med väggen.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredBreakableWall(MouseEvent e) { // TODO behöver metod för tangentbord också
+    public void enteredBreakableWall(MouseEvent e) { //TODO detta behöver implementeras i keyboard också
 
         Label label = (Label)e.getSource();
         ImageView pathView = new ImageView(path);
@@ -604,7 +598,7 @@ public class World1Template extends GridPane {
     /**
      * En listener som körs när spelaren plockar upp en collectible eller en yxa.
      */
-    private class MouseListener implements EventHandler<MouseEvent> { //TODO behöver ha metod för tangentbord också
+    private class MouseListener implements EventHandler<MouseEvent> {
 
         @Override
         public void handle(MouseEvent e) {
@@ -637,9 +631,9 @@ public class World1Template extends GridPane {
         return level.length;
     }
 
-    /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA FLYTTAS TILL ANNAN KLASS /////////////
+    /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA BRA FINNAS I KEYBOARDCAMPAIGN /////////////
 
-    public void updatePlayerImage(int x, int y) { // sker varje gång spelaren går ett steg
+    public void updatePlayerImage(int x, int y) { //sker varje gång spelaren går ett steg
 
         if(player == null){
             this.player = new KeyboardPlayer(x, y);
@@ -734,7 +728,7 @@ public class World1Template extends GridPane {
             audioPlayer.playDeathSound();
 
             return true; // lägg till sound för fel
-        }
+        } //TODO lägg till hantering av breakable wall
         else {
             return false; // om allt funkar som det ska
         }
@@ -761,7 +755,7 @@ public class World1Template extends GridPane {
 
 
 
-        } else if (level[y - 1][x - 1] == 5) { // fixa senare. plocka upp pickaxe
+        } else if (level[y - 1][x - 1] == 5) { // Plocka upp pickaxe
             for (Label label : pickaxes){
 
                 int labelX = GridPane.getColumnIndex(label);
@@ -774,6 +768,9 @@ public class World1Template extends GridPane {
                     rightPanel.addPickaxe();
                 }
             }
+
+        } else if(level[y - 1][x - 1] == 7) { // Plocka upp heartcrystal
+                //TODO lägg till hjärta i right panel och ta bort det från grid
         }
     }
 
@@ -812,12 +809,10 @@ public class World1Template extends GridPane {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
         }
 
-        //updatePlayerImage(x, y);
-
     }
 
 
-    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
+    public void startLevelKeyboard(int x, int y) {
 
         gameStarted = true;
 
