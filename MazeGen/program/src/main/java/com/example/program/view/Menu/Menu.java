@@ -37,6 +37,8 @@ public class Menu extends Pane {
 
     private Image settings;
     private Image settingsResize;
+    private Image highScore;
+    private Image highScoreResize;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
 
@@ -69,6 +71,8 @@ public class Menu extends Pane {
         helpResize = new Image(getClass().getResource("/com/example/program/files/texts/Help.png").toString(), 255, 33, false, false);
         settings = new Image(getClass().getResource("/com/example/program/files/texts/settings.png").toString(), 250, 30, false, false);
         settingsResize = new Image(getClass().getResource("/com/example/program/files/texts/settings.png").toString(), 255, 33, false, false);
+        highScore = new Image(getClass().getResource("/com/example/program/files/texts/Highscore.png").toString(), 250, 30, false, false);
+        highScoreResize = new Image(getClass().getResource("/com/example/program/files/texts/Highscore.png").toString(), 255, 33, false, false);
     }
 
     /**
@@ -156,28 +160,48 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
+        ImageView highScoreView = new ImageView(highScore);
+        highScoreView.setStyle("fx-background-color: transparent;");
+        highScoreView.setTranslateX(275);
+        highScoreView.setTranslateY(350);
+        highScoreView.toFront();
+        highScoreView.setOnMouseEntered(e -> {
+            highScoreView.setImage(highScoreResize);
+            highScoreView.setTranslateX(273);
+            highScoreView.setTranslateY(347);
+        });
+        highScoreView.setOnMouseExited(e -> {
+            highScoreView.setImage(highScore);
+            highScoreView.setTranslateX(275);
+            highScoreView.setTranslateY(350);
+        });
+        highScoreView.setOnMouseClicked(e -> {
+            mainProgram.changeToHighScore();
+            audioPlayer.playButtonSound();
+        });
+
 
         ImageView helpView = new ImageView(help);
         helpView.setStyle("fx-background-color: transparent;");
         helpView.setTranslateX(275);
-        helpView.setTranslateY(350);
+        helpView.setTranslateY(400);
         helpView.toFront();
         helpView.setOnMouseEntered(e -> {
             helpView.setImage(helpResize);
             helpView.setTranslateX(273);
-            helpView.setTranslateY(347);
+            helpView.setTranslateY(397);
         });
         helpView.setOnMouseExited(e -> {
             helpView.setImage(help);
             helpView.setTranslateX(275);
-            helpView.setTranslateY(350);
+            helpView.setTranslateY(400);
         });
         helpView.setOnMouseClicked(e -> {
             mainProgram.changeToHelp();
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,helpView, settingsView, mazegenView);
+        this.getChildren().addAll(campaignView,randomizeView,helpView, settingsView, highScoreView, mazegenView);
     }
 
 }

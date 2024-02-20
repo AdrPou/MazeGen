@@ -1,0 +1,7 @@
+.highScoreList{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-spacing: 20px;
+    -fx-alignment: top-center;
+    -fx-padding: 40px;
+}

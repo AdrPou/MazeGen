@@ -39,11 +39,13 @@ public class MainProgram extends Application {
     private Scene introScene;
     private Scene helpScene;
     private Scene settingsScene;
+    private Scene highScoreScene;
     private Scene chooseDimensionScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private Setting setting;
+    private HighScoreList highScoreList;
     private ChooseDimension chooseDimension;
     private Scene randomScene;
     private Scene campaignScene;
@@ -80,11 +82,13 @@ public class MainProgram extends Application {
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
         setting = new Setting(this, audioPlayer);
+        highScoreList = new HighScoreList(this, audioPlayer);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
         settingsScene = new Scene(setting, 800, 600);
+        highScoreScene = new Scene(highScoreList, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
@@ -117,6 +121,7 @@ public class MainProgram extends Application {
         chooseDimensionScene.setCursor(new ImageCursor(cursorImage));
         helpScene.setCursor(new ImageCursor(cursorImage));
         settingsScene.setCursor(new ImageCursor(cursorImage));
+        highScoreScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
     }
 
@@ -174,6 +179,13 @@ public class MainProgram extends Application {
 
     public void changeToSettings() {
         mainWindow.setScene(settingsScene);
+    }
+
+    /**
+     * Byter scen till highscorefönstret.
+     */
+    public void changeToHighScore() {
+        mainWindow.setScene(highScoreScene);
     }
 
     /**
