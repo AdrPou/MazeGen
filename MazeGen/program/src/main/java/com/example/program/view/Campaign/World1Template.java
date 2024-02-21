@@ -419,7 +419,7 @@ public class World1Template extends GridPane {
      * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredWall(MouseEvent e) { //TODO ska vi ha samma koncept för spel med keyboard?
+    public String enteredWall(MouseEvent e) { //TODO ska vi ha samma koncept för spel med keyboard?
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -435,10 +435,15 @@ public class World1Template extends GridPane {
 
             if (heartCrystals == 0) {
                 gameOver();
+                return "dead";
             }
             audioPlayer.playDeathSound();
             startButtonPressed = false;
+
+            return "alive";
         }
+
+        return null;
     }
 
     /**

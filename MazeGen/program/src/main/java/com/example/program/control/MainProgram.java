@@ -429,6 +429,10 @@ public class MainProgram extends Application {
         }
     }
 
+    public void setMainPaneCampaign(BorderPane mainPaneCampaign) {
+        this.mainPaneCampaign = mainPaneCampaign;
+    }
+
     /**
      * Main startar programmet.
      * @param args
