@@ -1,5 +1,6 @@
 package com.example.program.control;
 
+import com.example.program.model.KeyboardPlayer;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
@@ -57,6 +58,8 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
+    private KeyboardPlayer player;
+    private KeyBoardCampaign keyboardCampaign;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -150,12 +153,19 @@ public class MainProgram extends Application {
     public void changeToCampaign() throws FileNotFoundException {
 
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
+        // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
 
+
+        audioPlayer.stopMusic();
         mainPaneCampaign.setCenter(world1Template);
         mainWindow.setScene(campaignScene);
         introAnimation = new WorldIntroAnimation("1");
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
+
+
+        world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
+        //TODO: samma här för både vanlig och keyboard
     }
 
     /**
