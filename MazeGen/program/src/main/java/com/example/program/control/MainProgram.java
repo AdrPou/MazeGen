@@ -1,5 +1,6 @@
 package com.example.program.control;
 
+import com.example.program.model.HighScore;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
@@ -45,7 +46,7 @@ public class MainProgram extends Application {
     private Menu menu;
     private Help help;
     private Setting setting;
-    private HighScoreList highScoreList;
+    private HighScoreView highScoreView;
     private ChooseDimension chooseDimension;
     private Scene randomScene;
     private Scene campaignScene;
@@ -59,6 +60,8 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
+    private HighScore highScore = new HighScore();
+    private int totalScore = 0;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -78,17 +81,19 @@ public class MainProgram extends Application {
         rightPanel = new RightPanel(this, "11", audioPlayer, null);
         rightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
+        String[] scores = highScore.readList();
+
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
         setting = new Setting(this, audioPlayer);
-        highScoreList = new HighScoreList(this, audioPlayer);
+        highScoreView = new HighScoreView(this, audioPlayer, scores);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
         settingsScene = new Scene(setting, 800, 600);
-        highScoreScene = new Scene(highScoreList, 800, 600);
+        highScoreScene = new Scene(highScoreView, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
@@ -195,6 +200,14 @@ public class MainProgram extends Application {
     public void gameOver() {
         gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
+    }
+
+    /**
+     * Adds the time from the previous level to your total score.
+     * @param seconds it took to complete the previous level.
+     */
+    public void totalScore(int seconds) {
+        totalScore += seconds;
     }
 
     /**

@@ -2,15 +2,13 @@ Adam
 10
 Erik
 11
+Adam
+12
 Albert
 15
 Sebastian
 15
-Ida
-16
 Mattias
-17
-Adam
 17
 Ida
 17
@@ -18,3 +16,5 @@ Mattias
 17
 Adam
 20
+Ida
+21

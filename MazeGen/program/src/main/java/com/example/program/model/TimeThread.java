@@ -46,6 +46,7 @@ public class TimeThread extends Thread {
                 e.printStackTrace();
             }
         }
+        panel.timeRemaining(seconds);
     }
 
     /**

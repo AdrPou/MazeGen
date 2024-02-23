@@ -359,4 +359,8 @@ public class RightPanel extends GridPane {
         timerLabel.setStyle("-fx-text-fill: white;");
         audioPlayer.stopClockSound();
     }
+
+    public void timeRemaining(int seconds){
+        mainProgram.totalScore(seconds);
+    }
 }

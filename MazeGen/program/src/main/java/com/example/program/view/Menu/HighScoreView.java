@@ -5,74 +5,61 @@ import com.example.program.view.AudioPlayer;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
 import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-import javafx.scene.control.Label;
 
 
 import java.io.*;
 import java.util.Scanner;
 
-public class HighScoreList extends VBox {
+public class HighScoreView extends VBox {
     private MainProgram mainProgram;
     private Image pressMouse;
     private AudioPlayer audioPlayer;
-    private final String[] name = new String[10];
-    private final int[] score = new int[10];
-    private final String[] list = new String[10];
-    private int place = 1;
+    private String[] highScores;
     private static final String BASE_PATH = "/com/example/program/files/";
 
 
 
-    public HighScoreList(MainProgram mainProgram, AudioPlayer audioPlayer) {
+    public HighScoreView(MainProgram mainProgram, AudioPlayer audioPlayer, String[] scores) {
         this.getStyleClass().add("highScoreList");
         this.getStylesheets().add(getClass().getResource(BASE_PATH + "HighScoreStyle.css").toExternalForm());
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         pressMouse = new Image(getClass().getResource(BASE_PATH + "menuImages/helppicmouse.png").toString());
+        highScores = scores;
+
+        TextArea textArea = new TextArea();
         setBackground();
         pressMouseAnimation();
+        displayHighScores(textArea);
         addListener();
-        displayHighScores();
     }
 
-    public void displayHighScores() {
-        // Läs in highscore-listan
-        String[] highScores = readList();
+    public void displayHighScores(TextArea textArea) {
+        // Rensa tidigare innehåll från TextArea
+       // textArea.clear();
+        //Label label = new Label();
 
-        // Skapa en label för varje highscore
+        textArea.setText("Highscores \n");
+        // Lägg till texten till TextArea
         for (String score : highScores) {
-            Label label = new Label(score);
-            label.setStyle("-fx-text-fill: white; -fx-font-size: 20px;"); // Styla texten efter behov
-            getChildren().add(label); // Lägg till label i HighScoreList
+            textArea.appendText(score + "\n");
+            System.out.println(score);
+           // label = new Label(score);
         }
-    }
 
-    public String[] readList() {
-        int i = 0;
-        try {
-            //File myFile = new File(BASE_PATH + "HighScoreList.txt");
-            //com/example/program/files/HighScoreList.txt
-            File myFile = new File("com/example/program/files/HighScoreList.txt");
-            Scanner myReader = new Scanner(myFile);
-            while (myReader.hasNextLine()) {
-                name[i] = myReader.nextLine();
-                score[i] = Integer.parseInt(myReader.nextLine());
-                if (name[i] != null) {
-                    list[i] = String.format(place + " " + name[i] + " " + score[i]);
-                    i++;
-                    place++;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred");
-            e.printStackTrace();
-        }
-        return list;
+        textArea.setStyle("-fx-text-fill: white;");
+        textArea.setEditable(false);
+
+        ImageView showText = new ImageView(String.valueOf(textArea));
+
+        getChildren().add(showText); // Lägg till TextArea i HighScoreList
     }
 
 
