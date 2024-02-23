@@ -198,6 +198,7 @@ public class MainProgram extends Application {
      * Kör en enkel animation med texten "Game Over".
      */
     public void gameOver() {
+        //highScore.checkNewScore(, totalScore);
         gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
     }

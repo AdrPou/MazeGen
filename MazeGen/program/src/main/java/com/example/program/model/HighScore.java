@@ -66,6 +66,7 @@ public class HighScore {
             score[9] = newScore;
             name[9] = newName;
             sortList();
+            writeToList(name, score);
             return true;
         }
         else {return false;}
