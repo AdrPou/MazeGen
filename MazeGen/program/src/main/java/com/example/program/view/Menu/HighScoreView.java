@@ -33,33 +33,27 @@ public class HighScoreView extends VBox {
         this.audioPlayer = audioPlayer;
         pressMouse = new Image(getClass().getResource(BASE_PATH + "menuImages/helppicmouse.png").toString());
         highScores = scores;
-
-        TextArea textArea = new TextArea();
         setBackground();
+        displayHighScores();
         pressMouseAnimation();
-        displayHighScores(textArea);
         addListener();
     }
 
-    public void displayHighScores(TextArea textArea) {
-        // Rensa tidigare innehåll från TextArea
-       // textArea.clear();
-        //Label label = new Label();
+    /**
+     * Metod för att visa topplistan
+     */
+    public void displayHighScores() {
+        Label title = new Label("Leaderboard");
+        title.getStyleClass().add("title-label");
 
-        textArea.setText("Highscores \n");
-        // Lägg till texten till TextArea
+        getChildren().add(title);
+        // Skapa en label för varje highscore
         for (String score : highScores) {
-            textArea.appendText(score + "\n");
-            System.out.println(score);
-           // label = new Label(score);
+            Label label = new Label(score);
+            label.getStyleClass().add("highscore-label");
+            label.toFront();
+            getChildren().add(label); // Lägg till label i HighScoreList
         }
-
-        textArea.setStyle("-fx-text-fill: white;");
-        textArea.setEditable(false);
-
-        ImageView showText = new ImageView(String.valueOf(textArea));
-
-        getChildren().add(showText); // Lägg till TextArea i HighScoreList
     }
 
 
