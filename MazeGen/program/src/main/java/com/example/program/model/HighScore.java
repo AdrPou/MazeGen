@@ -1,5 +1,6 @@
 package com.example.program.model;
 
+import javax.swing.*;
 import java.io.*;
 import java.util.Scanner;
 
@@ -61,8 +62,9 @@ public class HighScore {
         return list;
     }
 
-    public boolean checkNewScore(String newName, int newScore) {
+    public boolean checkNewScore(int newScore) {
         if(newScore < score[9]) {
+            String newName = JOptionPane.showInputDialog(null, "You are in the Top10! \n" + "Enter name");
             score[9] = newScore;
             name[9] = newName;
             sortList();
