@@ -5,6 +5,7 @@ import com.example.program.control.MainProgram;
 import com.example.program.model.KeyboardPlayer;
 import com.example.program.model.Maps.World1Maps;
 import javafx.animation.FadeTransition;
+import javafx.scene.Node;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +23,9 @@ import com.example.program.view.Menu.RightPanel;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static java.lang.Thread.sleep;
 
 
 public class KeyBoardCampaign extends GridPane {
@@ -59,10 +63,16 @@ public class KeyBoardCampaign extends GridPane {
     private TimeThread time;
     private TotalTime totTime;
     private KeyboardPlayer player;
-    boolean gameOver = false;
+    boolean gameOver = false; // When true, game should stop listening for keyboard input
     private ImageView playerView;
+    private HashMap<Label, Boolean> soundPlayedForLabel = new HashMap<>(); // To know if the sound for the collectible has been played or not, so it doesn't play again
+
+    private Label heartCrystal;
+
+    //private boolean heartTaken; // so that the sound for the heart is only played once
 
     private static final String BASE_PATH = "/com/example/program/files/";
+
 
     /**
      * Instansierar objekten.
@@ -97,9 +107,12 @@ public class KeyBoardCampaign extends GridPane {
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
 
+        // To know if the sound for the collectible has been played or not, so it doesn't play again
+        for (Label label : collectibles) {
+            soundPlayedForLabel.put(label, false);
+        }
+
         totTime = new TotalTime(false);
-        //time = null;
-        startLevelKeyboard(1, 1);
 
         setOnKeyPressed(event -> {
             try {
@@ -281,6 +294,9 @@ public class KeyBoardCampaign extends GridPane {
         return label;
     }
 
+
+
+
     /**
      * En metod som skapar ett objekt av label som representerar ett mål.
      * @return Returnerar en label.
@@ -299,6 +315,8 @@ public class KeyBoardCampaign extends GridPane {
      * @return Returnerar en label.
      */
     private Label getStart() {
+
+
         Label label = new Label();
         ImageView borderView = new ImageView(start);
         borderView.setFitHeight(squareSize);
@@ -330,7 +348,7 @@ public class KeyBoardCampaign extends GridPane {
      * @return Returnerar en label.
      */
     public Label addHeartCrystal() {
-        Label heartCrystal = new Label();
+        heartCrystal = new Label();
         ImageView borderView = new ImageView(heart);
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
@@ -365,22 +383,30 @@ public class KeyBoardCampaign extends GridPane {
      * Avslutar spelrundan och kör metoden gameOver i mainProgram.
      */
     private void gameOver() {
+        gameOver = true;
         audioPlayer.playGameOverSound();
         audioPlayer.stopMusic();
         mainProgram.gameOver();
         rightPanel.pauseClock();
-        gameStarted = true;
+
+
+        //gameStarted = true;
         time.setGameOver(true);
         rightPanel.setGameOver(true); // använd denna boolean för testing.
+        //time.resetTime();
         time = null;
         rightPanel.removePickaxe();
+
     }
+
+
 
     /**
      * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
+    /*
     public void enteredGoal() throws FileNotFoundException, InterruptedException {
         if (startButtonPressed && allCollectiblesObtained) {
             audioPlayer.stopClockSound();
@@ -393,6 +419,10 @@ public class KeyBoardCampaign extends GridPane {
             time = null;
         }
     }
+
+     */
+
+
 
     /**
      * Baserad på den aktuella världen väljer programmmet vilken nivå som ska spelas.
@@ -445,65 +475,74 @@ public class KeyBoardCampaign extends GridPane {
         add(playerLabel, x, y);
     }
 
-    private void handleKeyPressed(javafx.scene.input.KeyEvent event) throws FileNotFoundException, InterruptedException {
+    private void handleKeyPressed(KeyEvent event) throws FileNotFoundException, InterruptedException {
+        if(gameOver) {
+            return;
+        }
+        if(!gameStarted){
+            startLevelKeyboard(1, 1);
+        }
 
         KeyCode keyCode = event.getCode();
-        int newX = 0;
-        int newY = 0;
+        int newX = player.getX();
+        int newY = player.getY();
 
         switch (keyCode) {
             case UP:
-                newY = player.getY() - player.getSpeed();
-                newX = player.getX();
-                if(!hitWall(newX, newY)) {
-                    player.setY(player.getY() - player.getSpeed());
-                }
+                newY--;
                 break;
-
             case DOWN:
-                newY = player.getY() + player.getSpeed();
-                newX = player.getX();
-                if(!hitWall(newX, newY)) {
-                    player.setY(player.getY() + player.getSpeed());
-                }
+                newY++;
                 break;
-
             case LEFT:
-                newX = player.getX() - player.getSpeed();
-                newY = player.getY();
-                if(!hitWall(newX, newY)) {
-                    player.setX(player.getX() - player.getSpeed());
-                }
+                newX--;
                 break;
-
             case RIGHT:
-                newX = player.getX() + player.getSpeed();
-                newY = player.getY();
-                if(!hitWall(newX, newY)) {
-                    player.setX(player.getX() + player.getSpeed());
-                }
+                newX++;
                 break;
-
             default:
-                // Lägg till ljud för fel knapp här?
-                break;
+                return;
         }
 
-        newX = player.getX();
-        newY = player.getY();
+        if (newX > 0 && newY > 0 && newX <= level[0].length && newY <= level.length && level[newY - 1][newX - 1] == 6) {
+            if (pickaxeObtained) {
+                level[newY - 1][newX - 1] = 1; // Replace the breakable wall with a path
+                Label label = (Label)getNodeFromGridPane(this, newX, newY);
+                ImageView pathView = new ImageView(path);
+                label.setGraphic(pathView);
+                pickaxeObtained = false;
+                rightPanel.removePickaxe();
+                audioPlayer.playBreakableWallSound();
+            }
+            return;
+        } else if (hitWall(newX, newY)) {
+            return;
+            }
 
+        player.move(newX, newY);
         updatePlayerImage(newX, newY);
         checkCollectibles(newX, newY);
         checkReachedGoal(newX, newY);
     }
+    // TODO: Check if ghost is at the player's position
+    /*
+    private boolean isGhostAt(int x, int y) {
+        for (Ghost ghost : ghosts) {
+            if (ghost.getX() == x && ghost.getY() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+    */
 
     private void handleKeyReleased(KeyEvent event) {
-        System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
+        //System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
     }
 
     public boolean hitWall(int newX, int newY){ //TODO lägg till if-sats för breakable wall
 
-        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
+        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
 
             FadeTransition fade = new FadeTransition();
             fade.setDuration(Duration.seconds(0.3));
@@ -511,13 +550,15 @@ public class KeyBoardCampaign extends GridPane {
             fade.setToValue(0.6);
             fade.play();
 
-            heartCrystals--;
-            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-
+            if(heartCrystals > 0){
+                heartCrystals--;
+                rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                audioPlayer.playDeathSound();
+            }
             if (heartCrystals == 0) {
                 gameOver();
             }
-            audioPlayer.playDeathSound();
+
 
             return true; // lägg till sound för fel
         }
@@ -531,12 +572,14 @@ public class KeyBoardCampaign extends GridPane {
         if(level[y - 1][x - 1] == 4) { //fixa senare. plocka upp collectible
 
             for (Label label: collectibles) {
-
                 int labelX = GridPane.getColumnIndex(label);
                 int labelY = GridPane.getRowIndex(label);
 
                 if (labelX == x && labelY == y) {
-                    audioPlayer.playCollectibleSound();
+                    if (!soundPlayedForLabel.get(label)) {
+                        audioPlayer.playCollectibleSound();
+                        soundPlayedForLabel.put(label, true);
+                    }
                     label.setVisible(false);
                     collectiblesObtained++;
                     if (collectiblesObtained == collectibles.size()) {
@@ -558,7 +601,20 @@ public class KeyBoardCampaign extends GridPane {
                     rightPanel.addPickaxe();
                 }
             }
+        } else if (level[y - 1][x - 1] == 7 && heartCrystal.isVisible()) { // New code for heart
+            // Code to handle heart collection
+            // For example, you might want to increase the player's health
+            if(heartCrystals < 3 ){
+                heartCrystals++;
+                rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                // Remove the heart from the GUI
+            }
+            audioPlayer.playHeartSound(); // Assuming you have a sound for collecting hearts
+            heartCrystal.setVisible(false);
+            //heartTaken = true;
         }
+
+
     }
 
     public void setPlayerOnStart(int x, int y) {
@@ -571,12 +627,14 @@ public class KeyBoardCampaign extends GridPane {
         if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
+            nextLevelKeyboard(x, y);
             rightPanel.pauseClock();
+            System.out.println(seconds);
             rightPanel.setTheTime(seconds);
-            gameStarted = true;
+            //gameStarted = true;
             time.setGameOver(true);
             time = null;
-            nextLevelKeyboard(x, y);
+
         }
     }
 
@@ -598,19 +656,17 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
-
-        gameStarted = true;
-
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
             rightPanel.setTimerIsStarted(true);
         }
-        System.out.println(gameStarted);
 
-        if (gameStarted){
-            System.out.println("this method is running");
+        if (!gameStarted){
             rightPanel.resumeClock();
             gameStarted = true;
+            if(time != null){
+                time = null;
+            }
             time = new TimeThread(seconds, rightPanel);
             time.setGameOver(false);
             time.start();
@@ -620,6 +676,15 @@ public class KeyBoardCampaign extends GridPane {
         totalTimeStarted = true;
         audioPlayer.playStartSound();
         startButtonPressed = true;
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
 }

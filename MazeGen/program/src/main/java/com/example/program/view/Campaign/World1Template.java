@@ -63,12 +63,12 @@ public class World1Template extends GridPane {
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
-    private KeyboardPlayer player;
+    //private KeyboardPlayer player;
     boolean gameOver = false;
     private ImageView playerView;
     private Label playerLabel;
     private World1Maps world1Maps;
-    private KeyBoardCampaign keyBoardCampaign;
+    //private KeyBoardCampaign keyBoardCampaign;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -107,9 +107,9 @@ public class World1Template extends GridPane {
 
         totTime = new TotalTime(false);
         //time = null;
-        startLevelKeyboard(1, 1);
+        //startLevelKeyboard(1, 1);
         //keyBoardCampaign = new KeyBoardCampaign(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, seconds);
-
+/*
         setOnKeyPressed(event -> {
             try {
                 handleKeyPressed(event);
@@ -122,6 +122,8 @@ public class World1Template extends GridPane {
 
         setFocusTraversable(true); //flytta till enbart keyboardcampaign sen?
 
+
+ */
     }
 
     /**
@@ -168,7 +170,7 @@ public class World1Template extends GridPane {
                 }
                 else if (level[i][j] == 2){
                     add(getStart(),j + 1,i + 1);
-                    setPlayerOnStart(j + 1, i + 1);
+                    //setPlayerOnStart(j + 1, i + 1);
                 }
                 else if (level[i][j] == 3){
                     add(getGoal(),j + 1,i + 1);
@@ -478,7 +480,6 @@ public class World1Template extends GridPane {
         rightPanel.setGameOver(true); // använd denna boolean för testing.
         time = null;
         rightPanel.removePickaxe();
-
     }
 
     /**
@@ -539,17 +540,21 @@ public class World1Template extends GridPane {
         if (!gameStarted){
             rightPanel.resumeClock();
             gameStarted = true;
+            time = null;
             time = new TimeThread(seconds, rightPanel);
             time.setGameOver(false);
             time.start();
 
-        }else if (startNotClickedOnce){
+        }
+        /*else if (startNotClickedOnce){
             rightPanel.runClock();
             time = new TimeThread(seconds, rightPanel);
             time.setGameOver(false);
             time.start();
 
         }
+
+         */
         totalTimeStarted = true;
         startNotClickedOnce = false;
         audioPlayer.playStartSound();
@@ -632,7 +637,7 @@ public class World1Template extends GridPane {
     }
 
     /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA BRA FINNAS I KEYBOARDCAMPAIGN /////////////
-
+/*
     public void updatePlayerImage(int x, int y) { //sker varje gång spelaren går ett steg
 
         if(player == null){
@@ -837,4 +842,6 @@ public class World1Template extends GridPane {
         audioPlayer.playStartSound();
         startButtonPressed = true;
     }
+
+ */
 }

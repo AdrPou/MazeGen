@@ -33,4 +33,9 @@ public class KeyboardPlayer { //this class will be responsible for controlling t
     public int getSpeed() {
         return speed;
     }
+
+    public void move(int newX, int newY) {
+        this.x = newX;
+        this.y = newY;
+    }
 }

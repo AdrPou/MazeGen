@@ -13,9 +13,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
-import javax.sound.sampled.*;
-import java.awt.*;
-
 public class Setting extends VBox {
     private MainProgram mainProgram;
     private Image pressMouse;
@@ -26,7 +23,7 @@ public class Setting extends VBox {
     private Image back;
     private ImageView backView;
     private Slider volumeSlider;
-    private ToggleButton toggleButton;
+    private ToggleButton toggleButtonKeyboard;
     private ToggleButton toggleButtonMouse;
     private AudioPlayer audioPlayer;
 
@@ -37,8 +34,9 @@ public class Setting extends VBox {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.volumeSlider = new Slider();
-        this.toggleButton = new ToggleButton();
+        this.toggleButtonKeyboard = new ToggleButton();
         this.toggleButtonMouse = new ToggleButton();
+        this.toggleButtonMouse.setDisable(true);
         pressMouse = new javafx.scene.image.Image(getClass().getResource(BASE_PATH + "menuImages/helppicmouse.png").toString());
         setBackground();
         setImages();
@@ -97,20 +95,23 @@ public class Setting extends VBox {
     }
 
     public void setToggleButton(){
-        toggleButton.getStyleClass().add("toggleButton");
-        toggleButton.setText("Keyboard Control");
-        toggleButton.setOnAction(event -> {
+        toggleButtonKeyboard.getStyleClass().add("toggleButton");
+        toggleButtonKeyboard.setText("Keyboard Control");
+
+        toggleButtonKeyboard.setOnAction(event -> {
             System.out.println("Keyboard toggle button is activated!");
-            toggleButton.setDisable(true);
+            toggleButtonKeyboard.setDisable(true); // True when keyboard is activated
             toggleButtonMouse.setDisable(false);
+            mainProgram.setKeyboardControl(true);
         });
 
         toggleButtonMouse.getStyleClass().add("toggleButton");
         toggleButtonMouse.setText("Mouse Control");
         toggleButtonMouse.setOnAction(event -> {
             System.out.println("Mouse toggle button is activated!");
-            toggleButton.setDisable(false);
+            toggleButtonKeyboard.setDisable(false);
             toggleButtonMouse.setDisable(true);
+            mainProgram.setKeyboardControl(false);
         });
     }
 
@@ -139,7 +140,11 @@ public class Setting extends VBox {
     }
 
     public void addAllToChildren(){
-       this.getChildren().addAll(soundView, volumeSlider, keyboardView, toggleButton, toggleButtonMouse, backView);
+       this.getChildren().addAll(soundView, volumeSlider, keyboardView, toggleButtonKeyboard, toggleButtonMouse, backView);
+    }
+
+    public boolean getToggleButtonKeyboard() {
+        return toggleButtonKeyboard.isDisabled();
     }
 
 }
