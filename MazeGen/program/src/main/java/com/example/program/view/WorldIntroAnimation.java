@@ -52,4 +52,8 @@ public class WorldIntroAnimation extends Pane {
         ft.play();
 
     }
+
+    public Image getWorldIntro() {
+        return worldIntro;
+    }
 }
