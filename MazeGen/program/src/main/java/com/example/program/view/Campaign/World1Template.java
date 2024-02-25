@@ -59,6 +59,7 @@ public class World1Template extends GridPane {
     private boolean totalTimeStarted = false;
     private int world;
     private int seconds = 25;
+    private int numberOfLevels = 0;
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
     private TimeThread time;
@@ -92,6 +93,7 @@ public class World1Template extends GridPane {
         this.level = level;
         this.heartCrystals = heartCrystals;
         this.seconds = seconds;
+        this.numberOfLevels = numberOfLevels;
 
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         this.rightPanel = rightPanel;

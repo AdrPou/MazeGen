@@ -60,7 +60,6 @@ public class MainProgram extends Application {
     private Image cursorImage;
     private KeyboardPlayer player;
     private KeyBoardCampaign keyboardCampaign;
-
     private static final String BASE_PATH = "/com/example/program/files/";
 
     /**

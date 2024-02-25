@@ -108,7 +108,9 @@ public class MapTemplate extends GridPane {
      * Omvandlar värdena i arrayen av siffror till olika grafiska komponenter baserat på vilken siffra en position har.
      * Exempelvis så representerar 1:or väg, 0:or väggar, och 7:or hjärtan osv.
      */
-    public void setupLevel() {
+    public int setupLevel() {
+        boolean collectible = false;
+
         for (int i = 0; i < level.length; i++) {
             for (int j = 0; j < level.length; j++) {
 
@@ -116,6 +118,7 @@ public class MapTemplate extends GridPane {
                     add(getPath(),j + 1,i + 1);
                     if (new Random().nextInt(5) == 4) {
                         add(addCollectible(),j + 1,i + 1);
+                        collectible = true;
                     }
                 }
                 else if (level[i][j] == 0){
@@ -129,6 +132,12 @@ public class MapTemplate extends GridPane {
                 }
             }
         }
+
+        if (collectible) {
+            return 4;
+        }
+
+        return -1;
     }
     /**
      * Instansierar de olika bilderna som används som grafik inuti spelet.
