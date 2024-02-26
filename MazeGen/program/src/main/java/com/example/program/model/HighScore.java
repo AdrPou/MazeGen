@@ -14,8 +14,8 @@ public class HighScore {
     private int[] score = new int[10];
     private String[] list = new String[10];
     private int place = 1;
-    //private final String path = "/com/example/program/files/HighScoreList.txt";
-    private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
+    private final String path = "/com/example/program/files/HighScoreList.txt";
+    //private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
 
     /**
      * Inputs a new person and time to the highScoreList.
