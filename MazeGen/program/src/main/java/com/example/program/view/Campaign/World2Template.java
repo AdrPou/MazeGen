@@ -200,5 +200,7 @@ public class World2Template extends World1Template {
         ghost5V.setOnMouseEntered(e -> enteredGhost(e));
         ghost6V.setOnMouseEntered(e -> enteredGhost(e));
 
+
+
     }
 }

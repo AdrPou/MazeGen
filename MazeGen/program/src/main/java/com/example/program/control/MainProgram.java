@@ -165,30 +165,30 @@ public class MainProgram extends Application {
             setupCampaignAfterInitializationOfTemplate();
             keyboardIsOn = true;
 
-            /*
+
             // for Testing purposes
             try {
-                nextWorld1Level(4,3);
+                nextWorld1Level(3,3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-             */
+
 
         } else {
             world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
 
-            /*
+
             // for Testing purposes
             try {
-                nextWorld1Level(4,3);
+                nextWorld2Level(5,3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-             */
+
         }
 
         // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
@@ -344,9 +344,9 @@ public class MainProgram extends Application {
             case 5:
                 rightPanel.changeLevelCounter("25");
                 if(keyboardIsOn){
-                    mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
+                    mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, true, rightPanel));
                 } else {
-                    mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
+                    mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, true, rightPanel));
                 }
                 break;
             case 6:

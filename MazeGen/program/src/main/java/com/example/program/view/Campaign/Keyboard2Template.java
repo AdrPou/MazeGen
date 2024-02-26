@@ -9,10 +9,15 @@ import javafx.animation.PathTransition;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @author Sebastian Helin & Filip Örnling
@@ -37,6 +42,14 @@ public class Keyboard2Template extends KeyBoardCampaign {
     private int seconds;
 
     private static final String BASE_PATH = "/com/example/program/files/";
+
+
+    Label ghost1VLabel;
+    Label ghost2VLabel;
+    Label ghost3VLabel;
+    Label ghost4VLabel;
+    Label ghost5VLabel;
+    Label ghost6VLabel;
 
     public Keyboard2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, 35);
@@ -72,12 +85,12 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ImageView ghost5V = new ImageView(ghost);
         ImageView ghost6V = new ImageView(ghost);
 
-        Label ghost1VLabel = new Label();
-        Label ghost2VLabel = new Label();
-        Label ghost3VLabel = new Label();
-        Label ghost4VLabel = new Label();
-        Label ghost5VLabel = new Label();
-        Label ghost6VLabel = new Label();
+        ghost1VLabel = new Label();
+        ghost2VLabel = new Label();
+        ghost3VLabel = new Label();
+        ghost4VLabel = new Label();
+        ghost5VLabel = new Label();
+        ghost6VLabel = new Label();
 
         ghost1VLabel.setGraphic(ghost1V);
         ghost2VLabel.setGraphic(ghost2V);
@@ -194,6 +207,11 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghost5V.setOnMouseEntered(e -> enteredGhost(e));
         ghost6V.setOnMouseEntered(e -> enteredGhost(e));
          */
+        setOnKeyReleased(this::handleKeyReleased);
+    }
 
+    private void handleKeyReleased(KeyEvent event) {
+        List<Label> ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel, ghost6VLabel);
+        isColliding(ghosts);
     }
 }

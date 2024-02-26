@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.event.EventHandler;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import com.example.program.model.TimeThread;
 import com.example.program.model.TotalTime;
@@ -24,6 +25,7 @@ import com.example.program.view.Menu.RightPanel;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -53,7 +55,7 @@ public class KeyBoardCampaign extends GridPane {
     private int heartCrystals;
     private Image pickAxeImage;
     private boolean pickaxeObtained;
-    private boolean gameStarted;
+    boolean gameStarted;
     // private boolean startNotClickedOnce = true;
     private boolean totalTimeStarted = false;
     private int world;
@@ -72,6 +74,7 @@ public class KeyBoardCampaign extends GridPane {
     //private boolean heartTaken; // so that the sound for the heart is only played once
 
     private static final String BASE_PATH = "/com/example/program/files/";
+    private List<Label> ghosts;
 
 
     /**
@@ -122,7 +125,7 @@ public class KeyBoardCampaign extends GridPane {
             }
         });
 
-        setOnKeyReleased(this::handleKeyReleased);
+
 
         setFocusTraversable(true);
     }
@@ -536,12 +539,71 @@ public class KeyBoardCampaign extends GridPane {
     }
     */
 
-    private void handleKeyReleased(KeyEvent event) {
-        //System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
+    /*
+    public void checkIfCollidingWithGhost(List<Label> ghosts) {
+        while(gameStarted && !gameOver){
+
+            // Check for collision with each ghost
+            for (Label ghost : ghosts) {
+                if (isColliding(player, ghost)) {
+                    FadeTransition fade = new FadeTransition();
+                    fade.setDuration(Duration.seconds(0.3));
+                    fade.setFromValue(10);
+                    fade.setToValue(0.6);
+                    fade.play();
+
+                    if(heartCrystals > 0){
+                        heartCrystals--;
+                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                        audioPlayer.playDeathSound();
+                    }
+                    if (heartCrystals == 0) {
+                        gameOver();
+                    }
+                } else {
+                }
+            }
+        }
+        try {
+            sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+     */
+
+    // Function to check collision between player and ghost
+    public void isColliding(List<Label> ghosts) {
+        if(this.ghosts == null){
+            this.ghosts = ghosts;
+        }
+        Rectangle boundsPlayer = new Rectangle(player.getX(), player.getY(),
+                squareSize, squareSize);
+        if(ghosts != null){
+            for(Label ghost : ghosts){
+                Rectangle boundsGhost = new Rectangle(ghost.getLayoutX(), ghost.getLayoutY(),
+                        squareSize, squareSize);
+                if(boundsPlayer.getBoundsInParent().intersects(boundsGhost.getBoundsInParent())){
+                    if(heartCrystals > 0){
+                        heartCrystals--;
+                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                        audioPlayer.playDeathSound();
+                    }
+                    if (heartCrystals == 0) {
+                        gameOver();
+                    }
+                }
+            }
+        }
+
+    }
+
+
 
     public boolean hitWall(int newX, int newY){ //TODO lägg till if-sats för breakable wall
 
+        isColliding(ghosts);
         if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
 
             FadeTransition fade = new FadeTransition();
