@@ -59,7 +59,6 @@ public class World1Template extends GridPane {
     private boolean totalTimeStarted = false;
     private int world;
     private int seconds = 25;
-    private int numberOfLevels = 0;
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
     private TimeThread time;
@@ -70,6 +69,7 @@ public class World1Template extends GridPane {
     private Label playerLabel;
     private World1Maps world1Maps;
     private KeyBoardCampaign keyBoardCampaign;
+    private int numberOfLevels;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -130,6 +130,31 @@ public class World1Template extends GridPane {
 
 
 
+    }
+
+    public World1Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, int seconds, int numberOfLevels) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.currentLevel = currentLevel;
+        this.level = level;
+        this.heartCrystals = heartCrystals;
+        this.seconds = seconds;
+        this.numberOfLevels = numberOfLevels;
+
+        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+        this.rightPanel = rightPanel;
+        this.audioPlayer = audioPlayer;
+        this.world = world;
+        squareSize = 600/(level.length+2);
+        setBackground();
+        setupImages(world);
+        setupBorders();
+        setupLevel();
+        rightPanel.setSTARTTIME(seconds);
+        rightPanel.resetTimerLabel();
+
+
+        totTime = new TotalTime(false);
+        time = null;
     }
 
     /**
@@ -606,6 +631,10 @@ public class World1Template extends GridPane {
                 enteredWall(e);
             }
         }
+    }
+
+    public int getNumberOfLevels() {
+        return numberOfLevels;
     }
 
     /**
