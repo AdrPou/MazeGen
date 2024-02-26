@@ -361,6 +361,6 @@ public class RightPanel extends GridPane {
     }
 
     public void timeRemaining(int seconds){
-        mainProgram.totalScore(seconds);
+        mainProgram.totalScore((STARTTIME - seconds));
     }
 }
