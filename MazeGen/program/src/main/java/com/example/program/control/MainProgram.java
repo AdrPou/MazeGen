@@ -149,7 +149,7 @@ public class MainProgram extends Application {
      * Byter scen till kampanjläget.
      * @throws FileNotFoundException
      */
-    public void changeToCampaign() throws FileNotFoundException {
+    public String changeToCampaign() throws FileNotFoundException {
 
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25, 5);
 
@@ -163,7 +163,8 @@ public class MainProgram extends Application {
 
 
         world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
-        //TODO: samma här för både vanlig och keyboard
+
+        return "campaign";
     }
 
     /**

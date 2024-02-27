@@ -55,5 +55,20 @@ public class World1TemplateTest {
         assertEquals("alive", world1Template.enteredWall(mockEvent));
     }
 
+    @Test
+    public void numberOfLevels() throws FileNotFoundException {
+        setup();
+        World1Template world1Template = new World1Template(world1Maps.getLevel12(), 2, 3, mainProgram, rightPanel, 0, audioPlayer, 25, 5);
+        assertEquals(5, world1Template.getNumberOfLevels());
+    }
+
+    //Test doesn't work at the moment
+    @Test
+    public void changeToCampaignMode() throws FileNotFoundException {
+        //Need to initialize the mainProgram instance variables to not get null values
+        setup();
+        assertEquals("campaign", mainProgram.changeToCampaign());
+    }
+
 }
 
