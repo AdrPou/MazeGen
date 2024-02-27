@@ -432,6 +432,10 @@ public class MainProgram extends Application {
         this.mainPaneCampaign = mainPaneCampaign;
     }
 
+    public BorderPane getMainPaneCampaign() {
+        return mainPaneCampaign;
+    }
+
     /**
      * Main startar programmet.
      * @param args

@@ -4,14 +4,19 @@ import com.example.program.control.MainProgram;
 import com.example.program.model.Maps.World1Maps;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
+import com.sun.tools.javac.Main;
 import javafx.application.Platform;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import org.junit.jupiter.api.*;
+import org.mockito.Mock;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class World1TemplateTest {
 
@@ -28,7 +33,7 @@ public class World1TemplateTest {
         audioPlayer = mock(AudioPlayer.class);
         world1Maps = new World1Maps();
         rightPanel = mock(RightPanel.class);
-        mockEvent = mock(javafx.scene.input.MouseEvent.class);
+        mockEvent = mock(MouseEvent.class);
     }
     @BeforeAll
     public static void initJfxRuntime() {
@@ -68,6 +73,7 @@ public class World1TemplateTest {
         //Need to initialize the mainProgram instance variables to not get null values
         setup();
         assertEquals("campaign", mainProgram.changeToCampaign());
+
     }
 
 }
