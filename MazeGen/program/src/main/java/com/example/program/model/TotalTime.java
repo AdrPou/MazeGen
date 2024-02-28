@@ -12,7 +12,7 @@ public class TotalTime extends Thread{
 
     /**
      *
-     * @param gameOver Tar en boolen som används som villkor
+     * @param gameOver Tar en boolean som används som villkor
      */
     public TotalTime(boolean gameOver){
         this.gameOver = gameOver;

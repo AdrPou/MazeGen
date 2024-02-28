@@ -56,4 +56,8 @@ public class TimeThread extends Thread {
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
+
+    public void resetTime() {
+        stop();
+    }
 }

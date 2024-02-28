@@ -261,6 +261,7 @@ public class RightPanel extends GridPane {
      */
     public void setTheTime(int timesec){
         timeSeconds.set(timesec);
+        System.out.println(timeSeconds.toString());
     }
     /**
      * Kör igång klockan när spelaren trycker på startknappen

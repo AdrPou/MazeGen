@@ -33,7 +33,6 @@ public class World3Template extends World1Template {
      */
 
     private Image ghost;
-
     private int squareSize;
     private ImageView imageView = new ImageView();
     private PathTransition animation;
@@ -47,8 +46,8 @@ public class World3Template extends World1Template {
     private RightPanel panel;
     private TimeThread time;
     private AudioPlayer audioPlayer;
-
     private static final String BASE_PATH = "/com/example/program/files/";
+
 
     public World3Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 60);

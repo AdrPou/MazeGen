@@ -1,8 +1,10 @@
 package com.example.program.view.Randomize;
 
 
+import com.example.program.model.KeyboardPlayer;
 import com.example.program.model.MazeGeneration.GenerateNextLevel;
 import com.example.program.control.MainProgram;
+import com.example.program.model.TimeThread;
 import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
 import javafx.scene.effect.Glow;
@@ -57,7 +59,8 @@ public class MapTemplate extends GridPane {
     private MediaPlayer startPlayer = new MediaPlayer(new Media(getClass().getResource(SOUND_BASE_PATH + "MazegenStart.mp3").toString()));
     private MediaPlayer goalPlayer = new MediaPlayer(new Media(getClass().getResource(SOUND_BASE_PATH + "MazegenGoal.mp3").toString()));
 
-
+    private KeyboardPlayer player;
+    private Image playerImage;
 
 
 
