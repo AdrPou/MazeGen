@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
  */
 
 public class Menu extends Pane {
-    private MainProgram mainProgram;
+    private final MainProgram mainProgram;
 
     public Image getCampaign() {
         return campaign;
@@ -39,17 +39,18 @@ public class Menu extends Pane {
     private Image settingsResize;
     private Image highScore;
     private Image highScoreResize;
-    private AudioPlayer audioPlayer;
-    private RightPanel panel;
+    private final AudioPlayer audioPlayer;
+    private final RightPanel panel;
 
     /**
      * Konstruktor som tar emot mainProgram, audioPlayer och panel
      * Kör sedan metoder för att länka Image-objekten med png-filer
+     *
      * @param mainProgram tas emot och sätts
      * @param audioPlayer tas emot och sätts
-     * @param panel tas emot och sätts
+     * @param panel       tas emot och sätts
      */
-    public Menu(MainProgram mainProgram, AudioPlayer audioPlayer, RightPanel panel){
+    public Menu(MainProgram mainProgram, AudioPlayer audioPlayer, RightPanel panel) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.panel = panel;
@@ -61,7 +62,7 @@ public class Menu extends Pane {
     /**
      * Metod som länkar Image-objekten till png-filer
      */
-    public void setupImages(){
+    public void setupImages() {
         mazegen = new Image(getClass().getResource("/com/example/program/files/texts/MazegenTitel.png").toString(), 800, 600, false, false);
         campaign = new Image(getClass().getResource("/com/example/program/files/texts/Campaign.png").toString(), 250, 30, false, false);
         campaignResize = new Image(getClass().getResource("/com/example/program/files/texts/Campaign.png").toString(), 255, 33, false, false);
@@ -78,7 +79,7 @@ public class Menu extends Pane {
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
+    public void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image(getClass().getResource("/com/example/program/files/MenuBackground.jpg").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
@@ -89,7 +90,7 @@ public class Menu extends Pane {
      * Metod som lägger till klickbara ImageViews i scenen
      * Imageviews förstoras när man hovrar och byter scen när man klickar på dem
      */
-    public void addButtons(){
+    public void addButtons() {
         ImageView mazegenView = new ImageView(mazegen);
         mazegenView.setStyle("fx-background-color: transparent;");
 
@@ -201,7 +202,7 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,helpView, settingsView, highScoreView, mazegenView);
+        this.getChildren().addAll(campaignView, randomizeView, helpView, settingsView, highScoreView, mazegenView);
     }
 
 }

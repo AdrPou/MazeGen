@@ -8,14 +8,11 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import com.example.program.model.Maps.*;
-
 import com.example.program.model.MazeGeneration.GenerateNextLevel;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Campaign.*;
@@ -24,7 +21,6 @@ import com.example.program.view.Randomize.MapTemplate;
 import com.example.program.model.MazeGeneration.MazeGenerator;
 import com.example.program.view.Menu.*;
 import com.example.program.view.WorldIntroAnimation;
-
 
 import java.io.FileNotFoundException;
 
@@ -38,36 +34,21 @@ public class MainProgram extends Application {
     private Stage mainWindow;
     private BorderPane mainPaneRandomMaze;
     private BorderPane mainPaneCampaign;
-    private MapTemplate mapTemplate;
     private Scene menuScene;
-    private Scene introScene;
     private Scene helpScene;
     private Scene settingsScene;
     private Scene highScoreScene;
     private Scene chooseDimensionScene;
-    private Intro intro;
-    private Menu menu;
-    private Help help;
     private Setting setting;
-    private HighScoreView highScoreView;
-    private ChooseDimension chooseDimension;
     private Scene randomScene;
     private Scene campaignScene;
     private RightPanel rightPanel;
-    private RightPanel rightPnlRndm;
-    private MazeGenerator mazeGenerator;
-    private GenerateNextLevel generateNextLevel;
-    private World1Template world1Template;
     private World1Maps world1Maps;
     private WorldIntroAnimation introAnimation;
     private AudioPlayer audioPlayer;
-    private GameOverScreen gameOverScreen;
-    private Image cursorImage;
-    private HighScore highScore = new HighScore();
+    private final HighScore highScore = new HighScore();
     private int totalScore = 0;
-
     private KeyboardPlayer player;
-    private KeyBoardCampaign keyboardCampaign;
     private TemplateKeyboard templateKeyboard;
     private static final String BASE_PATH = "/com/example/program/files/";
     private boolean keyboardIsOn; // To know if keyboard is on or not so that nextLevel is created for KeyboardTemplate
@@ -76,8 +57,9 @@ public class MainProgram extends Application {
     /**
      * En metod som startar programmet.
      * Metoden instanierar även de olika komponenterna.
+     *
      * @param primaryStage JavaFX top Container, huvudkomponenten till programmet.
-     * @throws Exception
+     * @throws Exception if something goes wrong.
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -90,13 +72,13 @@ public class MainProgram extends Application {
 
         String[] scores = highScore.readList();
 
-        menu = new Menu(this, audioPlayer, rightPanel);
-        intro = new Intro(this, audioPlayer);
-        help = new Help(this, audioPlayer);
+        Menu menu = new Menu(this, audioPlayer, rightPanel);
+        Intro intro = new Intro(this, audioPlayer);
+        Help help = new Help(this, audioPlayer);
         setting = new Setting(this, audioPlayer);
-        highScoreView = new HighScoreView(this, audioPlayer, scores);
-        chooseDimension = new ChooseDimension(this, audioPlayer);
-        introScene = new Scene(intro, 800, 600);
+        HighScoreView highScoreView = new HighScoreView(this, audioPlayer, scores);
+        ChooseDimension chooseDimension = new ChooseDimension(this, audioPlayer);
+        Scene introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
         settingsScene = new Scene(setting, 800, 600);
@@ -108,7 +90,7 @@ public class MainProgram extends Application {
         introAnimation = new WorldIntroAnimation();
 
         mainWindow = primaryStage;
-        cursorImage = new Image(getClass().getResource(BASE_PATH + "imagecursor.png").toString());
+        Image cursorImage = new Image(getClass().getResource(BASE_PATH + "imagecursor.png").toString());
 
         mainWindow.setTitle("Mazegen");
         mainWindow.setResizable(false);
@@ -116,7 +98,7 @@ public class MainProgram extends Application {
         world1Maps = new World1Maps();
         mainPaneCampaign.setRight(rightPanel);
 
-        rightPnlRndm = new RightPanel(this, "Random", audioPlayer, null);
+        RightPanel rightPnlRndm = new RightPanel(this, "Random", audioPlayer, null);
         rightPnlRndm.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
 
         mainPaneRandomMaze.setRight(rightPnlRndm);
@@ -143,19 +125,19 @@ public class MainProgram extends Application {
      */
     public void changeToMenu() {
         mainWindow.setScene(menuScene);
-
     }
 
 
     /**
      * Byter scen till Randomize.
+     *
      * @param dimension Storleken på labyrinten som ska genereras.
-     * @throws FileNotFoundException
+     * @throws FileNotFoundException if file not found.
      */
     public void changeToRandomize(int dimension) throws FileNotFoundException {
-        mazeGenerator = new MazeGenerator(dimension, true);
-        generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
-        mapTemplate = new MapTemplate(mazeGenerator.getMaze(), this, generateNextLevel);
+        MazeGenerator mazeGenerator = new MazeGenerator(dimension, true);
+        GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
+        MapTemplate mapTemplate = new MapTemplate(mazeGenerator.getMaze(), this, generateNextLevel);
         //templateKeyboard = new TemplateKeyboard(mazeGenerator.getMaze(), this, generateNextLevel);
         mainPaneRandomMaze.setCenter(mapTemplate);
         //mainPaneRandomMaze.setCenter(templateKeyboard);
@@ -168,11 +150,12 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till kampanjläget.
-     * @throws FileNotFoundException
+     *
+     * @throws FileNotFoundException if file not found.
      */
     public void changeToCampaign() throws FileNotFoundException {
-        if(setting.getToggleButtonKeyboard()){
-            keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
+        if (setting.getToggleButtonKeyboard()) {
+            KeyBoardCampaign keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
             mainPaneCampaign.setCenter(keyboardCampaign);
             setupCampaignAfterInitializationOfTemplate();
             keyboardIsOn = true;
@@ -180,22 +163,21 @@ public class MainProgram extends Application {
 
             // for Testing purposes
             try {
-                nextWorld1Level(3,3);
+                nextWorld1Level(3, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
 
-
         } else {
-            world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
+            World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
 
 
             // for Testing purposes
             try {
-                nextWorld2Level(5,3);
+                nextWorld2Level(5, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -258,13 +240,14 @@ public class MainProgram extends Application {
      */
     public void gameOver() {
         highScore.checkNewScore(totalScore);
-        gameOverScreen = new GameOverScreen(this);
+        GameOverScreen gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
     }
 
 
     /**
      * Adds the time from the previous level to your total score.
+     *
      * @param seconds it took to complete the previous level.
      */
     public void totalScore(int seconds) {
@@ -273,10 +256,11 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
+     * @throws InterruptedException  if thread was interrupted.
      */
     public void nextWorld1Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
         switch (level) {
@@ -323,10 +307,11 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
+     * @throws InterruptedException  if thread was interrupted.
      */
     public void nextWorld2Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
 
@@ -335,7 +320,7 @@ public class MainProgram extends Application {
         switch (level) {
             case 1:
                 rightPanel.changeLevelCounter("21");
-                if(keyboardIsOn){
+                if (keyboardIsOn) {
                     mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel21(), 2, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
                 } else {
                     mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel21(), 2, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
@@ -347,7 +332,7 @@ public class MainProgram extends Application {
                 break;
             case 2:
                 rightPanel.changeLevelCounter("22");
-                if(keyboardIsOn){
+                if (keyboardIsOn) {
                     mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel22(), 3, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
                 } else {
                     mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel22(), 3, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
@@ -355,7 +340,7 @@ public class MainProgram extends Application {
                 break;
             case 3:
                 rightPanel.changeLevelCounter("23");
-                if(keyboardIsOn){
+                if (keyboardIsOn) {
                     mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel23(), 4, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
                 } else {
                     mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel23(), 4, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
@@ -363,7 +348,7 @@ public class MainProgram extends Application {
                 break;
             case 4:
                 rightPanel.changeLevelCounter("24");
-                if(keyboardIsOn){
+                if (keyboardIsOn) {
                     mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel24(), 5, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
                 } else {
                     mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel24(), 5, heartCrystals, this, rightPanel, 1, audioPlayer, false, rightPanel));
@@ -371,7 +356,7 @@ public class MainProgram extends Application {
                 break;
             case 5:
                 rightPanel.changeLevelCounter("25");
-                if(keyboardIsOn){
+                if (keyboardIsOn) {
                     mainPaneCampaign.setCenter(new Keyboard2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, true, rightPanel));
                 } else {
                     mainPaneCampaign.setCenter(new World2Template(world2Maps.getLevel25(), 6, heartCrystals, this, rightPanel, 1, audioPlayer, true, rightPanel));
@@ -388,12 +373,12 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
      */
-    public void nextWorld3Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld3Level(int level, int heartCrystals) throws FileNotFoundException {
 
         World3Maps world3Maps = new World3Maps();
 
@@ -406,24 +391,19 @@ public class MainProgram extends Application {
             audioPlayer.playWorldIntroSound();
             audioPlayer.stopMusic();
             audioPlayer.playLevelMusic("lava");
-        }
-        else if (level == 2) {
+        } else if (level == 2) {
             rightPanel.changeLevelCounter("32");
             mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel32(), 3, heartCrystals, this, rightPanel, 2, audioPlayer));
-        }
-        else if (level == 3) {
+        } else if (level == 3) {
             rightPanel.changeLevelCounter("33");
             mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel33(), 4, heartCrystals, this, rightPanel, 2, audioPlayer));
-        }
-        else if (level == 4) {
+        } else if (level == 4) {
             rightPanel.changeLevelCounter("34");
             mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel34(), 5, heartCrystals, this, rightPanel, 2, audioPlayer));
-        }
-        else if (level == 5) {
+        } else if (level == 5) {
             rightPanel.changeLevelCounter("35");
             mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel35(), 6, heartCrystals, this, rightPanel, 2, audioPlayer));
-        }
-        else if (level == 6) {
+        } else if (level == 6) {
             nextWorld4Level(1, heartCrystals);
         }
     }
@@ -431,12 +411,12 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
      */
-    public void nextWorld4Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld4Level(int level, int heartCrystals) throws FileNotFoundException {
 
         World4Maps world4Maps = new World4Maps();
 
@@ -449,24 +429,19 @@ public class MainProgram extends Application {
             audioPlayer.playWorldIntroSound();
             audioPlayer.stopMusic();
             audioPlayer.playLevelMusic("heaven");
-        }
-        else if (level == 2) {
+        } else if (level == 2) {
             rightPanel.changeLevelCounter("42");
             mainPaneCampaign.setCenter(new World4Template(world4Maps.getLevel42(), 3, heartCrystals, this, rightPanel, 3, audioPlayer));
-        }
-        else if (level == 3) {
+        } else if (level == 3) {
             rightPanel.changeLevelCounter("43");
             mainPaneCampaign.setCenter(new World4Template(world4Maps.getLevel43(), 4, heartCrystals, this, rightPanel, 3, audioPlayer));
-        }
-        else if (level == 4) {
+        } else if (level == 4) {
             rightPanel.changeLevelCounter("44");
             mainPaneCampaign.setCenter(new World4Template(world4Maps.getLevel44(), 5, heartCrystals, this, rightPanel, 3, audioPlayer));
-        }
-        else if (level == 5) {
+        } else if (level == 5) {
             rightPanel.changeLevelCounter("45");
             mainPaneCampaign.setCenter(new World4Template(world4Maps.getLevel45(), 6, heartCrystals, this, rightPanel, 3, audioPlayer));
-        }
-        else if (level == 6) {
+        } else if (level == 6) {
             nextWorld5Level(1, heartCrystals);
         }
     }
@@ -474,12 +449,12 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
      */
-    public void nextWorld5Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld5Level(int level, int heartCrystals) throws FileNotFoundException {
 
         World5Maps world5Maps = new World5Maps();
 
@@ -492,24 +467,19 @@ public class MainProgram extends Application {
             audioPlayer.playWorldIntroSound();
             audioPlayer.stopMusic();
             audioPlayer.playLevelMusic("egypt");
-        }
-        else if (level == 2) {
+        } else if (level == 2) {
             rightPanel.changeLevelCounter("52");
             mainPaneCampaign.setCenter(new World5Template(world5Maps.getLevel52(), 3, heartCrystals, this, rightPanel, 4, audioPlayer));
-        }
-        else if (level == 3) {
+        } else if (level == 3) {
             rightPanel.changeLevelCounter("53");
             mainPaneCampaign.setCenter(new World5Template(world5Maps.getLevel53(), 4, heartCrystals, this, rightPanel, 4, audioPlayer));
-        }
-        else if (level == 4) {
+        } else if (level == 4) {
             rightPanel.changeLevelCounter("54");
             mainPaneCampaign.setCenter(new World5Template(world5Maps.getLevel54(), 5, heartCrystals, this, rightPanel, 4, audioPlayer));
-        }
-        else if (level == 5) {
+        } else if (level == 5) {
             rightPanel.changeLevelCounter("55");
             mainPaneCampaign.setCenter(new World5Template(world5Maps.getLevel55(), 6, heartCrystals, this, rightPanel, 4, audioPlayer));
-        }
-        else if (level == 6) {
+        } else if (level == 6) {
             nextWorld6Level(1, heartCrystals);
         }
     }
@@ -517,12 +487,12 @@ public class MainProgram extends Application {
 
     /**
      * Byter scen till en ny nivå i kampanjläget baserad på givna parametrar.
-     * @param level Den aktuella nivån.
+     *
+     * @param level         Den aktuella nivån.
      * @param heartCrystals Spelarens aktuella liv.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
+     * @throws FileNotFoundException if file not found.
      */
-    public void nextWorld6Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld6Level(int level, int heartCrystals) throws FileNotFoundException {
 
         World6Maps world6Maps = new World6Maps();
 
@@ -533,20 +503,16 @@ public class MainProgram extends Application {
             mainPaneCampaign.getChildren().add(introAnimation);
             introAnimation.setDisable(true);
             audioPlayer.playWorldIntroSound();
-        }
-        else if (level == 2) {
+        } else if (level == 2) {
             rightPanel.changeLevelCounter("62");
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel62(), 3, heartCrystals, this, rightPanel, 5, audioPlayer));
-        }
-        else if (level == 3) {
+        } else if (level == 3) {
             rightPanel.changeLevelCounter("63");
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel63(), 4, heartCrystals, this, rightPanel, 5, audioPlayer));
-        }
-        else if (level == 4) {
+        } else if (level == 4) {
             rightPanel.changeLevelCounter("64");
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel64(), 5, heartCrystals, this, rightPanel, 5, audioPlayer));
-        }
-        else if (level == 5) {
+        } else if (level == 5) {
             rightPanel.changeLevelCounter("65");
             mainPaneCampaign.setCenter(new World6Template(world6Maps.getLevel65(), 5, heartCrystals, this, rightPanel, 5, audioPlayer));
         }
@@ -555,7 +521,7 @@ public class MainProgram extends Application {
 
     /**
      * Main startar programmet.
-     * @param args
+     *
      */
     public static void main(String[] args) {
         launch(args);

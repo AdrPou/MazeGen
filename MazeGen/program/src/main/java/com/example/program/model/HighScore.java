@@ -10,9 +10,9 @@ import java.util.Scanner;
  */
 public class HighScore {
 
-    private String[] name = new String[10];
-    private int[] score = new int[10];
-    private String[] list = new String[10];
+    private final String[] name = new String[10];
+    private final int[] score = new int[10];
+    private final String[] list = new String[10];
     private int place = 1;
     private final String path = "/com/example/program/files/HighScoreList.txt";
     //private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
@@ -20,7 +20,7 @@ public class HighScore {
     /**
      * Inputs a new person and time to the highScoreList.
      *
-     * @param name  the name of the person.
+     * @param name the name of the person.
      * @param time how long it took to win.
      */
     public void writeToList(String[] name, int[] time) {
@@ -63,15 +63,16 @@ public class HighScore {
     }
 
     public boolean checkNewScore(int newScore) {
-        if(newScore < score[9]) {
+        if (newScore < score[9]) {
             String newName = JOptionPane.showInputDialog(null, "You are in the Top10! \n" + "Enter name");
             score[9] = newScore;
             name[9] = newName;
             sortList();
             writeToList(name, score);
             return true;
+        } else {
+            return false;
         }
-        else {return false;}
     }
 
     /**
@@ -105,23 +106,4 @@ public class HighScore {
             n--;
         } while (swapped);
     }
-
-    /**
-     * @return The scores from the highscorelist
-     */
-    public int[] getScore() {
-        return score;
-    }
-
-    /**
-     * @return The names from the highscorelist
-     */
-    public String[] getName() {
-        return name;
-    }
-
-    public String[] getList() {
-        return list;
-    }
-
 }

@@ -11,14 +11,14 @@ import com.example.program.view.Menu.RightPanel;
 public class TimeThread extends Thread {
 
     private int seconds;
-    private RightPanel panel;
+    private final RightPanel panel;
     private boolean gameOver = false;
 
     /**
      * @param seconds Varje nivå skickar in en seconds variabel till tråden
-     * @param panel
+     * @param panel   Höger panelen som visar information när man spelar.
      */
-    public TimeThread(int seconds, RightPanel panel){
+    public TimeThread(int seconds, RightPanel panel) {
         this.seconds = seconds;
         this.panel = panel;
     }
@@ -34,10 +34,10 @@ public class TimeThread extends Thread {
                 if (seconds > 0) {
                     seconds--;
                 }
-                if (seconds == 5){
+                if (seconds == 5) {
                     panel.fiveSecLeft();
                 }
-                if (seconds ==0) {
+                if (seconds == 0) {
                     panel.startTask();
                     gameOver = true;
                 }
@@ -50,14 +50,10 @@ public class TimeThread extends Thread {
     }
 
     /**
-     *
      * @param gameOver setter för trådens villkor
      */
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
-    public void resetTime() {
-        stop();
-    }
 }

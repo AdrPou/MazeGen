@@ -3,10 +3,8 @@ package com.example.program.view.Menu;
 import com.example.program.control.MainProgram;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import com.example.program.view.AudioPlayer;
@@ -17,18 +15,19 @@ import com.example.program.view.AudioPlayer;
 
 public class Help extends VBox {
 
-    private MainProgram mainProgram;
-    private Image pressMouse;
-    private AudioPlayer audioPlayer;
+    private final MainProgram mainProgram;
+    private final Image pressMouse;
+    private final AudioPlayer audioPlayer;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
     /**
      * Konstruktor som skapar pressMouse-objektet för animation och tar emot mainProgram och audioPlayer
+     *
      * @param mainProgram tas emot och instansvariabeln sätts
      * @param audioPlayer tas emot och instansvariabeln sätts
      */
-    public Help(MainProgram mainProgram, AudioPlayer audioPlayer){
+    public Help(MainProgram mainProgram, AudioPlayer audioPlayer) {
         pressMouse = new Image(getClass().getResource(BASE_PATH + "menuImages/helppicmouse.png").toString());
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
@@ -40,8 +39,8 @@ public class Help extends VBox {
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
-        BackgroundImage myBI= new BackgroundImage(new Image(getClass().getResource(BASE_PATH + "menuImages/helppicnew.png").toString(),800,600,false,true),
+    public void setBackground() {
+        BackgroundImage myBI = new BackgroundImage(new Image(getClass().getResource(BASE_PATH + "menuImages/helppicnew.png").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(myBI));
@@ -50,7 +49,7 @@ public class Help extends VBox {
     /**
      * Metod som får pressMouseView-objektet att blinka genom en FadeTransition
      */
-    public void pressMouseAnimation(){
+    public void pressMouseAnimation() {
         ImageView pressMouseView = new ImageView(pressMouse);
         pressMouseView.setStyle("fx-background-color: transparent;");
         pressMouseView.toFront();
@@ -68,13 +67,10 @@ public class Help extends VBox {
     /**
      * Lägger till listener för knapptryck och skiftar scen till menyn
      */
-    public void addListener(){
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                mainProgram.changeToMenu();
-                audioPlayer.playButtonSound();
-            }
+    public void addListener() {
+        this.setOnMouseClicked(mouseEvent -> {
+            mainProgram.changeToMenu();
+            audioPlayer.playButtonSound();
         });
     }
 

@@ -4,17 +4,16 @@ package com.example.program.model;
  * @author Sebastian Helin
  * Tråd som räknar den totala tiden det tog att spela
  */
-public class TotalTime extends Thread{
+public class TotalTime extends Thread {
 
     private boolean gameOver;
     private int seconds;
     private int minutes;
 
     /**
-     *
      * @param gameOver Tar en boolean som används som villkor
      */
-    public TotalTime(boolean gameOver){
+    public TotalTime(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
@@ -22,13 +21,13 @@ public class TotalTime extends Thread{
      * Tråden sover i 1000 millisekunder
      * Inkrementerar int variabeln med 1
      */
-    public void run(){
+    public void run() {
 
-        while(!gameOver){
+        while (!gameOver) {
             try {
                 Thread.sleep(1000);
                 seconds++;
-                if (seconds==60){
+                if (seconds == 60) {
                     minutes++;
                     seconds = 0;
                 }

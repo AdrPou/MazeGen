@@ -3,7 +3,6 @@ package com.example.program.view;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import java.io.File;
 
 /**
  * @author André Eklund
@@ -12,68 +11,24 @@ import java.io.File;
 
 public class AudioPlayer {
 
-    private File diamondSound;
-    private Media diamondMedia;
     private MediaPlayer diamondPlayer;
-
-    private File deathSound;
-    private Media deathMedia;
     private MediaPlayer deathPlayer;
-
-
-    private File startSound;
-    private Media startMedia;
     private MediaPlayer startPlayer;
-
-    private File goalSound;
-    private Media goalMedia;
     private MediaPlayer goalPlayer;
-
-    private File heartSound;
-    private Media heartMedia;
     private MediaPlayer heartPlayer;
-
-    private File breakableWallSound;
-    private Media breakableWallMedia;
     private MediaPlayer breakableWallPlayer;
-
-    private File currentSong;
-    private Media currentMedia;
     private MediaPlayer currentSongPlayer;
-
-    private File pickAxeSound;
-    private Media pickAxeMedia;
     private MediaPlayer pickAxeMediaPlayer;
-
-    private File gameOverSound;
-    private Media gameOverMedia;
     private MediaPlayer gameOverMediaPlayer;
-
-    private File buttonClickSound;
-    private Media buttonClickMedia;
     private MediaPlayer buttonClickedMediaPlayer;
-
-    private File introSound;
-    private Media introMedia;
     private MediaPlayer introMediaPlayer;
-
-    private File worldIntroSound;
-    private Media worldIntroMedia;
     private MediaPlayer worldIntroMediaPlayer;
-
-    private File timeLeftSound;
-    private Media timeLeftMedia;
     private MediaPlayer timeLeftMediaPlayer;
-
-    private File mobSound;
-    private Media mobSoundMedia;
     private MediaPlayer mobSoundMediaPlayer;
-
-    private final String SOUND_BASE_PATH = "/com/example/program/files/sounds/";
     private final String MUSIC_BASE_PATH = "/com/example/program/files/music/";
 
     /**
-     * Kör metoden som instanierar ljudfilerna.
+     * Kör metoden som instansierar ljudfilerna.
      */
     public AudioPlayer() {
         setupAudioFiles();
@@ -85,6 +40,7 @@ public class AudioPlayer {
     public void setupAudioFiles() {
 
         // Sound players
+        String SOUND_BASE_PATH = "/com/example/program/files/sounds/";
         diamondPlayer = new MediaPlayer(new Media(AudioPlayer.class.getResource(SOUND_BASE_PATH + "Diamond1.mp3").toString()));
         deathPlayer = new MediaPlayer(new Media(AudioPlayer.class.getResource(SOUND_BASE_PATH + "MazegenDeath.mp3").toString()));
         startPlayer = new MediaPlayer(new Media(AudioPlayer.class.getResource(SOUND_BASE_PATH + "MazegenStart.mp3").toString()));
@@ -111,6 +67,7 @@ public class AudioPlayer {
 
     /**
      * Spelar musik baserad på given input.
+     *
      * @param songToPlay Låten som ska spelas.
      */
     public void playLevelMusic(String songToPlay) {
@@ -124,11 +81,7 @@ public class AudioPlayer {
         Media songMedia = new Media(AudioPlayer.class.getResource(songPath).toString());
         currentSongPlayer = new MediaPlayer(songMedia);
 
-        currentSongPlayer.setOnEndOfMedia(new Runnable() {
-            public void run() {
-                currentSongPlayer.seek(Duration.ZERO);
-            }
-        });
+        currentSongPlayer.setOnEndOfMedia(() -> currentSongPlayer.seek(Duration.ZERO));
 
         currentSongPlayer.play();
     }
@@ -199,6 +152,7 @@ public class AudioPlayer {
 
     /**
      * En metod som mutear alla speleffekters ljud.
+     *
      * @param mute True om ljudet ska vara avstängt och false om ljudet ska vara på.
      */
     public void muteSound(boolean mute) {
@@ -255,16 +209,17 @@ public class AudioPlayer {
     /**
      * Spelar ett ljud när spelaren kolliderar med en fiende.
      */
-    public void playMobSound(){
+    public void playMobSound() {
         mobSoundMediaPlayer.play();
         mobSoundMediaPlayer.seek(Duration.ZERO);
     }
 
     /**
-     * En metod som mutear all musik .
+     * En metod som mutear all musik.
+     *
      * @param mute True om ljudet ska vara avstängt och false om ljudet ska vara på.
      */
-    public void muteMusic(boolean mute){
+    public void muteMusic(boolean mute) {
         currentSongPlayer.setMute(mute);
     }
 
@@ -276,7 +231,7 @@ public class AudioPlayer {
         timeLeftMediaPlayer.stop();
     }
 
-    public void setVolume(double volume){
+    public void setVolume(double volume) {
         currentSongPlayer.setVolume(volume);
         introMediaPlayer.setVolume(volume);
         buttonClickedMediaPlayer.setVolume(volume);

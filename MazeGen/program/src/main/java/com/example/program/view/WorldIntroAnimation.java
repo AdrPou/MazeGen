@@ -1,11 +1,9 @@
 package com.example.program.view;
 
-import com.example.program.control.MainProgram;
 import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 /**
@@ -19,11 +17,13 @@ public class WorldIntroAnimation extends Pane {
     /**
      * Default konstruktor
      */
-    public WorldIntroAnimation(){}
+    public WorldIntroAnimation() {
+    }
 
     /**
      * Konstruktor som tar emot en sträng
      * Sätter sedan bilderna och animationen
+     *
      * @param world tas emot och currentWorld sätts
      */
     public WorldIntroAnimation(String world) {

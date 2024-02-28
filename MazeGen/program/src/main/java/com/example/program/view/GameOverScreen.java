@@ -17,7 +17,7 @@ public class GameOverScreen extends Pane {
     /**
      * Konstruktor som tar emot mainProgram
      * Kör sedan metoder för bild och animation
-     * @param mainProgram
+     * @param mainProgram för att kunna ändra scen i programmet efter spelets slut.
      */
     public GameOverScreen(MainProgram mainProgram) {
         setOnMouseClicked(e -> mainProgram.changeToHighScore());

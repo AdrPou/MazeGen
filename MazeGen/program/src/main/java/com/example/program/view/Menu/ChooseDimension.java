@@ -1,7 +1,6 @@
 package com.example.program.view.Menu;
 
 import com.example.program.control.MainProgram;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,7 +13,7 @@ import java.io.FileNotFoundException;
  */
 
 public class ChooseDimension extends Pane {
-    private MainProgram mainProgram;
+    private final MainProgram mainProgram;
     private Image chooseDimension;
     private Image tenByTen;
     private Image tenByTenResize;
@@ -26,7 +25,7 @@ public class ChooseDimension extends Pane {
     private Image painResize;
     private Image returnImage;
     private Image returnResize;
-    private AudioPlayer audioPlayer;
+    private final AudioPlayer audioPlayer;
 
     private static final String BASE_PATH = "/com/example/program/files/texts/";
     private static final String BACKGROUND_PATH = "/com/example/program/files/";
@@ -35,10 +34,11 @@ public class ChooseDimension extends Pane {
     /**
      * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
      * sätta bilder och knappar
+     *
      * @param mainProgram tas emot och instansvariabeln sätts
      * @param audioPlayer tas emot och instansvariabeln sätts
      */
-    public ChooseDimension(MainProgram mainProgram, AudioPlayer audioPlayer){
+    public ChooseDimension(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         setBackground();
@@ -49,7 +49,7 @@ public class ChooseDimension extends Pane {
     /**
      * Metod som länkar Image-objekten till png-filer
      */
-    public void setupImages(){
+    public void setupImages() {
         chooseDimension = new Image(getClass().getResource(BASE_PATH + "ChooseDimension.png").toString(), 800, 600, false, false);
         tenByTen = new Image(getClass().getResource(BASE_PATH + "10x10.png").toString(), 250, 30, false, false);
         tenByTenResize = new Image(getClass().getResource(BASE_PATH + "10x10.png").toString(), 255, 33, false, false);
@@ -66,7 +66,7 @@ public class ChooseDimension extends Pane {
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
+    public void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image(getClass().getResource(BACKGROUND_PATH + "MenuBackground.jpg").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
@@ -77,7 +77,7 @@ public class ChooseDimension extends Pane {
      * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
      * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
      */
-    public void addButtons(){
+    public void addButtons() {
         ImageView dimensionView = new ImageView(chooseDimension);
         dimensionView.setStyle("fx-background-color: transparent;");
 
@@ -198,7 +198,7 @@ public class ChooseDimension extends Pane {
             audioPlayer.playButtonSound();
         });
 
-        getChildren().addAll(dimensionView,tenByTenView,fourteenView,eighteenView,painView,returnView);
+        getChildren().addAll(dimensionView, tenByTenView, fourteenView, eighteenView, painView, returnView);
     }
 
 }

@@ -3,10 +3,8 @@ package com.example.program.view.Menu;
 import com.example.program.control.MainProgram;
 import javafx.animation.FadeTransition;
 import javafx.animation.Transition;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import com.example.program.view.AudioPlayer;
@@ -17,12 +15,12 @@ import com.example.program.view.AudioPlayer;
 
 public class Intro extends Pane {
 
-    private MainProgram mainProgram;
+    private final MainProgram mainProgram;
     private Image spaceImage;
     private Image mazeGen;
     private Image mazeGenGlow;
     private Image pressMouse;
-    private AudioPlayer audioPlayer;
+    private final AudioPlayer audioPlayer;
 
     private static final String INTRO_PICS_PATH = "/com/example/program/files/intropics/";
 
@@ -30,10 +28,11 @@ public class Intro extends Pane {
     /**
      * Konstruktor som tar emot mainProgram och audioPlayer
      * Kör sedan metoder för bakgrundsbild, bilder i övrigt och listener
+     *
      * @param mainProgram tas emot och sätts
      * @param audioPlayer tas emot och sätts
      */
-    public Intro(MainProgram mainProgram, AudioPlayer audioPlayer){
+    public Intro(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         setBackground();
@@ -46,7 +45,7 @@ public class Intro extends Pane {
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
+    public void setBackground() {
         BackgroundImage backgroundImage = new BackgroundImage(
                 new Image(getClass().getResource(INTRO_PICS_PATH + "1.png").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
@@ -57,7 +56,7 @@ public class Intro extends Pane {
     /**
      * Metod som länkar Image-objekten till png-filer
      */
-    public void setupImages(){
+    public void setupImages() {
         spaceImage = new Image(getClass().getResource(INTRO_PICS_PATH + "2.png").toString(), 800, 600, false, false);
         mazeGen = new Image(getClass().getResource(INTRO_PICS_PATH + "3.png").toString(), 800, 600, false, false);
         mazeGenGlow = new Image(getClass().getResource(INTRO_PICS_PATH + "4.png").toString(), 800, 600, false, false);
@@ -68,14 +67,11 @@ public class Intro extends Pane {
     /**
      * Lägger till listener för att stänga av ljudet och byta scen
      */
-    public void addListener(){
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                //audioPlayer.stopMusic();
-                audioPlayer.playButtonSound();
-                mainProgram.changeToMenu();
-            }
+    public void addListener() {
+        this.setOnMouseClicked(mouseEvent -> {
+            //audioPlayer.stopMusic();
+            audioPlayer.playButtonSound();
+            mainProgram.changeToMenu();
         });
     }
 
