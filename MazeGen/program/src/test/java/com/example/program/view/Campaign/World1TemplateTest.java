@@ -12,7 +12,10 @@ import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 
 import java.awt.*;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -25,6 +28,7 @@ public class World1TemplateTest {
     private World1Maps world1Maps;
     private RightPanel rightPanel;
     private javafx.scene.input.MouseEvent mockEvent;
+    private MouseListener mouseListener;
 
     @BeforeEach
     public void setup() {
@@ -74,6 +78,20 @@ public class World1TemplateTest {
         setup();
         assertEquals("campaign", mainProgram.changeToCampaign());
 
+    }
+
+    @Test
+    public void enteredWallAliveTest() throws FileNotFoundException {
+        setup();
+        World1Template world1Template = new World1Template(world1Maps.getLevel12(), 2, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals("alive", world1Template.enteredWall(mockEvent));
+    }
+
+    @Test
+    public void enteredWallDeadTest() throws FileNotFoundException {
+        setup();
+        World1Template world1Template = new World1Template(world1Maps.getLevel12(), 2, 1, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals("dead", world1Template.enteredWall(mockEvent));
     }
 
 }
