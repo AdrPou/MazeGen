@@ -42,7 +42,7 @@ public class GenerateNextLevel {
      * Genererar en ny labyrint och skickar det till GUIt.
      * @throws FileNotFoundException
      */
-    public void generateNewMaze() throws FileNotFoundException {
+    public int generateNewMaze() throws FileNotFoundException {
         int currentMaze[][] = mazeGenerator.getMaze();
         MazeGenerator newMazegenerator = new MazeGenerator(dimension, false);
         int nextMaze[][] = newMazegenerator.getMaze();
@@ -61,6 +61,8 @@ public class GenerateNextLevel {
         nextMaze[new Random().nextBoolean() ? 0 : nextMaze.length - 1][col] = 3;
         mainPane.setCenter(new MapTemplate(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
         this.mazeGenerator = newMazegenerator;
+
+        return dimension;
     }
 
     /**

@@ -45,4 +45,8 @@ public class GameOverScreen extends Pane {
         ft.play();
 
     }
+
+    public Image getGameOver() {
+        return gameOver;
+    }
 }

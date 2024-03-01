@@ -50,6 +50,9 @@ public class MainProgram extends Application {
     private int totalScore = 0;
     private KeyboardPlayer player;
     private TemplateKeyboard templateKeyboard;
+    private KeyBoardCampaign keyboardCampaign;
+    private World1Template world1Template;
+
     private static final String BASE_PATH = "/com/example/program/files/";
     private boolean keyboardIsOn; // To know if keyboard is on or not so that nextLevel is created for KeyboardTemplate
 
@@ -153,7 +156,8 @@ public class MainProgram extends Application {
      *
      * @throws FileNotFoundException if file not found.
      */
-    public void changeToCampaign() throws FileNotFoundException {
+
+    public String changeToCampaign() throws FileNotFoundException {
         if (setting.getToggleButtonKeyboard()) {
             KeyBoardCampaign keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
             mainPaneCampaign.setCenter(keyboardCampaign);
@@ -170,7 +174,7 @@ public class MainProgram extends Application {
 
 
         } else {
-            World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
+            world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25, 5);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
 
@@ -185,6 +189,7 @@ public class MainProgram extends Application {
 
         }
 
+        return "campaign";
         // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
         //keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
         //TODO: samma här för både vanlig och keyboard
@@ -203,6 +208,7 @@ public class MainProgram extends Application {
         introAnimation = new WorldIntroAnimation("1");
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
+        world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
     }
 
 
@@ -519,6 +525,18 @@ public class MainProgram extends Application {
     }
 
 
+    public void setMainPaneCampaign(BorderPane mainPaneCampaign) {
+        this.mainPaneCampaign = mainPaneCampaign;
+    }
+
+    public BorderPane getMainPaneCampaign() {
+        return mainPaneCampaign;
+    }
+    public void setKeyboardControl(boolean b) {
+        keyboardIsOn = b;
+    }
+
+
     /**
      * Main startar programmet.
      *
@@ -527,7 +545,5 @@ public class MainProgram extends Application {
         launch(args);
     }
 
-    public void setKeyboardControl(boolean b) {
-        keyboardIsOn = b;
-    }
+
 }

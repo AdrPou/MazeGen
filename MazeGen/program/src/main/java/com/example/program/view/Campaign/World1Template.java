@@ -20,6 +20,7 @@ import com.example.program.model.TotalTime;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -68,7 +69,10 @@ public class World1Template extends GridPane {
     private ImageView playerView;
     private Label playerLabel;
     private World1Maps world1Maps;
+
     //private KeyBoardCampaign keyBoardCampaign;
+    private KeyBoardCampaign keyBoardCampaign;
+    private int numberOfLevels;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -124,6 +128,31 @@ public class World1Template extends GridPane {
 
 
  */
+    }
+
+    public World1Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, int seconds, int numberOfLevels) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.currentLevel = currentLevel;
+        this.level = level;
+        this.heartCrystals = heartCrystals;
+        this.seconds = seconds;
+        this.numberOfLevels = numberOfLevels;
+
+        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+        this.rightPanel = rightPanel;
+        this.audioPlayer = audioPlayer;
+        this.world = world;
+        squareSize = 600/(level.length+2);
+        setBackground();
+        setupImages(world);
+        setupBorders();
+        setupLevel();
+        rightPanel.setSTARTTIME(seconds);
+        rightPanel.resetTimerLabel();
+
+
+        totTime = new TotalTime(false);
+        time = null;
     }
 
     /**
@@ -415,7 +444,8 @@ public class World1Template extends GridPane {
      * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
      * @param e Används för att hitta rätt label.
      */
-    public void enteredWall(MouseEvent e) {
+
+    public String enteredWall(MouseEvent e) { //TODO ska vi ha samma koncept för spel med keyboard?
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
         fade.setNode(label);
@@ -431,10 +461,15 @@ public class World1Template extends GridPane {
 
             if (heartCrystals == 0) {
                 gameOver();
+                return "dead";
             }
             audioPlayer.playDeathSound();
             startButtonPressed = false;
+
+            return "alive";
         }
+
+        return null;
     }
 
     /**
@@ -598,6 +633,10 @@ public class World1Template extends GridPane {
                 enteredWall(e);
             }
         }
+    }
+
+    public int getNumberOfLevels() {
+        return numberOfLevels;
     }
 
     /**
