@@ -51,8 +51,6 @@ public class MainProgram extends Application {
     private KeyboardPlayer player;
     private TemplateKeyboard templateKeyboard;
     private KeyBoardCampaign keyboardCampaign;
-    private World1Template world1Template;
-
     private static final String BASE_PATH = "/com/example/program/files/";
     private boolean keyboardIsOn; // To know if keyboard is on or not so that nextLevel is created for KeyboardTemplate
 
@@ -174,7 +172,7 @@ public class MainProgram extends Application {
 
 
         } else {
-            world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25, 5);
+            World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25, 5);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
 
@@ -208,7 +206,6 @@ public class MainProgram extends Application {
         introAnimation = new WorldIntroAnimation("1");
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
-        world1Template.updatePlayerImage(1, 8); // Sätter spelaren på pos 1,8 på spelplanen
     }
 
 

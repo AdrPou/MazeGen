@@ -10,12 +10,12 @@ import java.util.Scanner;
  */
 public class HighScore {
 
-    private final String[] name = new String[10];
-    private final int[] score = new int[10];
+    private String[] name = new String[10];
+    private int[] score = new int[10];
     private final String[] list = new String[10];
     private int place = 1;
-    private final String path = "/com/example/program/files/HighScoreList.txt";
-    //private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
+    //private final String path = "/com/example/program/files/HighScoreList.txt";
+    private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
 
     /**
      * Inputs a new person and time to the highScoreList.
@@ -78,7 +78,7 @@ public class HighScore {
     /**
      * Sorts the highscorelist by score in descending order.
      */
-    private void sortList() {
+    public void sortList() {
         int n = list.length;
         boolean swapped;
         do {
@@ -105,5 +105,21 @@ public class HighScore {
             }
             n--;
         } while (swapped);
+    }
+
+    public String[] getName() {
+        return name;
+    }
+
+    public int[] getScore() {
+        return score;
+    }
+
+    public void setName(String[] name) {
+        this.name = name;
+    }
+
+    public void setScore(int[] score) {
+        this.score = score;
     }
 }
