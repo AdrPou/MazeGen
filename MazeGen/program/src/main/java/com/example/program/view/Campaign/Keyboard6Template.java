@@ -18,7 +18,6 @@ import java.io.FileNotFoundException;
 
 public class Keyboard6Template extends World1Template {
 
-
     private Image ghost;
 
     private int squareSize;
@@ -45,12 +44,12 @@ public class Keyboard6Template extends World1Template {
     private ImageView ghost9V;
     private ImageView ghost10V;
 
-
     private static final String BASE_PATH = "/com/example/program/files/";
 
-    public Keyboard6Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
+    public Keyboard6Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram,
+            RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 99);
-        squareSize = 600/(level.length+2);
+        squareSize = 600 / (level.length + 2);
         this.currentLevel = currentLevel;
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         rightPanel.resetTimerLabel();
@@ -59,18 +58,21 @@ public class Keyboard6Template extends World1Template {
     }
 
     /**
-     * Metoden initialize instansierar olika antal ImageView objekt beroende på vilken bana som spelas
-     * Metoden initialize instansierar även olika antal rectanglar i olika former beroende på bana
-     * Metoden kopplar sedan samman ImageView objekt och rectanglar för att skapa animationer
+     * Metoden initialize instansierar olika antal ImageView objekt beroende på
+     * vilken bana som spelas
+     * Metoden initialize instansierar även olika antal rectanglar i olika former
+     * beroende på bana
+     * Metoden kopplar sedan samman ImageView objekt och rectanglar för att skapa
+     * animationer
      * Animationerna kan gå i olika hastigheter
      */
 
-
     public void initialize() {
 
-        ghost = new Image(getClass().getResource(BASE_PATH + "space_mob3.png").toString(), squareSize, squareSize, false, false);
+        ghost = new Image(getClass().getResource(BASE_PATH + "space_mob3.png").toString(), squareSize, squareSize,
+                false, false);
 
-        if (currentLevel==2){
+        if (currentLevel == 2) {
 
             ImageView ghost4V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -82,16 +84,16 @@ public class Keyboard6Template extends World1Template {
             ghost3V.setImage(ghost);
             ghost2V.setImage(ghost);
             ghost1V.setImage(ghost);
-            add(ghost5V,16,4);
-            add(ghost3V,9,4);
-            add(ghost1V,5,10);
-            add(ghost2V,4,5);
-            add(ghost4V,10,13);
-            Rectangle rectangle = new Rectangle(120,93);
+            add(ghost5V, 16, 4);
+            add(ghost3V, 9, 4);
+            add(ghost1V, 5, 10);
+            add(ghost2V, 4, 5);
+            add(ghost4V, 10, 13);
+            Rectangle rectangle = new Rectangle(120, 93);
             rectangle.setY(72);
             rectangle.setX(-45);
 
-            Rectangle rectangle2 = new Rectangle(120,93);
+            Rectangle rectangle2 = new Rectangle(120, 93);
             rectangle2.setY(72);
             rectangle2.setX(-45);
 
@@ -123,7 +125,6 @@ public class Keyboard6Template extends World1Template {
             animation4.setPath(rectangle);
             animation4.play();
 
-
             animation5 = new PathTransition();
             animation5.setNode(ghost5V);
             animation5.setDuration(Duration.seconds(4));
@@ -139,27 +140,27 @@ public class Keyboard6Template extends World1Template {
 
         }
 
-        else if (currentLevel == 3){
-             ghost4V = new ImageView();
-             ghost3V = new ImageView();
-             ghost1V = new ImageView();
-             ghost2V = new ImageView();
-             ghost5V = new ImageView();
+        else if (currentLevel == 3) {
+            ghost4V = new ImageView();
+            ghost3V = new ImageView();
+            ghost1V = new ImageView();
+            ghost2V = new ImageView();
+            ghost5V = new ImageView();
             ghost5V.setImage(ghost);
             ghost4V.setImage(ghost);
             ghost3V.setImage(ghost);
             ghost2V.setImage(ghost);
             ghost1V.setImage(ghost);
-            add(ghost5V,16,4);
-            add(ghost3V,9,4);
-            add(ghost1V,5,10);
-            add(ghost2V,4,5);
-            add(ghost4V,10,13);
-            rectangle = new Rectangle(120,93);
+            add(ghost5V, 16, 4);
+            add(ghost3V, 9, 4);
+            add(ghost1V, 5, 10);
+            add(ghost2V, 4, 5);
+            add(ghost4V, 10, 13);
+            rectangle = new Rectangle(120, 93);
             rectangle.setY(72);
             rectangle.setX(-45);
 
-            Rectangle rectangle2 = new Rectangle(120,93);
+            Rectangle rectangle2 = new Rectangle(120, 93);
             rectangle2.setY(72);
             rectangle2.setX(-45);
 
@@ -207,8 +208,6 @@ public class Keyboard6Template extends World1Template {
                 animation3.play();
             });
 
-
-
             animation4 = new PathTransition();
             animation4.setNode(ghost4V);
             animation4.setDuration(Duration.seconds(5));
@@ -216,13 +215,12 @@ public class Keyboard6Template extends World1Template {
             animation4.setPath(rectangle);
             animation4.play();
 
-                    animation4.setOnFinished(actionEvent -> {
-                        animation4.setDuration(Duration.seconds(2));
-                        animation4.setCycleCount(Animation.INDEFINITE);
-                        animation4.setAutoReverse(true);
-                        animation4.play();
-                    });
-
+            animation4.setOnFinished(actionEvent -> {
+                animation4.setDuration(Duration.seconds(2));
+                animation4.setCycleCount(Animation.INDEFINITE);
+                animation4.setAutoReverse(true);
+                animation4.play();
+            });
 
             animation5 = new PathTransition();
             animation5.setNode(ghost5V);
@@ -244,8 +242,7 @@ public class Keyboard6Template extends World1Template {
             ghost1V.setOnMouseEntered(e -> enteredGhost(e));
             ghost3V.setOnMouseEntered(e -> enteredGhost(e));
 
-        }
-        else if (currentLevel == 4 ){
+        } else if (currentLevel == 4) {
             ghost4V = new ImageView();
             ghost3V = new ImageView();
             ghost1V = new ImageView();
@@ -266,20 +263,20 @@ public class Keyboard6Template extends World1Template {
             ghost3V.setImage(ghost);
             ghost2V.setImage(ghost);
             ghost1V.setImage(ghost);
-            add(ghost5V,3,1);
-            add(ghost3V,3,3);
-            add(ghost1V,3,5);
-            add(ghost2V,3,7);
-            add(ghost4V,3,9);
-            add(ghost6V,3,11);
-            add(ghost7V,3,13);
-            add(ghost8V,3,15);
-            add(ghost9V,3,17);
-            rectangle = new Rectangle(525,0);
+            add(ghost5V, 3, 1);
+            add(ghost3V, 3, 3);
+            add(ghost1V, 3, 5);
+            add(ghost2V, 3, 7);
+            add(ghost4V, 3, 9);
+            add(ghost6V, 3, 11);
+            add(ghost7V, 3, 13);
+            add(ghost8V, 3, 15);
+            add(ghost9V, 3, 17);
+            rectangle = new Rectangle(525, 0);
             rectangle.setY(72);
             rectangle.setX(-45);
 
-            Rectangle rectangle2 = new Rectangle(525,0);
+            Rectangle rectangle2 = new Rectangle(525, 0);
             rectangle2.setY(105);
             rectangle2.setX(-45);
 
@@ -341,8 +338,6 @@ public class Keyboard6Template extends World1Template {
                 });
             });
 
-
-
             animation4 = new PathTransition();
             animation4.setNode(ghost4V);
             animation4.setDuration(Duration.seconds(5));
@@ -361,7 +356,6 @@ public class Keyboard6Template extends World1Template {
                     animation4.play();
                 });
             });
-
 
             animation5 = new PathTransition();
             animation5.setNode(ghost5V);
@@ -438,7 +432,6 @@ public class Keyboard6Template extends World1Template {
                 });
             });
 
-
             animation9 = new PathTransition();
             animation9.setNode(ghost9V);
             animation9.setDuration(Duration.seconds(5));
@@ -457,8 +450,6 @@ public class Keyboard6Template extends World1Template {
                 });
             });
 
-
-
             ghost9V.setOnMouseEntered(event -> enteredGhost(event));
             ghost8V.setOnMouseEntered(event -> enteredGhost(event));
             ghost7V.setOnMouseEntered(e -> enteredGhost(e));
@@ -469,9 +460,7 @@ public class Keyboard6Template extends World1Template {
             ghost1V.setOnMouseEntered(e -> enteredGhost(e));
             ghost3V.setOnMouseEntered(e -> enteredGhost(e));
 
-
-        }
-        else if(currentLevel==5) {
+        } else if (currentLevel == 5) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -482,7 +471,7 @@ public class Keyboard6Template extends World1Template {
 
             add(ghost1V, 12, 8);
             add(ghost2V, 14, 0);
-            //add(ghost3V, 8, 12);
+            // add(ghost3V, 8, 12);
 
             Rectangle rectangle = new Rectangle(132, 200);
             rectangle.setY(80);
@@ -519,7 +508,7 @@ public class Keyboard6Template extends World1Template {
             animation3.play();
         }
 
-        else if (currentLevel==6){
+        else if (currentLevel == 6) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -584,6 +573,4 @@ public class Keyboard6Template extends World1Template {
         }
     }
 
-
-
-}//Class
+}// Class

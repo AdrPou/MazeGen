@@ -1,6 +1,5 @@
 package com.example.program.view.Campaign;
 
-
 import com.example.program.control.MainProgram;
 import com.example.program.model.KeyboardPlayer;
 import com.example.program.model.Maps.World1Maps;
@@ -31,9 +30,7 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
-
 public class KeyBoardCampaign extends GridPane {
-
 
     private MainProgram mainProgram;
     private int[][] level;
@@ -71,16 +68,18 @@ public class KeyBoardCampaign extends GridPane {
     public KeyboardPlayer player;
     boolean gameOver = false; // When true, game should stop listening for keyboard input
     private ImageView playerView;
-    private HashMap<Label, Boolean> soundPlayedForLabel = new HashMap<>(); // To know if the sound for the collectible has been played or not, so it doesn't play again
+    private HashMap<Label, Boolean> soundPlayedForLabel = new HashMap<>(); // To know if the sound for the collectible
+                                                                           // has been played or not, so it doesn't play
+                                                                           // again
 
     private Label heartCrystal;
     public Label playerLabel;
 
-    //private boolean heartTaken; // so that the sound for the heart is only played once
+    // private boolean heartTaken; // so that the sound for the heart is only played
+    // once
 
     private static final String BASE_PATH = "/com/example/program/files/";
     private List<ImageView> ghosts;
-
 
     /**
      * Instansierar objekten.
@@ -96,8 +95,9 @@ public class KeyBoardCampaign extends GridPane {
      * @throws FileNotFoundException
      */
 
-    //Konstruktorn ska kunna ta emot int-arrayer och representera dem i GUIt
-    public KeyBoardCampaign(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, int seconds) throws FileNotFoundException {
+    // Konstruktorn ska kunna ta emot int-arrayer och representera dem i GUIt
+    public KeyBoardCampaign(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram,
+            RightPanel rightPanel, int world, AudioPlayer audioPlayer, int seconds) throws FileNotFoundException {
         this.mainProgram = mainProgram;
         this.currentLevel = currentLevel;
         this.level = level;
@@ -116,7 +116,8 @@ public class KeyBoardCampaign extends GridPane {
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
 
-        // To know if the sound for the collectible has been played or not, so it doesn't play again
+        // To know if the sound for the collectible has been played or not, so it
+        // doesn't play again
         for (Label label : collectibles) {
             soundPlayedForLabel.put(label, false);
         }
@@ -131,7 +132,6 @@ public class KeyBoardCampaign extends GridPane {
             }
         });
 
-
         setFocusTraversable(true);
     }
 
@@ -139,7 +139,8 @@ public class KeyBoardCampaign extends GridPane {
      * Sätter bakgrunden i fönstret.
      */
     public void setBackground() {
-        BackgroundImage menuBackground = new BackgroundImage(new Image(getClass().getResource(BASE_PATH + "MenuBackground.jpg").toString(), 800, 600, false, true),
+        BackgroundImage menuBackground = new BackgroundImage(
+                new Image(getClass().getResource(BASE_PATH + "MenuBackground.jpg").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
@@ -164,7 +165,8 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     /**
-     * Omvandlar värdena i arrayen av siffror till olika grafiska komponenter baserat på vilken siffra en position har.
+     * Omvandlar värdena i arrayen av siffror till olika grafiska komponenter
+     * baserat på vilken siffra en position har.
      * Exempelvis så representerar 1:or väg, 0:or väggar, och 7:or hjärtan osv.
      */
     public void setupLevel() {
@@ -224,21 +226,32 @@ public class KeyBoardCampaign extends GridPane {
             folder = "space";
         }
 
-        path = new Image(getClass().getResource(BASE_PATH + "" + folder + "/path.png").toString(), squareSize, squareSize, false, false);
-        goal = new Image(getClass().getResource(BASE_PATH + "" + folder + "/goal.png").toString(), squareSize, squareSize, false, false);
-        diamond = new Image(getClass().getResource(BASE_PATH + "" + folder + "/collectible.png").toString(), squareSize, squareSize, false, false);
-        start = new Image(getClass().getResource(BASE_PATH + "" + folder + "/start.png").toString(), squareSize, squareSize, false, false);
-        pickAxeImage = new Image(getClass().getResource(BASE_PATH + "items/pickaxe.png").toString(), squareSize, squareSize, false, false);
-        heart = new Image(getClass().getResource(BASE_PATH + "items/heart.png").toString(), squareSize, squareSize, false, false);
-        playerImage = new Image(getClass().getResource(BASE_PATH + "playerTest.png").toString(), squareSize, squareSize, false, false); // ta bort sen
+        path = new Image(getClass().getResource(BASE_PATH + "" + folder + "/path.png").toString(), squareSize,
+                squareSize, false, false);
+        goal = new Image(getClass().getResource(BASE_PATH + "" + folder + "/goal.png").toString(), squareSize,
+                squareSize, false, false);
+        diamond = new Image(getClass().getResource(BASE_PATH + "" + folder + "/collectible.png").toString(), squareSize,
+                squareSize, false, false);
+        start = new Image(getClass().getResource(BASE_PATH + "" + folder + "/start.png").toString(), squareSize,
+                squareSize, false, false);
+        pickAxeImage = new Image(getClass().getResource(BASE_PATH + "items/pickaxe.png").toString(), squareSize,
+                squareSize, false, false);
+        heart = new Image(getClass().getResource(BASE_PATH + "items/heart.png").toString(), squareSize, squareSize,
+                false, false);
+        playerImage = new Image(getClass().getResource(BASE_PATH + "playerTest.png").toString(), squareSize, squareSize,
+                false, false); // ta bort sen
         if (value == 3) {
-            breakableWall = new Image(getClass().getResource(BASE_PATH + "cloud/breakablewall.png").toString(), squareSize, squareSize, false, false);
+            breakableWall = new Image(getClass().getResource(BASE_PATH + "cloud/breakablewall.png").toString(),
+                    squareSize, squareSize, false, false);
         } else {
-            breakableWall = new Image(getClass().getResource(BASE_PATH + "breakablewall.png").toString(), squareSize, squareSize, false, false);
+            breakableWall = new Image(getClass().getResource(BASE_PATH + "breakablewall.png").toString(), squareSize,
+                    squareSize, false, false);
         }
         if (value != 5) {
-            border = new Image(getClass().getResource(BASE_PATH + "" + folder + "/border.png").toString(), squareSize, squareSize, false, false);
-            wall = new Image(getClass().getResource(BASE_PATH + "" + folder + "/wall.png").toString(), squareSize, squareSize, false, false);
+            border = new Image(getClass().getResource(BASE_PATH + "" + folder + "/border.png").toString(), squareSize,
+                    squareSize, false, false);
+            wall = new Image(getClass().getResource(BASE_PATH + "" + folder + "/wall.png").toString(), squareSize,
+                    squareSize, false, false);
         }
     }
 
@@ -289,7 +302,7 @@ public class KeyBoardCampaign extends GridPane {
      *
      * @return Returnerar en label.
      */
-    private Label getBreakableWall() { //TODO fixa för keyboard
+    private Label getBreakableWall() { // TODO fixa för keyboard
         Label label = new Label();
         ImageView borderView = new ImageView(breakableWall);
         borderView.setFitHeight(squareSize);
@@ -297,7 +310,6 @@ public class KeyBoardCampaign extends GridPane {
         label.setGraphic(borderView);
         return label;
     }
-
 
     /**
      * En metod som skapar ett objekt av label som representerar ett mål.
@@ -319,7 +331,6 @@ public class KeyBoardCampaign extends GridPane {
      * @return Returnerar en label.
      */
     private Label getStart() {
-
 
         Label label = new Label();
         ImageView borderView = new ImageView(start);
@@ -396,41 +407,42 @@ public class KeyBoardCampaign extends GridPane {
         mainProgram.gameOver();
         rightPanel.pauseClock();
 
-
-        //gameStarted = true;
+        // gameStarted = true;
         time.setGameOver(true);
         rightPanel.setGameOver(true); // använd denna boolean för testing.
-        //time.resetTime();
+        // time.resetTime();
         time = null;
         rightPanel.removePickaxe();
 
     }
 
-
     /**
-     * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
+     * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles
+     * startas nästa nivå.
+     * 
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
     /*
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
-        if (startButtonPressed && allCollectiblesObtained) {
-            audioPlayer.stopClockSound();
-            audioPlayer.playGoalSound();
-            nextLevel();
-            rightPanel.pauseClock();
-            rightPanel.setTheTime(seconds);
-            gameStarted = true;
-            time.setGameOver(true);
-            time = null;
-        }
-    }
-
+     * public void enteredGoal() throws FileNotFoundException, InterruptedException
+     * {
+     * if (startButtonPressed && allCollectiblesObtained) {
+     * audioPlayer.stopClockSound();
+     * audioPlayer.playGoalSound();
+     * nextLevel();
+     * rightPanel.pauseClock();
+     * rightPanel.setTheTime(seconds);
+     * gameStarted = true;
+     * time.setGameOver(true);
+     * time = null;
+     * }
+     * }
+     * 
      */
 
-
     /**
-     * Baserad på den aktuella världen väljer programmmet vilken nivå som ska spelas.
+     * Baserad på den aktuella världen väljer programmmet vilken nivå som ska
+     * spelas.
      *
      * @throws FileNotFoundException
      * @throws InterruptedException
@@ -462,7 +474,7 @@ public class KeyBoardCampaign extends GridPane {
             this.player = new KeyboardPlayer(x, y);
         }
 
-        //startLevelKeyboard(x, y);
+        // startLevelKeyboard(x, y);
 
         playerLabel = new Label();
         ImageView playerView = new ImageView(playerImage);
@@ -471,7 +483,8 @@ public class KeyBoardCampaign extends GridPane {
         playerView.setFitWidth(squareSize);
         playerLabel.setGraphic(playerView);
 
-        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
+        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView
+                && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
 
         add(playerLabel, x, y);
     }
@@ -526,13 +539,13 @@ public class KeyBoardCampaign extends GridPane {
         checkReachedGoal(newX, newY);
     }
 
-
     // Function to check collision between player and ghost
     public Boolean isColliding(List<ImageView> ghosts) {
         if (this.ghosts == null) {
             this.ghosts = ghosts;
         }
-        Bounds boundsPlayer = playerLabel.localToScene(playerLabel.getBoundsInLocal()); // Accurately get player's bounds
+        Bounds boundsPlayer = playerLabel.localToScene(playerLabel.getBoundsInLocal()); // Accurately get player's
+                                                                                        // bounds
         boolean collisionDetected = false;
 
         for (ImageView ghost : ghosts) {
@@ -561,12 +574,12 @@ public class KeyBoardCampaign extends GridPane {
         return gameOver;
     }
 
+    public boolean hitWall(int newX, int newY) { // TODO lägg till if-sats för breakable wall
 
-
-
-    public boolean hitWall(int newX, int newY){ //TODO lägg till if-sats för breakable wall
-
-        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
+        if (newX == 0 || newY == 0 || newX == level.length + 1 || newY == level.length + 1
+                || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { // kolla om spelaren försöker gå
+                                                                                       // utanför banan eller in i en
+                                                                                       // vägg
 
             FadeTransition fade = new FadeTransition();
             fade.setDuration(Duration.seconds(0.3));
@@ -574,7 +587,7 @@ public class KeyBoardCampaign extends GridPane {
             fade.setToValue(0.6);
             fade.play();
 
-            if(heartCrystals > 0){
+            if (heartCrystals > 0) {
                 heartCrystals--;
                 rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                 audioPlayer.playDeathSound();
@@ -583,19 +596,17 @@ public class KeyBoardCampaign extends GridPane {
                 gameOver();
             }
 
-
             return true; // lägg till sound för fel
-        }
-        else {
+        } else {
             return false; // om allt funkar som det ska
         }
     }
 
-    public void checkCollectibles(int x, int y) { //TODO ska kunna plocka upp hjärtan
+    public void checkCollectibles(int x, int y) { // TODO ska kunna plocka upp hjärtan
 
-        if(level[y - 1][x - 1] == 4) { //fixa senare. plocka upp collectible
+        if (level[y - 1][x - 1] == 4) { // fixa senare. plocka upp collectible
 
-            for (Label label: collectibles) {
+            for (Label label : collectibles) {
                 int labelX = GridPane.getColumnIndex(label);
                 int labelY = GridPane.getRowIndex(label);
 
@@ -613,12 +624,12 @@ public class KeyBoardCampaign extends GridPane {
             }
 
         } else if (level[y - 1][x - 1] == 5) { // fixa senare. plocka upp pickaxe
-            for (Label label : pickaxes){
+            for (Label label : pickaxes) {
 
                 int labelX = GridPane.getColumnIndex(label);
                 int labelY = GridPane.getRowIndex(label);
 
-                if (labelX == x && labelY == y){
+                if (labelX == x && labelY == y) {
                     audioPlayer.playPickAxeSound();
                     label.setVisible(false);
                     pickaxeObtained = true;
@@ -628,16 +639,15 @@ public class KeyBoardCampaign extends GridPane {
         } else if (level[y - 1][x - 1] == 7 && heartCrystal.isVisible()) { // New code for heart
             // Code to handle heart collection
             // For example, you might want to increase the player's health
-            if(heartCrystals < 3 ){
+            if (heartCrystals < 3) {
                 heartCrystals++;
                 rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                 // Remove the heart from the GUI
             }
             audioPlayer.playHeartSound(); // Assuming you have a sound for collecting hearts
             heartCrystal.setVisible(false);
-            //heartTaken = true;
+            // heartTaken = true;
         }
-
 
     }
 
@@ -655,7 +665,7 @@ public class KeyBoardCampaign extends GridPane {
             rightPanel.pauseClock();
             System.out.println(seconds);
             rightPanel.setTheTime(seconds);
-            //gameStarted = true;
+            // gameStarted = true;
             time.setGameOver(true);
             time = null;
 
@@ -679,16 +689,17 @@ public class KeyBoardCampaign extends GridPane {
         }
     }
 
-    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i denna metoden
-        if (!totalTimeStarted){
+    public void startLevelKeyboard(int x, int y) { // TODO lägg till metodanrop här eller skriv metod för keyboard i
+                                                   // denna metoden
+        if (!totalTimeStarted) {
             rightPanel.startTotalTimer();
             rightPanel.setTimerIsStarted(true);
         }
 
-        if (!gameStarted){
+        if (!gameStarted) {
             rightPanel.resumeClock();
             gameStarted = true;
-            if(time != null){
+            if (time != null) {
                 time = null;
             }
             time = new TimeThread(seconds, rightPanel);
@@ -710,7 +721,5 @@ public class KeyBoardCampaign extends GridPane {
         }
         return null;
     }
-
-
 
 }

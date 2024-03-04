@@ -15,7 +15,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 
-
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +25,10 @@ import static java.lang.Thread.sleep;
  * @author Sebastian Helin & Filip Örnling
  */
 
-
 public class Keyboard2Template extends KeyBoardCampaign {
 
     private int squareSize;
-    private int duration=10;
+    private int duration = 10;
     private PathTransition animation;
     private PathTransition animation2;
     private PathTransition animation3;
@@ -44,9 +42,7 @@ public class Keyboard2Template extends KeyBoardCampaign {
     private AudioPlayer audioPlayer;
     private int seconds;
 
-
     private static final String BASE_PATH = "/com/example/program/files/";
-
 
     Label ghost1VLabel;
     Label ghost2VLabel;
@@ -64,9 +60,11 @@ public class Keyboard2Template extends KeyBoardCampaign {
 
     List<ImageView> ghosts;
 
-    public Keyboard2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel) throws FileNotFoundException {
+    public Keyboard2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram,
+            RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel)
+            throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, 35);
-        squareSize = 600/(level.length+2);
+        squareSize = 600 / (level.length + 2);
         this.panel = panel;
         this.audioPlayer = audioPlayer;
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
@@ -78,14 +76,19 @@ public class Keyboard2Template extends KeyBoardCampaign {
         rightPanel.setSTARTTIME(35);
         rightPanel.resetTimerLabel();
     }
+
     public void setupGhost() {
-        ghost = new Image(getClass().getResource(BASE_PATH + "ghost.png").toString(), squareSize, squareSize, false, false);
+        ghost = new Image(getClass().getResource(BASE_PATH + "ghost.png").toString(), squareSize, squareSize, false,
+                false);
     }
 
     /**
-     * Metoden initialize instansierar olika antal ImageView objekt beroende på vilken bana som spelas
-     * Metoden initialize instansierar även olika antal rectanglar i olika former beroende på bana
-     * Metoden kopplar sedan samman ImageView objekt och rectanglar för att skapa animationer
+     * Metoden initialize instansierar olika antal ImageView objekt beroende på
+     * vilken bana som spelas
+     * Metoden initialize instansierar även olika antal rectanglar i olika former
+     * beroende på bana
+     * Metoden kopplar sedan samman ImageView objekt och rectanglar för att skapa
+     * animationer
      * Animationerna kan gå i olika hastigheter
      */
 
@@ -113,12 +116,10 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghost6VLabel.setGraphic(ghost6V);
 
         ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V, ghost5V, ghost6V);
-        
 
-
-        add(ghost1V,10,0);
-        add(ghost2V,9,0);
-        add(ghost3V,8,0);
+        add(ghost1V, 10, 0);
+        add(ghost2V, 9, 0);
+        add(ghost3V, 8, 0);
         add(ghost4V, 1, 0);
         add(ghost5V, 2, 0);
         add(ghost6V, 3, 0);
@@ -129,26 +130,25 @@ public class Keyboard2Template extends KeyBoardCampaign {
         Polyline line4 = new Polyline();
         Polyline line5 = new Polyline();
         Polyline line6 = new Polyline();
-        
+
         line1.getPoints().addAll(
                 16.0, -10.5,
                 10.5, 650.0);
         line2.getPoints().addAll(
-                15.0,-10.5,
-                10.5,650.0);
+                15.0, -10.5,
+                10.5, 650.0);
         line3.getPoints().addAll(
-                14.0,-10.5,
-                10.5,650.0);
+                14.0, -10.5,
+                10.5, 650.0);
         line4.getPoints().addAll(
                 16.0, -10.5,
                 10.5, 650.0);
         line5.getPoints().addAll(
-                15.0,-10.5,
-                10.5,650.0);
+                15.0, -10.5,
+                10.5, 650.0);
         line6.getPoints().addAll(
-                14.0,-10.5,
-                10.5,650.0);
-
+                14.0, -10.5,
+                10.5, 650.0);
 
         animation3 = new PathTransition();
         animation3.setNode(ghost3V);
@@ -211,12 +211,12 @@ public class Keyboard2Template extends KeyBoardCampaign {
     }
 
     private void handleKeyReleased(KeyEvent event) {
-        List<Label> ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel, ghost6VLabel);
+        List<Label> ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel,
+                ghost6VLabel);
         int x = player.getX();
         int y = player.getY();
 
     }
-
 
     public class GhostThread extends Thread {
         private KeyBoardCampaign keyBoardCampaign;
@@ -254,6 +254,4 @@ public class Keyboard2Template extends KeyBoardCampaign {
         }
     }
 
-
-    }
-
+}
