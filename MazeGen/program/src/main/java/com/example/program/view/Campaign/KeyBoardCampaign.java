@@ -588,6 +588,8 @@ public class KeyBoardCampaign extends GridPane {
             fade.play();
 
             if (heartCrystals > 0) {
+                player.move(startX, startY);
+                updatePlayerImage(startX, startY);
                 heartCrystals--;
                 rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                 audioPlayer.playDeathSound();
