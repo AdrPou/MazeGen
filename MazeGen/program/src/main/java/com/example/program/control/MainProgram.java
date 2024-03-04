@@ -162,14 +162,15 @@ public class MainProgram extends Application {
 
 
             // for Testing purposes
-            /*
+
             try {
-                nextWorld1Level(3, 3);
+                //nextWorld1Level(3, 3);
+                nextWorld2Level(5, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-             */
+
 
 
         } else {
@@ -179,14 +180,14 @@ public class MainProgram extends Application {
 
 
             // for Testing purposes
-            /*
+
             try {
                 nextWorld2Level(5, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
-             */
+
 
 
         }

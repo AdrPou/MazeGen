@@ -64,12 +64,13 @@ public class KeyBoardCampaign extends GridPane {
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
-    private KeyboardPlayer player;
+    public KeyboardPlayer player;
     boolean gameOver = false; // When true, game should stop listening for keyboard input
     private ImageView playerView;
     private HashMap<Label, Boolean> soundPlayedForLabel = new HashMap<>(); // To know if the sound for the collectible has been played or not, so it doesn't play again
 
     private Label heartCrystal;
+    public Label playerLabel;
 
     //private boolean heartTaken; // so that the sound for the heart is only played once
 
@@ -466,7 +467,7 @@ public class KeyBoardCampaign extends GridPane {
 
         //startLevelKeyboard(x, y);
 
-        Label playerLabel = new Label();
+        playerLabel = new Label();
         ImageView playerView = new ImageView(playerImage);
 
         playerView.setFitHeight(squareSize);
@@ -585,8 +586,9 @@ public class KeyBoardCampaign extends GridPane {
                 Rectangle boundsGhost = new Rectangle(ghost.getLayoutX(), ghost.getLayoutY(),
                         squareSize, squareSize);
                 if(boundsPlayer.getBoundsInParent().intersects(boundsGhost.getBoundsInParent())){
+                    System.out.println("Collision detected");
                     if(heartCrystals > 0){
-                        heartCrystals--;
+                        //heartCrystals--;
                         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                         audioPlayer.playDeathSound();
                     }
@@ -603,7 +605,6 @@ public class KeyBoardCampaign extends GridPane {
 
     public boolean hitWall(int newX, int newY){ //TODO lägg till if-sats för breakable wall
 
-        isColliding(ghosts);
         if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
 
             FadeTransition fade = new FadeTransition();
@@ -748,5 +749,7 @@ public class KeyBoardCampaign extends GridPane {
         }
         return null;
     }
+
+
 
 }

@@ -6,12 +6,14 @@ import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
+
 
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -41,6 +43,7 @@ public class Keyboard2Template extends KeyBoardCampaign {
     private AudioPlayer audioPlayer;
     private int seconds;
 
+
     private static final String BASE_PATH = "/com/example/program/files/";
 
 
@@ -50,6 +53,7 @@ public class Keyboard2Template extends KeyBoardCampaign {
     Label ghost4VLabel;
     Label ghost5VLabel;
     Label ghost6VLabel;
+    List<Label> ghosts;
 
     public Keyboard2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, 35);
@@ -98,6 +102,8 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghost4VLabel.setGraphic(ghost4V);
         ghost5VLabel.setGraphic(ghost5V);
         ghost6VLabel.setGraphic(ghost6V);
+
+        ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel, ghost6VLabel);
 
 
         /*
@@ -208,10 +214,44 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghost6V.setOnMouseEntered(e -> enteredGhost(e));
          */
         setOnKeyReleased(this::handleKeyReleased);
+        GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+        ghostThread.start();
     }
 
     private void handleKeyReleased(KeyEvent event) {
         List<Label> ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel, ghost6VLabel);
-        isColliding(ghosts);
+        int x = player.getX();
+        int y = player.getY();
+
     }
-}
+
+
+    public class GhostThread extends Thread {
+        private KeyBoardCampaign keyBoardCampaign;
+        private List<Label> ghosts;
+        private Label playerLabel;
+
+        public GhostThread(KeyBoardCampaign keyBoardCampaign, List<Label> ghosts, Label playerLabel) {
+            this.keyBoardCampaign = keyBoardCampaign;
+            this.ghosts = ghosts;
+            this.playerLabel = playerLabel;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    sleep(100); // Adjust the sleep duration as needed
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                isColliding(ghosts);
+
+                }
+            }
+        }
+
+
+    }
+
