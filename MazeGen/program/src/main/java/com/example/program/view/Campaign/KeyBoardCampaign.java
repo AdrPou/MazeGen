@@ -5,6 +5,8 @@ import com.example.program.control.MainProgram;
 import com.example.program.model.KeyboardPlayer;
 import com.example.program.model.Maps.World1Maps;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -46,6 +48,8 @@ public class KeyBoardCampaign extends GridPane {
     private Image heart;
     private Image breakableWall;
     private Image playerImage;
+    private int startX;
+    private int startY;
     private boolean startButtonPressed;
     private boolean allCollectiblesObtained;
     private boolean wallDestroyed;
@@ -75,19 +79,20 @@ public class KeyBoardCampaign extends GridPane {
     //private boolean heartTaken; // so that the sound for the heart is only played once
 
     private static final String BASE_PATH = "/com/example/program/files/";
-    private List<Label> ghosts;
+    private List<ImageView> ghosts;
 
 
     /**
      * Instansierar objekten.
-     * @param level Den array som sedan omvandlas till en nivå inuti spelet.
-     * @param currentLevel Den aktuella nivån
+     *
+     * @param level         Den array som sedan omvandlas till en nivå inuti spelet.
+     * @param currentLevel  Den aktuella nivån
      * @param heartCrystals Spelarens liv.
-     * @param mainProgram Huvudprogrammet.
-     * @param rightPanel Panelen som visar information så som liv, tid, nivå osv.
-     * @param world Används för att sätta rätt grafik på världen.
-     * @param audioPlayer Används för att spela upp ljud inne i spelet.
-     * @param seconds Tidsbegränsningen för varje bana.
+     * @param mainProgram   Huvudprogrammet.
+     * @param rightPanel    Panelen som visar information så som liv, tid, nivå osv.
+     * @param world         Används för att sätta rätt grafik på världen.
+     * @param audioPlayer   Används för att spela upp ljud inne i spelet.
+     * @param seconds       Tidsbegränsningen för varje bana.
      * @throws FileNotFoundException
      */
 
@@ -103,7 +108,7 @@ public class KeyBoardCampaign extends GridPane {
         this.rightPanel = rightPanel;
         this.audioPlayer = audioPlayer;
         this.world = world;
-        squareSize = 600/(level.length+2);
+        squareSize = 600 / (level.length + 2);
         setBackground();
         setupImages(world);
         setupBorders();
@@ -127,15 +132,14 @@ public class KeyBoardCampaign extends GridPane {
         });
 
 
-
         setFocusTraversable(true);
     }
 
     /**
      * Sätter bakgrunden i fönstret.
      */
-    public void setBackground(){
-        BackgroundImage menuBackground = new BackgroundImage(new Image(getClass().getResource(BASE_PATH + "MenuBackground.jpg").toString(),800,600,false,true),
+    public void setBackground() {
+        BackgroundImage menuBackground = new BackgroundImage(new Image(getClass().getResource(BASE_PATH + "MenuBackground.jpg").toString(), 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
@@ -168,62 +172,55 @@ public class KeyBoardCampaign extends GridPane {
             for (int j = 0; j < level.length; j++) {
 
                 if (level[i][j] == 1) {
-                    add(getPath(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 0){
-                    add(getWall(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 2){
-                    add(getStart(),j + 1,i + 1);
+                    add(getPath(), j + 1, i + 1);
+                } else if (level[i][j] == 0) {
+                    add(getWall(), j + 1, i + 1);
+                } else if (level[i][j] == 2) {
+                    add(getStart(), j + 1, i + 1);
                     setPlayerOnStart(j + 1, i + 1);
-                }
-                else if (level[i][j] == 3){
-                    add(getGoal(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 4){
-                    add(getPath(),j + 1,i + 1);
-                    add(addCollectible(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 5){
-                    add(getPath(),j + 1,i + 1);
-                    add(addPickAxe(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 6){
-                    add(getBreakableWall(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 7){
-                    add(getPath(),j + 1,i + 1);
-                    add(addHeartCrystal(),j + 1,i + 1);
+                } else if (level[i][j] == 3) {
+                    add(getGoal(), j + 1, i + 1);
+                } else if (level[i][j] == 4) {
+                    add(getPath(), j + 1, i + 1);
+                    add(addCollectible(), j + 1, i + 1);
+                } else if (level[i][j] == 5) {
+                    add(getPath(), j + 1, i + 1);
+                    add(addPickAxe(), j + 1, i + 1);
+                } else if (level[i][j] == 6) {
+                    add(getBreakableWall(), j + 1, i + 1);
+                } else if (level[i][j] == 7) {
+                    add(getPath(), j + 1, i + 1);
+                    add(addHeartCrystal(), j + 1, i + 1);
                 }
             }
         }
+        startX = player.getX();
+        startY = player.getY();
+
+        System.out.println(startX + " " + startY);
     }
 
     /**
      * Instansierar de olika bilderna som används som grafik inuti spelet.
      * Baserad på value så sätts bilderna till en specifik folder per värld.
+     *
      * @param value Den aktuella världen.
      */
-    public void setupImages(int value){
+    public void setupImages(int value) {
 
         String folder = "";
 
         if (value == 0) {
             folder = "forest";
-        }
-        else if (value == 1) {
+        } else if (value == 1) {
             folder = "underground";
-        }
-        else if (value == 2) {
+        } else if (value == 2) {
             folder = "lava";
-        }
-        else if(value == 3) {
+        } else if (value == 3) {
             folder = "cloud";
-        }
-        else if(value == 4) {
+        } else if (value == 4) {
             folder = "desert";
-        }
-        else if(value == 5) {
+        } else if (value == 5) {
             folder = "space";
         }
 
@@ -236,11 +233,10 @@ public class KeyBoardCampaign extends GridPane {
         playerImage = new Image(getClass().getResource(BASE_PATH + "playerTest.png").toString(), squareSize, squareSize, false, false); // ta bort sen
         if (value == 3) {
             breakableWall = new Image(getClass().getResource(BASE_PATH + "cloud/breakablewall.png").toString(), squareSize, squareSize, false, false);
-        }
-        else {
+        } else {
             breakableWall = new Image(getClass().getResource(BASE_PATH + "breakablewall.png").toString(), squareSize, squareSize, false, false);
         }
-        if(value!=5){
+        if (value != 5) {
             border = new Image(getClass().getResource(BASE_PATH + "" + folder + "/border.png").toString(), squareSize, squareSize, false, false);
             wall = new Image(getClass().getResource(BASE_PATH + "" + folder + "/wall.png").toString(), squareSize, squareSize, false, false);
         }
@@ -248,6 +244,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en vägg.
+     *
      * @return Returnerar en label.
      */
     public Label getWall() {
@@ -261,6 +258,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en väg.
+     *
      * @return Returnerar en label.
      */
     private Label getPath() {
@@ -274,6 +272,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en border.
+     *
      * @return Returnerar en label.
      */
     private Label getBorders() {
@@ -287,6 +286,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en förstörbar vägg.
+     *
      * @return Returnerar en label.
      */
     private Label getBreakableWall() { //TODO fixa för keyboard
@@ -299,10 +299,9 @@ public class KeyBoardCampaign extends GridPane {
     }
 
 
-
-
     /**
      * En metod som skapar ett objekt av label som representerar ett mål.
+     *
      * @return Returnerar en label.
      */
     private Label getGoal() {
@@ -316,6 +315,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar start.
+     *
      * @return Returnerar en label.
      */
     private Label getStart() {
@@ -331,6 +331,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en collectible.
+     *
      * @return Returnerar en label.
      */
     public Label addCollectible() {
@@ -349,6 +350,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar ett spelarliv.
+     *
      * @return Returnerar en label.
      */
     public Label addHeartCrystal() {
@@ -367,6 +369,7 @@ public class KeyBoardCampaign extends GridPane {
 
     /**
      * En metod som skapar ett objekt av label som representerar en yxa.
+     *
      * @return Returnerar en label.
      */
     public Label addPickAxe() {
@@ -404,7 +407,6 @@ public class KeyBoardCampaign extends GridPane {
     }
 
 
-
     /**
      * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
      * @throws FileNotFoundException
@@ -427,9 +429,9 @@ public class KeyBoardCampaign extends GridPane {
      */
 
 
-
     /**
      * Baserad på den aktuella världen väljer programmmet vilken nivå som ska spelas.
+     *
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
@@ -437,20 +439,15 @@ public class KeyBoardCampaign extends GridPane {
 
         if (world == 0) {
             mainProgram.nextWorld1Level(currentLevel, heartCrystals);
-        }
-        else if (world == 1) {
+        } else if (world == 1) {
             mainProgram.nextWorld2Level(currentLevel, heartCrystals);
-        }
-        else if (world == 2) {
+        } else if (world == 2) {
             mainProgram.nextWorld3Level(currentLevel, heartCrystals);
-        }
-        else if (world == 3) {
+        } else if (world == 3) {
             mainProgram.nextWorld4Level(currentLevel, heartCrystals);
-        }
-        else if (world == 4) {
+        } else if (world == 4) {
             mainProgram.nextWorld5Level(currentLevel, heartCrystals);
-        }
-        else if (world == 5) {
+        } else if (world == 5) {
             mainProgram.nextWorld6Level(currentLevel, heartCrystals);
         }
     }
@@ -461,7 +458,7 @@ public class KeyBoardCampaign extends GridPane {
 
     public void updatePlayerImage(int x, int y) { // sker varje gång spelaren går ett steg
 
-        if(player == null){
+        if (player == null) {
             this.player = new KeyboardPlayer(x, y);
         }
 
@@ -480,10 +477,10 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     private void handleKeyPressed(KeyEvent event) throws FileNotFoundException, InterruptedException {
-        if(gameOver) {
+        if (gameOver) {
             return;
         }
-        if(!gameStarted){
+        if (!gameStarted) {
             startLevelKeyboard(1, 1);
         }
 
@@ -511,7 +508,7 @@ public class KeyBoardCampaign extends GridPane {
         if (newX > 0 && newY > 0 && newX <= level[0].length && newY <= level.length && level[newY - 1][newX - 1] == 6) {
             if (pickaxeObtained) {
                 level[newY - 1][newX - 1] = 1; // Replace the breakable wall with a path
-                Label label = (Label)getNodeFromGridPane(this, newX, newY);
+                Label label = (Label) getNodeFromGridPane(this, newX, newY);
                 ImageView pathView = new ImageView(path);
                 label.setGraphic(pathView);
                 pickaxeObtained = false;
@@ -521,85 +518,49 @@ public class KeyBoardCampaign extends GridPane {
             return;
         } else if (hitWall(newX, newY)) {
             return;
-            }
+        }
 
         player.move(newX, newY);
         updatePlayerImage(newX, newY);
         checkCollectibles(newX, newY);
         checkReachedGoal(newX, newY);
     }
-    // TODO: Check if ghost is at the player's position
-    /*
-    private boolean isGhostAt(int x, int y) {
-        for (Ghost ghost : ghosts) {
-            if (ghost.getX() == x && ghost.getY() == y) {
-                return true;
-            }
-        }
-        return false;
-    }
-    */
 
-    /*
-    public void checkIfCollidingWithGhost(List<Label> ghosts) {
-        while(gameStarted && !gameOver){
-
-            // Check for collision with each ghost
-            for (Label ghost : ghosts) {
-                if (isColliding(player, ghost)) {
-                    FadeTransition fade = new FadeTransition();
-                    fade.setDuration(Duration.seconds(0.3));
-                    fade.setFromValue(10);
-                    fade.setToValue(0.6);
-                    fade.play();
-
-                    if(heartCrystals > 0){
-                        heartCrystals--;
-                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-                        audioPlayer.playDeathSound();
-                    }
-                    if (heartCrystals == 0) {
-                        gameOver();
-                    }
-                } else {
-                }
-            }
-        }
-        try {
-            sleep(500);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-     */
 
     // Function to check collision between player and ghost
-    public void isColliding(List<Label> ghosts) {
-        if(this.ghosts == null){
+    public Boolean isColliding(List<ImageView> ghosts) {
+        if (this.ghosts == null) {
             this.ghosts = ghosts;
         }
-        Rectangle boundsPlayer = new Rectangle(player.getX(), player.getY(),
-                squareSize, squareSize);
-        if(ghosts != null){
-            for(Label ghost : ghosts){
-                Rectangle boundsGhost = new Rectangle(ghost.getLayoutX(), ghost.getLayoutY(),
-                        squareSize, squareSize);
-                if(boundsPlayer.getBoundsInParent().intersects(boundsGhost.getBoundsInParent())){
-                    System.out.println("Collision detected");
-                    if(heartCrystals > 0){
-                        //heartCrystals--;
-                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-                        audioPlayer.playDeathSound();
-                    }
-                    if (heartCrystals == 0) {
-                        gameOver();
-                    }
-                }
+        Bounds boundsPlayer = playerLabel.localToScene(playerLabel.getBoundsInLocal()); // Accurately get player's bounds
+        boolean collisionDetected = false;
+
+        for (ImageView ghost : ghosts) {
+            Bounds boundsGhost = ghost.localToScene(ghost.getBoundsInLocal()); // Accurately get each ghost's bounds
+            if (boundsPlayer.intersects(boundsGhost)) {
+                System.out.println("Collision detected");
+                collisionDetected = true;
+                break; // Exit loop after first collision detected
             }
         }
 
+        if (collisionDetected) {
+            Platform.runLater(() -> {
+                player.move(startX, startY);
+                updatePlayerImage(startX, startY);
+                if (heartCrystals > 0) {
+                    heartCrystals--;
+                    rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                    audioPlayer.playDeathSound();
+                }
+                if (heartCrystals == 0) {
+                    gameOver();
+                }
+            });
+        }
+        return gameOver;
     }
+
 
 
 

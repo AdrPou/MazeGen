@@ -6,6 +6,7 @@ import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -53,7 +54,15 @@ public class Keyboard2Template extends KeyBoardCampaign {
     Label ghost4VLabel;
     Label ghost5VLabel;
     Label ghost6VLabel;
-    List<Label> ghosts;
+
+    ImageView ghost1V;
+    ImageView ghost2V;
+    ImageView ghost3V;
+    ImageView ghost4V;
+    ImageView ghost5V;
+    ImageView ghost6V;
+
+    List<ImageView> ghosts;
 
     public Keyboard2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, 35);
@@ -82,12 +91,12 @@ public class Keyboard2Template extends KeyBoardCampaign {
 
     public void initialize() {
 
-        ImageView ghost1V = new ImageView(ghost);
-        ImageView ghost2V = new ImageView(ghost);
-        ImageView ghost3V = new ImageView(ghost);
-        ImageView ghost4V = new ImageView(ghost);
-        ImageView ghost5V = new ImageView(ghost);
-        ImageView ghost6V = new ImageView(ghost);
+        ghost1V = new ImageView(ghost);
+        ghost2V = new ImageView(ghost);
+        ghost3V = new ImageView(ghost);
+        ghost4V = new ImageView(ghost);
+        ghost5V = new ImageView(ghost);
+        ghost6V = new ImageView(ghost);
 
         ghost1VLabel = new Label();
         ghost2VLabel = new Label();
@@ -103,17 +112,8 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghost5VLabel.setGraphic(ghost5V);
         ghost6VLabel.setGraphic(ghost6V);
 
-        ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel, ghost6VLabel);
-
-
-        /*
-        ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost6V.setOnMouseEntered(e -> enteredGhost(e));
-         */
+        ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V, ghost5V, ghost6V);
+        
 
 
         add(ghost1V,10,0);
@@ -205,14 +205,6 @@ public class Keyboard2Template extends KeyBoardCampaign {
         animation.setCycleCount(PathTransition.INDEFINITE);
         animation.play();
 
-        /*
-        ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-        ghost6V.setOnMouseEntered(e -> enteredGhost(e));
-         */
         setOnKeyReleased(this::handleKeyReleased);
         GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
         ghostThread.start();
@@ -228,10 +220,11 @@ public class Keyboard2Template extends KeyBoardCampaign {
 
     public class GhostThread extends Thread {
         private KeyBoardCampaign keyBoardCampaign;
-        private List<Label> ghosts;
+        private List<ImageView> ghosts;
         private Label playerLabel;
+        Boolean done = false;
 
-        public GhostThread(KeyBoardCampaign keyBoardCampaign, List<Label> ghosts, Label playerLabel) {
+        public GhostThread(KeyBoardCampaign keyBoardCampaign, List<ImageView> ghosts, Label playerLabel) {
             this.keyBoardCampaign = keyBoardCampaign;
             this.ghosts = ghosts;
             this.playerLabel = playerLabel;
@@ -239,18 +232,27 @@ public class Keyboard2Template extends KeyBoardCampaign {
 
         @Override
         public void run() {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 try {
-                    sleep(100); // Adjust the sleep duration as needed
+                    Thread.sleep(100);
+                    Platform.runLater(() -> {
+                        done = isColliding(ghosts); // Ensure this method is safe to call from the JavaFX thread
+                    });
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    Thread.currentThread().interrupt(); // Properly handle thread interruption
+                    System.out.println("Thread was interrupted, Failed to complete operation");
                 }
-
-                isColliding(ghosts);
-
+                if (done) {
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
                 }
             }
         }
+    }
 
 
     }
