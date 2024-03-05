@@ -67,8 +67,10 @@ public class MainProgram extends Application {
         audioPlayer = new AudioPlayer();
         audioPlayer.playIntroMusic();
 
+
         rightPanel = new RightPanel(this, "11", audioPlayer, null);
         rightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+
 
         String[] scores = highScore.readList();
 
@@ -163,12 +165,15 @@ public class MainProgram extends Application {
 
             // for Testing purposes
 
+            /*
             try {
                 //nextWorld1Level(3, 3);
                 nextWorld2Level(5, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+             */
 
 
 
@@ -180,17 +185,20 @@ public class MainProgram extends Application {
 
 
             // for Testing purposes
-
+            /*
             try {
                 nextWorld2Level(5, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
 
+             */
+
 
 
 
         }
+
 
         // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
         //keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
@@ -205,6 +213,8 @@ public class MainProgram extends Application {
      * true.
      */
     private void setupCampaignAfterInitializationOfTemplate() {
+        rightPanel.setSoundImage(true);
+        rightPanel.setMusicImage(true);
         audioPlayer.stopMusic();
         mainWindow.setScene(campaignScene);
         introAnimation = new WorldIntroAnimation("1");

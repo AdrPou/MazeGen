@@ -163,6 +163,24 @@ public class RightPanel extends GridPane {
         soundLabel.setGraphic(soundView);
     }
 
+    public void setSoundImage(Boolean soundOn) {
+        if (soundOn) {
+            soundImage = new Image(getClass().getResource(BASE_PATH + "soundbuttons/soundon.png").toString(), 30, 30, false, false);
+        } else {
+            soundImage = new Image(getClass().getResource(BASE_PATH + "soundbuttons/soundoff.png").toString(), 30, 30, false, false);
+        }
+        soundView.setImage(soundImage);
+        soundLabel.setGraphic(soundView);
+    }
+
+    public void setMusicImage(Boolean musicOn) {
+        if (musicOn) {
+            musicImage = new Image(getClass().getResource(BASE_PATH + "soundbuttons/musicon.png").toString(), 30, 30, false, false);
+        } else {
+            musicImage = new Image(getClass().getResource(BASE_PATH + "soundbuttons/musicoff.png").toString(), 30, 30, false, false);
+        }
+    }
+
     /**
      * Slår på/av musik
      */
@@ -230,24 +248,13 @@ public class RightPanel extends GridPane {
     /**
      * Startar den visuella klockan i GUIt
      */
-    public void runClock() {
-        timeSeconds.set(STARTTIME);
 
-        timeline.getKeyFrames().add(
-                new KeyFrame(Duration.seconds(STARTTIME),
-                        new KeyValue(timeSeconds, 0)));
-        timeline.playFromStart();
-    }
 
     /**
      * Pausar klockan vid avancemang till ny nivå
      */
     public void pauseClock() {
-        int seconds = timeSeconds.getValue().intValue();
-        timeline.stop();
-
-        timeSeconds.set(seconds);
-        timeline = null;
+        timeline.pause();
     }
 
     /**
@@ -263,7 +270,7 @@ public class RightPanel extends GridPane {
     /**
      * Kör igång klockan när spelaren trycker på startknappen
      */
-    public void resumeClock() {
+    public void startClock() {
         timeSeconds.set(STARTTIME);
         timeline = new Timeline();
         timeline.getKeyFrames().add(
@@ -271,6 +278,10 @@ public class RightPanel extends GridPane {
                         new KeyValue(timeSeconds, 0)));
         timeline.playFromStart();
 
+    }
+
+    public void continueClock() {
+        timeline.play();
     }
 
     /**
