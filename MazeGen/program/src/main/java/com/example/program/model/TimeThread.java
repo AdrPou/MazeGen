@@ -2,36 +2,33 @@ package com.example.program.model;
 
 import com.example.program.view.Menu.RightPanel;
 
-/**
- * @author Sebastian Helin
- * En tråd som räknar ner den
- * totala tiden som skickas in från konstruktorn
- */
-
 public class TimeThread extends Thread {
 
     private int seconds;
     private final RightPanel panel;
     private boolean gameOver = false;
+    // Declare a volatile boolean for pause control
+    private volatile boolean isPaused = false;
 
-    /**
-     * @param seconds Varje nivå skickar in en seconds variabel till tråden
-     * @param panel   Höger panelen som visar information när man spelar.
-     */
     public TimeThread(int seconds, RightPanel panel) {
         this.seconds = seconds;
         this.panel = panel;
     }
 
-    /**
-     * Körs tills det blir GameOver eller en bana blir avklarad
-     * Instansieras om och körs igen för varje nivå
-     */
     public void run() {
         while (!gameOver) {
             try {
+                // Check if the thread is paused
+                synchronized (this) {
+                    while (isPaused) {
+                        wait(); // Wait until notified to resume
+                    }
+                }
+
                 Thread.sleep(1000);
+
                 if (seconds > 0) {
+                    System.out.println(seconds);
                     seconds--;
                 }
                 if (seconds == 5) {
@@ -41,19 +38,27 @@ public class TimeThread extends Thread {
                     panel.startTask();
                     gameOver = true;
                 }
+                //panel.setTheTime(seconds);
 
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt(); // Handle interrupted exception
                 e.printStackTrace();
             }
         }
         panel.timeRemaining(seconds);
     }
 
-    /**
-     * @param gameOver setter för trådens villkor
-     */
+
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
 
+    public synchronized void pauseTime() {
+        isPaused = true; // Set the pause flag
+    }
+
+    public synchronized void resumeTime() {
+        isPaused = false; // Clear the pause flag
+        notifyAll(); // Notify to resume
+    }
 }

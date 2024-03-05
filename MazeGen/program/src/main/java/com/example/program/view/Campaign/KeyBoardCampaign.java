@@ -500,6 +500,10 @@ public class KeyBoardCampaign extends GridPane {
         KeyCode keyCode = event.getCode();
         int newX = player.getX();
         int newY = player.getY();
+        if (newY == startY && newX == startX) {
+            rightPanel.continueClock();
+            time.resumeTime();
+        }
 
         switch (keyCode) {
             case UP:
@@ -562,6 +566,8 @@ public class KeyBoardCampaign extends GridPane {
                 player.move(startX, startY);
                 updatePlayerImage(startX, startY);
                 if (heartCrystals > 0) {
+                    rightPanel.pauseClock();
+                    time.pauseTime();
                     heartCrystals--;
                     rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                     audioPlayer.playDeathSound();
@@ -590,6 +596,8 @@ public class KeyBoardCampaign extends GridPane {
             if (heartCrystals > 0) {
                 player.move(startX, startY);
                 updatePlayerImage(startX, startY);
+                rightPanel.pauseClock();
+                time.pauseTime();
                 heartCrystals--;
                 rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
                 audioPlayer.playDeathSound();
@@ -699,7 +707,7 @@ public class KeyBoardCampaign extends GridPane {
         }
 
         if (!gameStarted) {
-            rightPanel.resumeClock();
+            rightPanel.startClock();
             gameStarted = true;
             if (time != null) {
                 time = null;

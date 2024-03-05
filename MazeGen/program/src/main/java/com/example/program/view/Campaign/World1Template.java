@@ -106,24 +106,7 @@ public class World1Template extends GridPane {
         rightPanel.resetTimerLabel();
 
         totTime = new TotalTime(false);
-        //time = null;
-        //startLevelKeyboard(1, 1);
-        //keyBoardCampaign = new KeyBoardCampaign(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, seconds);
-/*
-        setOnKeyPressed(event -> {
-            try {
-                handleKeyPressed(event);
-            } catch (FileNotFoundException | InterruptedException e) {
-                e.printStackTrace();
-            }
-        });
 
-        setOnKeyReleased(this::handleKeyReleased); // flytta till enbart keyboardcampaign sen
-
-        setFocusTraversable(true); //flytta till enbart keyboardcampaign sen?
-
-
- */
     }
 
     /**
@@ -426,6 +409,8 @@ public class World1Template extends GridPane {
 
         if (startButtonPressed) {
 
+            time.pauseTime();
+            rightPanel.pauseClock();
             heartCrystals--;
             rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
 
@@ -455,6 +440,8 @@ public class World1Template extends GridPane {
 
 
         if (startButtonPressed) {
+            time.pauseTime();
+            rightPanel.pauseClock();
             audioPlayer.playMobSound();
             audioPlayer.playDeathSound();
             heartCrystals--;
@@ -538,7 +525,7 @@ public class World1Template extends GridPane {
         }
 
         if (!gameStarted){
-            rightPanel.resumeClock();
+            rightPanel.startClock();
             gameStarted = true;
             time = null;
             time = new TimeThread(seconds, rightPanel);
@@ -546,15 +533,11 @@ public class World1Template extends GridPane {
             time.start();
 
         }
-        /*else if (startNotClickedOnce){
-            rightPanel.runClock();
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
 
+        if(gameStarted) {
+            time.resumeTime();
+            rightPanel.continueClock();
         }
-
-         */
         totalTimeStarted = true;
         startNotClickedOnce = false;
         audioPlayer.playStartSound();
@@ -636,212 +619,4 @@ public class World1Template extends GridPane {
         return level.length;
     }
 
-    /////////////ALLT HÄR NEDAN ÄR FÖR KEYBOARD. SKA BRA FINNAS I KEYBOARDCAMPAIGN /////////////
-/*
-    public void updatePlayerImage(int x, int y) { //sker varje gång spelaren går ett steg
-
-        if(player == null){
-            this.player = new KeyboardPlayer(x, y);
-        }
-
-        //startLevelKeyboard(x, y);
-
-        Label playerLabel = new Label();
-        ImageView playerView = new ImageView(playerImage);
-
-        playerView.setFitHeight(squareSize);
-        playerView.setFitWidth(squareSize);
-        playerLabel.setGraphic(playerView);
-
-        getChildren().removeIf(node -> node instanceof Label && ((Label) node).getGraphic() instanceof ImageView && ((ImageView) ((Label) node).getGraphic()).getImage() == playerImage);
-
-        add(playerLabel, x, y);
-    }
-
-    private void handleKeyPressed(javafx.scene.input.KeyEvent event) throws FileNotFoundException, InterruptedException {
-
-            KeyCode keyCode = event.getCode();
-            int newX = 0;
-            int newY = 0;
-
-            switch (keyCode) {
-                case UP:
-                    newY = player.getY() - player.getSpeed();
-                    newX = player.getX();
-                    if(!hitWall(newX, newY)) {
-                        player.setY(player.getY() - player.getSpeed());
-                    }
-                    break;
-
-                case DOWN:
-                    newY = player.getY() + player.getSpeed();
-                    newX = player.getX();
-                    if(!hitWall(newX, newY)) {
-                        player.setY(player.getY() + player.getSpeed());
-                    }
-                    break;
-
-                case LEFT:
-                    newX = player.getX() - player.getSpeed();
-                    newY = player.getY();
-                    if(!hitWall(newX, newY)) {
-                        player.setX(player.getX() - player.getSpeed());
-                    }
-                    break;
-
-                case RIGHT:
-                    newX = player.getX() + player.getSpeed();
-                    newY = player.getY();
-                    if(!hitWall(newX, newY)) {
-                        player.setX(player.getX() + player.getSpeed());
-                    }
-                    break;
-
-                default:
-                    // Lägg till ljud för fel knapp här?
-                    break;
-            }
-
-            newX = player.getX();
-            newY = player.getY();
-
-            updatePlayerImage(newX, newY);
-            checkCollectibles(newX, newY);
-            checkReachedGoal(newX, newY);
-    }
-
-    private void handleKeyReleased(KeyEvent event) {
-        System.out.println("released " + event.getCode().toString()); // Kolla senare om denna metoden behövs
-    }
-
-    public boolean hitWall(int newX, int newY){ // lägg till förlorat liv
-
-        if (newX == 0 || newY == 0 || newX == level.length+1 || newY == level.length+1 || level[newY - 1][newX - 1] == 0) { //kolla om spelaren försöker gå utanför banan eller in i en vägg
-
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.seconds(0.3));
-            fade.setFromValue(10);
-            fade.setToValue(0.6);
-            fade.play();
-
-            heartCrystals--;
-            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-
-            if (heartCrystals == 0) {
-                gameOver();
-            }
-            audioPlayer.playDeathSound();
-
-            return true; // lägg till sound för fel
-        } //TODO lägg till hantering av breakable wall
-        else {
-            return false; // om allt funkar som det ska
-        }
-    }
-
-    public void checkCollectibles(int x, int y) {
-
-        if(level[y - 1][x - 1] == 4) { //fixa senare. plocka upp collectible
-
-            for (Label label: collectibles) {
-
-                int labelX = GridPane.getColumnIndex(label);
-                int labelY = GridPane.getRowIndex(label);
-
-                if (labelX == x && labelY == y) {
-                    audioPlayer.playCollectibleSound();
-                    label.setVisible(false);
-                    collectiblesObtained++;
-                    if (collectiblesObtained == collectibles.size()) {
-                        allCollectiblesObtained = true;
-                    }
-                }
-            }
-
-
-
-        } else if (level[y - 1][x - 1] == 5) { // Plocka upp pickaxe
-            for (Label label : pickaxes){
-
-                int labelX = GridPane.getColumnIndex(label);
-                int labelY = GridPane.getRowIndex(label);
-
-                if (labelX == x && labelY == y){
-                    audioPlayer.playPickAxeSound();
-                    label.setVisible(false);
-                    pickaxeObtained = true;
-                    rightPanel.addPickaxe();
-                }
-            }
-
-        } else if(level[y - 1][x - 1] == 7) { // Plocka upp heartcrystal
-                //TODO lägg till hjärta i right panel och ta bort det från grid
-        }
-    }
-
-    public void setPlayerOnStart(int x, int y) {
-        if (level[y - 1][x - 1] == 2) {
-            updatePlayerImage(x, y);
-        }
-    }
-
-    public void checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
-        if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
-            audioPlayer.stopClockSound();
-            audioPlayer.playGoalSound();
-            rightPanel.pauseClock();
-            rightPanel.setTheTime(seconds);
-            gameStarted = true;
-            time.setGameOver(true);
-            time = null;
-            nextLevelKeyboard(x, y);
-        }
-    }
-
-    public void nextLevelKeyboard(int x, int y) throws FileNotFoundException, InterruptedException {
-
-        if (world == 0) {
-            mainProgram.nextWorld1Level(currentLevel, heartCrystals);
-        } else if (world == 1) {
-            mainProgram.nextWorld2Level(currentLevel, heartCrystals);
-        } else if (world == 2) {
-            mainProgram.nextWorld3Level(currentLevel, heartCrystals);
-        } else if (world == 3) {
-            mainProgram.nextWorld4Level(currentLevel, heartCrystals);
-        } else if (world == 4) {
-            mainProgram.nextWorld5Level(currentLevel, heartCrystals);
-        } else if (world == 5) {
-            mainProgram.nextWorld6Level(currentLevel, heartCrystals);
-        }
-
-    }
-
-
-    public void startLevelKeyboard(int x, int y) {
-
-        gameStarted = true;
-
-        if (!totalTimeStarted){
-            rightPanel.startTotalTimer();
-            rightPanel.setTimerIsStarted(true);
-        }
-        System.out.println(gameStarted);
-
-        if (gameStarted){
-            System.out.println("this method is running");
-            rightPanel.resumeClock();
-            gameStarted = true;
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
-
-        }
-
-        totalTimeStarted = true;
-        //startNotClickedOnce = false;
-        audioPlayer.playStartSound();
-        startButtonPressed = true;
-    }
-
- */
 }
