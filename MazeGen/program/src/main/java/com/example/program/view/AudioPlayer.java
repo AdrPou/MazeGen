@@ -247,4 +247,7 @@ public class AudioPlayer {
         timeLeftMediaPlayer.setVolume(volume);
         mobSoundMediaPlayer.setVolume(volume);
     }
+    public double getVolume() {
+        return currentSongPlayer.getVolume();
+    }
 }
