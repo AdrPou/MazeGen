@@ -165,17 +165,9 @@ public class MainProgram extends Application {
 
             // for Testing purposes
 
-            /*
-            try {
-                //nextWorld1Level(3, 3);
-                nextWorld2Level(5, 3);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
 
-             */
-
-
+            //nextWorld1Level(3, 3);
+            nextWorld3Level(1, 3);
 
 
         } else {
@@ -399,31 +391,61 @@ public class MainProgram extends Application {
 
         World3Maps world3Maps = new World3Maps();
 
-        if (level == 1) {
-            rightPanel.changeLevelCounter("31");
-            mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel31(), 2, heartCrystals, this, rightPanel, 2, audioPlayer));
-            introAnimation = new WorldIntroAnimation("3");
-            mainPaneCampaign.getChildren().add(introAnimation);
-            introAnimation.setDisable(true);
-            audioPlayer.playWorldIntroSound();
-            audioPlayer.stopMusic();
-            audioPlayer.playLevelMusic("lava");
-        } else if (level == 2) {
-            rightPanel.changeLevelCounter("32");
-            mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel32(), 3, heartCrystals, this, rightPanel, 2, audioPlayer));
-        } else if (level == 3) {
-            rightPanel.changeLevelCounter("33");
-            mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel33(), 4, heartCrystals, this, rightPanel, 2, audioPlayer));
-        } else if (level == 4) {
-            rightPanel.changeLevelCounter("34");
-            mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel34(), 5, heartCrystals, this, rightPanel, 2, audioPlayer));
-        } else if (level == 5) {
-            rightPanel.changeLevelCounter("35");
-            mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel35(), 6, heartCrystals, this, rightPanel, 2, audioPlayer));
-        } else if (level == 6) {
-            nextWorld4Level(1, heartCrystals);
+        switch (level) {
+            case 1:
+                rightPanel.changeLevelCounter("31");
+                if (keyboardIsOn) {
+                    mainPaneCampaign.setCenter(new Keyboard3Template(world3Maps.getLevel31(), 2, heartCrystals, this, rightPanel, 2, audioPlayer));
+                } else {
+                    mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel31(), 2, heartCrystals, this, rightPanel, 2, audioPlayer));
+                }
+                introAnimation = new WorldIntroAnimation("3");
+                mainPaneCampaign.getChildren().add(introAnimation);
+                introAnimation.setDisable(true);
+                audioPlayer.playWorldIntroSound();
+                audioPlayer.stopMusic();
+                audioPlayer.playLevelMusic("lava");
+                break;
+            case 2:
+                rightPanel.changeLevelCounter("32");
+                if (keyboardIsOn) {
+                    mainPaneCampaign.setCenter(new Keyboard3Template(world3Maps.getLevel32(), 3, heartCrystals, this, rightPanel, 2, audioPlayer));
+                } else {
+                    mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel32(), 3, heartCrystals, this, rightPanel, 2, audioPlayer));
+                }
+                break;
+            case 3:
+                rightPanel.changeLevelCounter("33");
+                if (keyboardIsOn) {
+                    mainPaneCampaign.setCenter(new Keyboard3Template(world3Maps.getLevel33(), 4, heartCrystals, this, rightPanel, 2, audioPlayer));
+                } else {
+                    mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel33(), 4, heartCrystals, this, rightPanel, 2, audioPlayer));
+                }
+                break;
+            case 4:
+                rightPanel.changeLevelCounter("34");
+                if (keyboardIsOn) {
+                    mainPaneCampaign.setCenter(new Keyboard3Template(world3Maps.getLevel34(), 5, heartCrystals, this, rightPanel, 2, audioPlayer));
+                } else {
+                    mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel34(), 5, heartCrystals, this, rightPanel, 2, audioPlayer));
+                }
+                break;
+            case 5:
+                rightPanel.changeLevelCounter("35");
+                if (keyboardIsOn) {
+                    mainPaneCampaign.setCenter(new Keyboard3Template(world3Maps.getLevel35(), 6, heartCrystals, this, rightPanel, 2, audioPlayer));
+                } else {
+                    mainPaneCampaign.setCenter(new World3Template(world3Maps.getLevel35(), 6, heartCrystals, this, rightPanel, 2, audioPlayer));
+                }
+                break;
+            case 6:
+                nextWorld4Level(1, heartCrystals);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid level: " + level);
         }
     }
+
 
 
     /**

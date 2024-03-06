@@ -205,53 +205,9 @@ public class Keyboard2Template extends KeyBoardCampaign {
         animation.setCycleCount(PathTransition.INDEFINITE);
         animation.play();
 
-        setOnKeyReleased(this::handleKeyReleased);
         GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
         ghostThread.start();
     }
 
-    private void handleKeyReleased(KeyEvent event) {
-        List<Label> ghosts = Arrays.asList(ghost1VLabel, ghost2VLabel, ghost3VLabel, ghost4VLabel, ghost5VLabel,
-                ghost6VLabel);
-        int x = player.getX();
-        int y = player.getY();
-
-    }
-
-    public class GhostThread extends Thread {
-        private KeyBoardCampaign keyBoardCampaign;
-        private List<ImageView> ghosts;
-        private Label playerLabel;
-        Boolean done = false;
-
-        public GhostThread(KeyBoardCampaign keyBoardCampaign, List<ImageView> ghosts, Label playerLabel) {
-            this.keyBoardCampaign = keyBoardCampaign;
-            this.ghosts = ghosts;
-            this.playerLabel = playerLabel;
-        }
-
-        @Override
-        public void run() {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Thread.sleep(100);
-                    Platform.runLater(() -> {
-                        done = isColliding(ghosts); // Ensure this method is safe to call from the JavaFX thread
-                    });
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt(); // Properly handle thread interruption
-                    System.out.println("Thread was interrupted, Failed to complete operation");
-                }
-                if (done) {
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                    break;
-                }
-            }
-        }
-    }
 
 }

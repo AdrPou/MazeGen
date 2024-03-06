@@ -5,18 +5,22 @@ import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
+import javafx.application.Platform;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Filip Örnling
  */
 
-public class Keyboard4Template extends World1Template {
+public class Keyboard4Template extends KeyBoardCampaign {
 
     private Image ghost;
     private Image largeGhost;
@@ -31,6 +35,14 @@ public class Keyboard4Template extends World1Template {
     private PathTransition animation6;
     private Thread platfrom;
     private int currentLevel;
+    private List<ImageView> ghosts;
+    ImageView ghost1V;
+    ImageView ghost2V;
+    ImageView ghost3V;
+    ImageView ghost4V;
+    ImageView ghost5V;
+    ImageView ghost6V;
+    ImageView ghost7V;
     private static final String BASE_PATH = "/com/example/program/files/";
 
     public Keyboard4Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram,
@@ -56,7 +68,7 @@ public class Keyboard4Template extends World1Template {
         imageView.setFitHeight(squareSize);
         imageView.setFitWidth(squareSize);
 
-        imageView.setOnMouseEntered(e -> enteredWall(e));
+
 
         initialize();
     }
@@ -73,9 +85,9 @@ public class Keyboard4Template extends World1Template {
 
     public void initialize() {
         if (currentLevel == 2) {
-            ImageView ghost3V = new ImageView();
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
+             ghost3V = new ImageView();
+             ghost1V = new ImageView();
+             ghost2V = new ImageView();
 
             ghost2V.setImage(ghost);
             ghost3V.setImage(ghost);
@@ -116,16 +128,18 @@ public class Keyboard4Template extends World1Template {
             animation2.setCycleCount(Animation.INDEFINITE);
             animation2.setPath(rectangle2);
             animation2.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V);
+            GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
+
 
         }
 
         else if (currentLevel == 3) {
 
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
+             ghost1V = new ImageView();
+             ghost2V = new ImageView();
 
             ghost1V.setImage(ghost);
             ghost2V.setImage(ghost);
@@ -155,18 +169,20 @@ public class Keyboard4Template extends World1Template {
             animation2.setCycleCount(Animation.INDEFINITE);
             animation2.setPath(rectangle1);
             animation2.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V);
+            GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
+
 
         } else if (currentLevel == 4) {
-            ImageView ghost4V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost1V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost5V = new ImageView();
-            ImageView ghost6V = new ImageView();
-            ImageView ghost7V = new ImageView();
+             ghost4V = new ImageView();
+             ghost2V = new ImageView();
+             ghost1V = new ImageView();
+             ghost3V = new ImageView();
+             ghost5V = new ImageView();
+             ghost6V = new ImageView();
+             ghost7V = new ImageView();
 
             ghost1V.setImage(ghost);
             ghost2V.setImage(ghost);
@@ -263,20 +279,16 @@ public class Keyboard4Template extends World1Template {
             animation7.setPath(rectangle1);
             animation7.setAutoReverse(true);
             animation7.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V, ghost5V, ghost6V, ghost7V);
+            GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost6V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost7V.setOnMouseEntered(e -> enteredGhost(e));
 
         } else if (currentLevel == 5) {
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost4V = new ImageView();
+             ghost1V = new ImageView();
+             ghost2V = new ImageView();
+             ghost3V = new ImageView();
+             ghost4V = new ImageView();
 
             ghost4V.setImage(ghost);
             ghost3V.setImage(ghost);
@@ -335,19 +347,18 @@ public class Keyboard4Template extends World1Template {
             animation.setCycleCount(Animation.INDEFINITE);
             animation.setPath(rectangle);
             animation.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V);
+            GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
 
         else if (currentLevel == 6) {
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost4V = new ImageView();
+             ghost1V = new ImageView();
+             ghost2V = new ImageView();
+             ghost3V = new ImageView();
+             ghost4V = new ImageView();
 
             ghost4V.setImage(ghost);
             ghost3V.setImage(ghost);
@@ -406,12 +417,14 @@ public class Keyboard4Template extends World1Template {
             animation.setCycleCount(Animation.INDEFINITE);
             animation.setPath(rectangle);
             animation.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V);
+            GhostThread ghostThread = new GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
+
 
         }
     }
+
+
 }
