@@ -11,12 +11,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Filip Örnling
  */
 
-public class Keyboard6Template extends World1Template {
+public class Keyboard6Template extends KeyBoardCampaign {
 
     private Image ghost;
 
@@ -43,6 +45,7 @@ public class Keyboard6Template extends World1Template {
     private ImageView ghost8V;
     private ImageView ghost9V;
     private ImageView ghost10V;
+    private List<ImageView> ghosts;
 
     private static final String BASE_PATH = "/com/example/program/files/";
 
@@ -131,13 +134,9 @@ public class Keyboard6Template extends World1Template {
             animation5.setCycleCount(Animation.INDEFINITE);
             animation5.setPath(rectangle);
             animation5.play();
-
-            ghost5V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost4V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost2V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V,ghost5V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
         }
 
         else if (currentLevel == 3) {
@@ -170,6 +169,9 @@ public class Keyboard6Template extends World1Template {
             animation.setCycleCount(1);
             animation.setPath(rectangle);
             animation.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V,ghost5V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
             animation.setOnFinished(actionEvent -> {
 
@@ -235,12 +237,6 @@ public class Keyboard6Template extends World1Template {
                 animation5.setAutoReverse(true);
                 animation5.play();
             });
-
-            ghost5V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost4V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost2V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
 
         } else if (currentLevel == 4) {
             ghost4V = new ImageView();
@@ -363,6 +359,9 @@ public class Keyboard6Template extends World1Template {
             animation5.setCycleCount(3);
             animation5.setPath(rectangle);
             animation5.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V,ghost5V, ghost6V, ghost7V, ghost8V,ghost9V ,ghost10V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
             animation5.setOnFinished(actionEvent -> {
                 animation5.setPath(rectangle2);
@@ -450,16 +449,6 @@ public class Keyboard6Template extends World1Template {
                 });
             });
 
-            ghost9V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost8V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost7V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost6V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost5V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost4V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost2V.setOnMouseEntered(event -> enteredGhost(event));
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-
         } else if (currentLevel == 5) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
@@ -506,6 +495,10 @@ public class Keyboard6Template extends World1Template {
             animation3.setCycleCount(Animation.INDEFINITE);
             animation3.setPath(rectangle2);
             animation3.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
+
         }
 
         else if (currentLevel == 6) {
@@ -570,6 +563,9 @@ public class Keyboard6Template extends World1Template {
             animation4.setCycleCount(Animation.INDEFINITE);
             animation4.setPath(rectangle3);
             animation4.play();
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
         }
     }
 
