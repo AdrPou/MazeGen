@@ -1,6 +1,7 @@
 package com.example.program.view.Menu;
 
 import com.example.program.control.MainProgram;
+import com.example.program.model.HighScore;
 import com.example.program.view.AudioPlayer;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -9,8 +10,9 @@ import javafx.scene.layout.*;
 public class HighScoreView extends VBox {
     private final MainProgram mainProgram;
     private final AudioPlayer audioPlayer;
-    private final String[] highScores;
+    private String[] highScores;
     private static final String BASE_PATH = "/com/example/program/files/";
+    HighScore highscore = new HighScore();
 
 
     public HighScoreView(MainProgram mainProgram, AudioPlayer audioPlayer, String[] scores) {
@@ -24,6 +26,10 @@ public class HighScoreView extends VBox {
         addListener();
     }
 
+    public void setHighScores(String[] highScores) {
+        this.highScores = highScores;
+    }
+
     /**
      * Metod för att visa topplistan
      */
@@ -33,6 +39,7 @@ public class HighScoreView extends VBox {
 
         getChildren().add(title);
         // Skapa en label för varje highscore
+        highScores = highscore.readList();
         for (String score : highScores) {
             Label label = new Label(score);
             label.getStyleClass().add("highscore-label");
