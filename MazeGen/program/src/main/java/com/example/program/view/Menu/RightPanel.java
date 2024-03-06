@@ -179,6 +179,8 @@ public class RightPanel extends GridPane {
         } else {
             musicImage = new Image(getClass().getResource(BASE_PATH + "soundbuttons/musicoff.png").toString(), 30, 30, false, false);
         }
+        musicView.setImage(musicImage);
+        musicLabel.setGraphic(musicView);
     }
 
     /**

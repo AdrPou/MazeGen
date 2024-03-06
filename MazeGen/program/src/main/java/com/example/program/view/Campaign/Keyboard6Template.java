@@ -359,9 +359,7 @@ public class Keyboard6Template extends KeyBoardCampaign {
             animation5.setCycleCount(3);
             animation5.setPath(rectangle);
             animation5.play();
-            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V,ghost5V, ghost6V, ghost7V, ghost8V,ghost9V ,ghost10V);
-            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
-            ghostThread.start();
+
 
             animation5.setOnFinished(actionEvent -> {
                 animation5.setPath(rectangle2);
@@ -448,6 +446,9 @@ public class Keyboard6Template extends KeyBoardCampaign {
                     animation9.play();
                 });
             });
+            ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V,ghost5V, ghost6V, ghost7V, ghost8V,ghost9V ,ghost10V);
+            KeyBoardCampaign.GhostThread ghostThread = new KeyBoardCampaign.GhostThread(this, ghosts, playerLabel);
+            ghostThread.start();
 
         } else if (currentLevel == 5) {
             ImageView ghost1V = new ImageView();
