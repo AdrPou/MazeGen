@@ -162,13 +162,17 @@ public class MainProgram extends Application {
             setupCampaignAfterInitializationOfTemplate();
             keyboardIsOn = true;
 
-
+/*
             // for Testing purposes
             try {
-                nextWorld1Level(3, 3);
+                nextWorld1Level(1, 3);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
+
+ */
+
 
 
         } else {

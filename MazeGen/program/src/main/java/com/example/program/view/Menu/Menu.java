@@ -112,6 +112,7 @@ public class Menu extends Pane {
         });
         campaignView.setOnMouseClicked(e -> {
             try {
+                System.out.println("Changing to campaign");
                 mainProgram.changeToCampaign();
                 audioPlayer.playLevelMusic("forest");
                 panel.setTheTime(25);

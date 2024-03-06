@@ -35,6 +35,7 @@ public class KeyboardPlayer { //this class will be responsible for controlling t
     }
 
     public void move(int newX, int newY) {
+        System.out.println("Moving to " + newX + ", " + newY);
         this.x = newX;
         this.y = newY;
     }
