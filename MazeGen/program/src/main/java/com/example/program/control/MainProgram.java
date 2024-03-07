@@ -666,4 +666,12 @@ public class MainProgram extends Application {
     public void setKeyboardControl(boolean b) {
         keyboardIsOn = b;
     }
+
+    public void setMainPaneCampaign(BorderPane borderPane) {
+        mainPaneCampaign = borderPane;
+    }
+
+    public void setHighScoreView(HighScoreView highScoreView) {
+        this.highScoreView = highScoreView;
+    }
 }

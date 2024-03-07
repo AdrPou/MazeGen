@@ -489,7 +489,7 @@ public class KeyBoardCampaign extends GridPane {
         add(playerLabel, x, y);
     }
 
-    private void handleKeyPressed(KeyEvent event) throws FileNotFoundException, InterruptedException {
+    public void handleKeyPressed(KeyEvent event) throws FileNotFoundException, InterruptedException {
         if (gameOver) {
             return;
         }
@@ -730,6 +730,26 @@ public class KeyBoardCampaign extends GridPane {
             }
         }
         return null;
+    }
+
+    public KeyboardPlayer getPlayer() {
+        return player;
+    }
+
+    public int getHeartCrystals() {
+        return heartCrystals;
+    }
+
+    public int getCollectiblesObtained() {
+        return collectiblesObtained;
+    }
+
+    public boolean isPickaxeObtained() {
+        return pickaxeObtained;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     public class GhostThread extends Thread {
