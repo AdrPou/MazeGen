@@ -59,6 +59,14 @@ public class Menu extends Pane {
         addButtons();
     }
 
+    public Image getHelp() {
+        return help;
+    }
+
+    public Image getHighScore() {
+        return highScore;
+    }
+
     /**
      * Metod som länkar Image-objekten till png-filer
      */
