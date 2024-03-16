@@ -159,7 +159,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException if file not found.
      */
     public void changeToCampaign() throws FileNotFoundException {
-        if (setting.getToggleButtonKeyboard()) {
+        if (keyboardIsOn) {
             KeyBoardCampaign keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
             mainPaneCampaign.setCenter(keyboardCampaign);
             setupCampaignAfterInitializationOfTemplate();
