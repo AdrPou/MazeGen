@@ -121,7 +121,7 @@ public class Setting extends VBox {
     }
 
     public void addAllToChildren() {
-        this.getChildren().addAll(soundView, volumeSlider, keyboardView, toggleButtonKeyboard, toggleButtonMouse, backView);
+        this.getChildren().addAll(soundView, volumeSlider, keyboardView, toggleButtonMouse, toggleButtonKeyboard, backView);
     }
 
     public boolean getToggleButtonKeyboard() {
