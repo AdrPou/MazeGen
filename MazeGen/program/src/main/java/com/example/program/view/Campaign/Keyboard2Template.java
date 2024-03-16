@@ -118,11 +118,11 @@ public class Keyboard2Template extends KeyBoardCampaign {
         ghosts = Arrays.asList(ghost1V, ghost2V, ghost3V, ghost4V, ghost5V, ghost6V);
 
         add(ghost1V, 10, 0);
-        add(ghost2V, 9, 0);
+        //add(ghost2V, 9, 0);
         add(ghost3V, 8, 0);
-        add(ghost4V, 1, 0);
+        //add(ghost4V, 1, 0);
         add(ghost5V, 2, 0);
-        add(ghost6V, 3, 0);
+        //add(ghost6V, 3, 0);
 
         Polyline line1 = new Polyline();
         Polyline line2 = new Polyline();
