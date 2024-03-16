@@ -32,7 +32,6 @@ public class Setting extends VBox {
         this.volumeSlider = new Slider();
         this.toggleButtonKeyboard = new ToggleButton();
         this.toggleButtonMouse = new ToggleButton();
-        this.toggleButtonMouse.setDisable(true);
         pressMouse = new javafx.scene.image.Image(getClass().getResource(BASE_PATH + "menuImages/helppicmouse.png").toString());
         setBackground();
         setImages();
@@ -40,7 +39,6 @@ public class Setting extends VBox {
         setToggleButton();
         addAllToChildren();
         pressMouseAnimation();
-        //addListener();
         this.getStyleClass().add("setting");
         this.getStylesheets().add(getClass().getResource(BASE_PATH + "SettingsStyle.css").toExternalForm());
     }
@@ -91,20 +89,19 @@ public class Setting extends VBox {
     public void setToggleButton() {
         toggleButtonKeyboard.getStyleClass().add("toggleButton");
         toggleButtonKeyboard.setText("Keyboard Control");
+        toggleButtonKeyboard.setStyle("-fx-background-color: #FF0000;");
 
         toggleButtonKeyboard.setOnAction(event -> {
-            System.out.println("Keyboard toggle button is activated!");
-            toggleButtonKeyboard.setDisable(true); // True when keyboard is activated
-            toggleButtonMouse.setDisable(false);
+            toggleButtonMouse.setStyle("-fx-background-color: #FF0000;");
+            toggleButtonKeyboard.setStyle("-fx-background-color: #4CAF50;");
             mainProgram.setKeyboardControl(true);
         });
 
         toggleButtonMouse.getStyleClass().add("toggleButton");
         toggleButtonMouse.setText("Mouse Control");
         toggleButtonMouse.setOnAction(event -> {
-            System.out.println("Mouse toggle button is activated!");
-            toggleButtonKeyboard.setDisable(false);
-            toggleButtonMouse.setDisable(true);
+            toggleButtonKeyboard.setStyle("-fx-background-color: #FF0000;");
+            toggleButtonMouse.setStyle("-fx-background-color: #4CAF50;");
             mainProgram.setKeyboardControl(false);
         });
     }
