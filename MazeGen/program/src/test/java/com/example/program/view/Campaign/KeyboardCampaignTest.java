@@ -1,7 +1,7 @@
 package com.example.program.view.Campaign;
 
 import com.example.program.control.MainProgram;
-import com.example.program.model.Maps.World1Maps;
+import com.example.program.model.Maps.*;
 import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.HighScoreView;
 import com.example.program.view.Menu.RightPanel;
@@ -26,6 +26,7 @@ class KeyBoardCampaignTest {
     private KeyBoardCampaign keyBoardCampaign;
     private MainProgram mainProgram;
     private World1Maps world1Maps;
+    //private World5Maps world5Maps;
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
     private HighScoreView highScoreView;
@@ -53,18 +54,33 @@ class KeyBoardCampaignTest {
     }
 
     @Test
-    public void testMovingInAllDirections() throws FileNotFoundException, InterruptedException {
-        // Initialize a level with a clear path
+    public void testMovingUp() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
-
-        // Move player in all directions
         keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.RIGHT, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.RIGHT, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.LEFT, false, false, false, false));
+        assertEquals(7, keyBoardCampaign.getPlayer().getY());
+    }
 
-        // Assert that player's position is as expected after the movements
+    @Test
+    public void testMovingDown() throws FileNotFoundException, InterruptedException {
+        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        keyBoardCampaign.getPlayer().move(1, 7);
+        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.DOWN, false, false, false, false));
+        assertEquals(8, keyBoardCampaign.getPlayer().getY());
+    }
+
+    @Test
+    public void testMovingLeft() throws FileNotFoundException, InterruptedException {
+        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        keyBoardCampaign.getPlayer().move(2, 8);
+        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.LEFT, false, false, false, false));
+        assertEquals(1, keyBoardCampaign.getPlayer().getX());
+    }
+
+    @Test
+    public void testMovingRight() throws FileNotFoundException, InterruptedException {
+        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        keyBoardCampaign.getPlayer().move(1, 8);
+        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.RIGHT, false, false, false, false));
         assertEquals(2, keyBoardCampaign.getPlayer().getX());
     }
 
@@ -208,4 +224,40 @@ class KeyBoardCampaignTest {
         assertTrue(keyBoardCampaign.isGameOver());
     }
 
+
+    @Test
+    void checkIfCampaignIsMinimum5Worlds() throws FileNotFoundException {
+        // Initialize level 5
+        World5Maps world5Maps = new World5Maps();
+        keyBoardCampaign = new KeyBoardCampaign(world5Maps.getLevel51(), 1, 3, mainProgram, rightPanel, 4, audioPlayer, 25);
+
+        // Check if the level is 5 (NOTE: level 5 is the 4th world in the campaign)
+        assertEquals(4, keyBoardCampaign.getWorld());
+
+    }
+
+
+    @Test
+    void checkIfCampaignWorldsIsIncrementsByTwo() throws FileNotFoundException {
+        // Initialize all levels
+        World2Maps world2Maps = new World2Maps();
+        World3Maps world3Maps = new World3Maps();
+        World4Maps world4Maps = new World4Maps();
+        World5Maps world5Maps = new World5Maps();
+        World6Maps world6Maps = new World6Maps();
+
+        // Check if each level is incremented by 2
+        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel14(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(8, keyBoardCampaign.getLevel());
+        keyBoardCampaign = new KeyBoardCampaign(world2Maps.getLevel21(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(10, keyBoardCampaign.getLevel());
+        keyBoardCampaign = new KeyBoardCampaign(world3Maps.getLevel31(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(12, keyBoardCampaign.getLevel());
+        keyBoardCampaign = new KeyBoardCampaign(world4Maps.getLevel41(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(14, keyBoardCampaign.getLevel());
+        keyBoardCampaign = new KeyBoardCampaign(world5Maps.getLevel51(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(16, keyBoardCampaign.getLevel());
+        keyBoardCampaign = new KeyBoardCampaign(world6Maps.getLevel61(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        assertEquals(18, keyBoardCampaign.getLevel());
+    }
 }
