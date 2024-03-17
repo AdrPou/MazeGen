@@ -133,6 +133,7 @@ public class MainProgram extends Application {
         settingsScene.setCursor(new ImageCursor(cursorImage));
         highScoreScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
+        gameStartChoiceDialogScene.setCursor(new ImageCursor(cursorImage));
     }
 
 
