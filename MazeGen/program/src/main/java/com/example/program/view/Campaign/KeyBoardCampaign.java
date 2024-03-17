@@ -566,6 +566,7 @@ public class KeyBoardCampaign extends GridPane {
             Platform.runLater(() -> {
                 player.move(startX, startY);
                 updatePlayerImage(startX, startY);
+                showFlashGhost();
                 if (heartCrystals > 0) {
                     rightPanel.pauseClock();
                     time.pauseTime();
@@ -586,14 +587,7 @@ public class KeyBoardCampaign extends GridPane {
         if (newX == 0 || newY == 0 || newX == level.length + 1 || newY == level.length + 1
                 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { // kolla om spelaren försöker gå
                                                                                        // utanför banan eller in i en
-                                                                                       // vägg
-
-            FadeTransition fade = new FadeTransition();
-            fade.setDuration(Duration.seconds(0.3));
-            fade.setFromValue(10);
-            fade.setToValue(0.6);
-            fade.play();
-
+            showFlashWall();                                                                // vägg
             if (heartCrystals > 0) {
                 player.move(startX, startY);
                 updatePlayerImage(startX, startY);
@@ -611,6 +605,44 @@ public class KeyBoardCampaign extends GridPane {
         } else {
             return false; // om allt funkar som det ska
         }
+    }
+
+    public void showFlashWall(){
+        Pane rootPane = (Pane) playerLabel.getScene().getRoot();
+        Rectangle dimOverlay = new Rectangle();
+        dimOverlay.setFill(Color.WHITE);
+        dimOverlay.setWidth(playerLabel.getScene().getWidth());
+        dimOverlay.setHeight(playerLabel.getScene().getHeight());
+        dimOverlay.setOpacity(0.0); // Start fully transparent
+
+        rootPane.getChildren().add(dimOverlay);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
+        fade.setFromValue(0.0);
+        fade.setToValue(0.75); // Adjust opacity to desired level
+        fade.setAutoReverse(true);
+        fade.setCycleCount(2); // Fades in and out once
+        fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
+        fade.play();
+    }
+
+    public void showFlashGhost(){
+        Pane rootPane = (Pane) playerLabel.getScene().getRoot();
+        Rectangle dimOverlay = new Rectangle();
+        dimOverlay.setFill(Color.BLACK);
+        dimOverlay.setWidth(playerLabel.getScene().getWidth());
+        dimOverlay.setHeight(playerLabel.getScene().getHeight());
+        dimOverlay.setOpacity(0.0); // Start fully transparent
+
+        rootPane.getChildren().add(dimOverlay);
+
+        FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
+        fade.setFromValue(0.0);
+        fade.setToValue(0.75); // Adjust opacity to desired level
+        fade.setAutoReverse(true);
+        fade.setCycleCount(2); // Fades in and out once
+        fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
+        fade.play();
     }
 
     public void checkCollectibles(int x, int y) { // TODO ska kunna plocka upp hjärtan
