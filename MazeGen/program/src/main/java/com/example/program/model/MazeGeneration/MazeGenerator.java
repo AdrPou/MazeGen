@@ -28,7 +28,7 @@ public class MazeGenerator {
         dimension = dim;
         generateMaze();
         createStartAndGoal();
-        System.out.println(getRawMaze());
+        //System.out.println(getRawMaze());
     }
 
     public void generateMaze() {

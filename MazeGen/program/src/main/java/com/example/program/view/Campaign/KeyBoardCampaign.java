@@ -821,4 +821,9 @@ public class KeyBoardCampaign extends GridPane {
         }
     }
 
+
+    public int getWorld() {
+        return world;
+    }
+
 }

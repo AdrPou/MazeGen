@@ -21,12 +21,11 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-class KeyBoardCampaignTest {
+public class KeyboardCampaignTest {
 
     private KeyBoardCampaign keyBoardCampaign;
     private MainProgram mainProgram;
     private World1Maps world1Maps;
-    //private World5Maps world5Maps;
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
     private HighScoreView highScoreView;
@@ -167,29 +166,6 @@ class KeyBoardCampaignTest {
         assertTrue(keyBoardCampaign.isPickaxeObtained());
     }
 
-/*
-    @Test
-    void checkGoal() throws FileNotFoundException, InterruptedException, NoSuchFieldException, IllegalAccessException {
-        mainProgram.setRightPanel(rightPanel);
-        // Initialize a level with a goal
-        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
-
-        Field field = KeyBoardCampaign.class.getDeclaredField("allCollectiblesObtained");
-        field.setAccessible(true);
-        field.set(keyBoardCampaign, true);
-
-        // Move a player to a position that has a goal
-        keyBoardCampaign.getPlayer().move(7,2);
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.RIGHT, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
-
-
-        // Assert that the level is completed
-        assertEquals(2, keyBoardCampaign.getCurrentLevel());
-    }
- */
-
-
 
     @Test
     void hitBreakableWall() throws FileNotFoundException, InterruptedException, NoSuchFieldException, IllegalAccessException {
@@ -260,4 +236,7 @@ class KeyBoardCampaignTest {
         keyBoardCampaign = new KeyBoardCampaign(world6Maps.getLevel61(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
         assertEquals(18, keyBoardCampaign.getLevel());
     }
+
+
+
 }

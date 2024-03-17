@@ -151,7 +151,7 @@ public class MainProgram extends Application {
      * @param dimension Storleken på labyrinten som ska genereras.
      * @throws FileNotFoundException if file not found.
      */
-    public void changeToRandomize(int dimension) throws FileNotFoundException {
+    public int changeToRandomize(int dimension) throws FileNotFoundException {
         MazeGenerator mazeGenerator = new MazeGenerator(dimension, true);
         GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
         MapTemplate mapTemplate = new MapTemplate(mazeGenerator.getMaze(), this, generateNextLevel);
@@ -162,6 +162,7 @@ public class MainProgram extends Application {
         audioPlayer.playWorldIntroSound();
         audioPlayer.stopMusic();
         audioPlayer.playLevelMusic("forest"); //TODO fixa anpassad musik för banorna?
+        return mazeGenerator.getMaze().length;
     }
 
     public void changeToStartingScene(){
@@ -749,5 +750,24 @@ public class MainProgram extends Application {
 
     public void setHighScoreView(HighScoreView highScoreView) {
         this.highScoreView = highScoreView;
+    }
+
+    public void setMainPaneRandomMaze(BorderPane borderPane) {
+        mainPaneRandomMaze = borderPane;
+    }
+
+    public void initializeComponents() throws FileNotFoundException {
+        audioPlayer = new AudioPlayer();
+        rightPanel = new RightPanel(this, "11", audioPlayer, null);
+        rightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        world1Maps = new World1Maps();
+        mainPaneRandomMaze.setRight(rightPanel);
+        RightPanel rightPnlRndm = new RightPanel(this, "Random", audioPlayer, null);
+        rightPnlRndm.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        mainPaneRandomMaze.setRight(rightPnlRndm);
+    }
+
+    public void setMainWindow(Stage mainWindow) {
+        this.mainWindow = mainWindow;
     }
 }
