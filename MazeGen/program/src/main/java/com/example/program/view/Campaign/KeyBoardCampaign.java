@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import com.example.program.model.TimeThread;
@@ -580,7 +581,7 @@ public class KeyBoardCampaign extends GridPane {
         return gameOver;
     }
 
-    public boolean hitWall(int newX, int newY) { // TODO lägg till if-sats för breakable wall
+    public boolean hitWall(int newX, int newY) {
 
         if (newX == 0 || newY == 0 || newX == level.length + 1 || newY == level.length + 1
                 || level[newY - 1][newX - 1] == 0 || level[newY - 1][newX - 1] == 6) { // kolla om spelaren försöker gå

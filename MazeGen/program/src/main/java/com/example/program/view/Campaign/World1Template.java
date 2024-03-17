@@ -14,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.event.EventHandler;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import com.example.program.model.TimeThread;
 import com.example.program.model.TotalTime;
@@ -400,19 +402,38 @@ public class World1Template extends GridPane {
      */
     public void enteredWall(MouseEvent e) {
         Label label = (Label)e.getSource();
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(label);
-        fade.setDuration(Duration.seconds(0.3));
-        fade.setFromValue(10);
-        fade.setToValue(0.6);
-        fade.play();
 
+        // Checking if the start button has been pressed
         if (startButtonPressed) {
-
+            // Your existing logic for what happens when the wall is entered
             time.pauseTime();
             rightPanel.pauseClock();
             heartCrystals--;
             rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+
+            // Initial fade transition for the label
+            FadeTransition labelFade = new FadeTransition(Duration.seconds(0.3), label);
+            labelFade.setFromValue(1.0); // Assuming you want to fade from fully visible
+            labelFade.setToValue(0.6); // To slightly transparent
+            labelFade.play();
+
+            // New code for the white flash effect
+            Rectangle flashOverlay = new Rectangle();
+            flashOverlay.setFill(Color.WHITE); // Set the overlay color to white
+            flashOverlay.setWidth(label.getScene().getWidth()); // Ensure it covers the entire scene width
+            flashOverlay.setHeight(label.getScene().getHeight()); // Ensure it covers the entire scene height
+
+            // Adding the overlay to the scene
+            Pane rootPane = (Pane)label.getScene().getRoot();
+            rootPane.getChildren().add(flashOverlay);
+
+            // Create a fade transition for the white flash effect
+            FadeTransition flashFade = new FadeTransition(Duration.seconds(0.5), flashOverlay);
+            flashFade.setFromValue(1.0); // Start fully visible
+            flashFade.setToValue(0.0); // Fade to fully transparent
+            flashFade.setOnFinished(event -> rootPane.getChildren().remove(flashOverlay)); // Cleanup after the animation
+
+            flashFade.play();
 
             if (heartCrystals == 0) {
                 gameOver();
@@ -428,16 +449,16 @@ public class World1Template extends GridPane {
      * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
      * @param e
      */
-    public void enteredGhost(MouseEvent e){
+    public void enteredGhost(MouseEvent e) {
         ImageView view = (ImageView) e.getSource();
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(view);
-        fade.setDuration(Duration.seconds(1));
-        fade.setFromValue(10);
-        fade.setToValue(0.6);
-        fade.setToValue(10);
-        fade.play();
 
+        // Correcting the initial FadeTransition for the ImageView
+        FadeTransition viewFade = new FadeTransition(Duration.seconds(1), view);
+        viewFade.setFromValue(1.0); // Start fully visible
+        viewFade.setToValue(0.6); // Fade to slightly transparent
+        viewFade.setAutoReverse(true); // Automatically reverse the animation
+        viewFade.setCycleCount(2); // Play the animation forward and reverse
+        viewFade.play();
 
         if (startButtonPressed) {
             time.pauseTime();
@@ -451,8 +472,30 @@ public class World1Template extends GridPane {
                 gameOver();
             }
             startButtonPressed = false;
+
+            // Dimming effect for the ghost encounter, inside the if statement
+            Rectangle dimOverlay = new Rectangle();
+            dimOverlay.setFill(Color.BLACK); // Using black for a dimming effect
+            dimOverlay.setWidth(view.getScene().getWidth()); // Ensure it covers the entire scene
+            dimOverlay.setHeight(view.getScene().getHeight()); // Ensure it covers the entire scene
+            dimOverlay.setOpacity(0); // Start fully transparent
+
+            // Adding the overlay to the scene
+            Pane rootPane = (Pane) view.getScene().getRoot();
+            rootPane.getChildren().add(dimOverlay);
+
+            // Create a fade transition to dim the scene momentarily
+            FadeTransition dimFade = new FadeTransition(Duration.seconds(1), dimOverlay);
+            dimFade.setFromValue(0.0); // Start fully transparent
+            dimFade.setToValue(0.75); // Dim to 75% opacity
+            dimFade.setAutoReverse(true); // Automatically reverse the effect
+            dimFade.setCycleCount(2); // Ensure it fades in and out once
+            dimFade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay)); // Remove the overlay afterwards
+
+            dimFade.play();
         }
     }
+
 
     /**
      * Avslutar spelrundan och kör metoden gameOver i mainProgram.

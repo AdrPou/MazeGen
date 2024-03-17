@@ -1,16 +1,23 @@
-.highScoreList{
-    -fx-font-size: 12px;
-    -fx-font-weight: bold;
-    -fx-spacing: 12px;
-    -fx-alignment: top-center;
-    -fx-padding: 20px;
+/* HighScoreStyle.css */
+
+.highScoreList {
+    -fx-alignment: center;
+    -fx-spacing: 6; /* Slightly increased spacing for larger text */
 }
+
 .title-label {
-    -fx-font-size: 30px;
+    -fx-font-family: 'PressStart2P';
+    -fx-font-size: 28px; /* Increased size for the title */
     -fx-font-weight: bold;
-    -fx-text-fill: #0037ff;
+    -fx-text-fill: #0000D6; /* Blue color for the text */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0); /* Shadow effect */
 }
+
 .highscore-label {
-    -fx-font-size: 24px;
-    -fx-text-fill: #0037ff;
+    -fx-font-family: 'PressStart2P';
+    -fx-font-size: 22px; /* Increased size for the high score entries */
+    -fx-text-fill: #0000D6; /* Blue color for the text */
+    -fx-padding: 0 4 4 4; /* Adjusted padding for larger text */
+    -fx-background-radius: 5; /* Rounded corners, kept for aesthetics */
+    -fx-effect: dropshadow(one-pass-box, black, 5, 0.0, 2, 2); /* Subtle shadow */
 }
