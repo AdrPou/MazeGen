@@ -1,6 +1,7 @@
 package com.example.program.control;
 
 
+import com.example.program.model.Checkpoint;
 import com.example.program.model.HighScore;
 import com.example.program.model.KeyboardPlayer;
 import com.example.program.view.Randomize.TemplateKeyboard;
@@ -39,6 +40,7 @@ public class MainProgram extends Application {
     private Scene settingsScene;
     private Scene highScoreScene;
     private Scene chooseDimensionScene;
+    private Scene gameStartChoiceDialogScene;
     private Setting setting;
     private Scene randomScene;
     private Scene campaignScene;
@@ -54,6 +56,10 @@ public class MainProgram extends Application {
     private boolean keyboardIsOn; // To know if keyboard is on or not so that nextLevel is created for KeyboardTemplate
     private String[] scores;
     private HighScoreView highScoreView;
+    private Checkpoint checkpoint;
+    private GameStartChoiceDialog gameStartChoiceDialog;
+    private boolean fromCheckpoint = false;
+
 
 
     /**
@@ -89,6 +95,10 @@ public class MainProgram extends Application {
         highScoreView = new HighScoreView(this, audioPlayer, scores);
         highScoreScene = new Scene(highScoreView, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
+        gameStartChoiceDialog = new GameStartChoiceDialog(this);
+        gameStartChoiceDialogScene = new Scene(gameStartChoiceDialog, 800, 600);
+
+
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -105,6 +115,7 @@ public class MainProgram extends Application {
 
         RightPanel rightPnlRndm = new RightPanel(this, "Random", audioPlayer, null);
         rightPnlRndm.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        checkpoint = new Checkpoint();
 
         mainPaneRandomMaze.setRight(rightPnlRndm);
 
@@ -122,6 +133,7 @@ public class MainProgram extends Application {
         settingsScene.setCursor(new ImageCursor(cursorImage));
         highScoreScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
+        gameStartChoiceDialogScene.setCursor(new ImageCursor(cursorImage));
     }
 
 
@@ -152,52 +164,110 @@ public class MainProgram extends Application {
         audioPlayer.playLevelMusic("forest"); //TODO fixa anpassad musik för banorna?
     }
 
+    public void changeToStartingScene(){
+        mainWindow.setScene(gameStartChoiceDialogScene);
+    }
+
+    public void changeCheckPoint(boolean b){
+        fromCheckpoint = b;
+    }
+
 
     /**
      * Byter scen till kampanjläget.
      *
      * @throws FileNotFoundException if file not found.
      */
-    public void changeToCampaign() throws FileNotFoundException {
-        if (setting.getToggleButtonKeyboard()) {
+    public void changeToCampaign() throws FileNotFoundException, InterruptedException {
+        if (keyboardIsOn) {
             KeyBoardCampaign keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
             mainPaneCampaign.setCenter(keyboardCampaign);
             setupCampaignAfterInitializationOfTemplate();
             keyboardIsOn = true;
-
-
-            // for Testing purposes
-
-
-            //nextWorld1Level(3, 3);
-            //nextWorld6Level(4, 3);
-
+            audioPlayer.playLevelMusic("forest");
+            rightPanel.setTheTime(25);
+            rightPanel.resetTimerLabel();
+            if(fromCheckpoint) {
+                switch (checkpoint.getNumber()) {
+                    case 1:
+                        try {
+                            nextWorld1Level(1, 3);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case 2:
+                        try {
+                            nextWorld2Level(1, 3);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case 3:
+                        nextWorld3Level(1, 3);
+                        break;
+                    case 4:
+                        nextWorld4Level(1, 3);
+                        break;
+                    case 5:
+                        nextWorld5Level(1, 3);
+                        break;
+                    case 6:
+                        nextWorld6Level(1, 3);
+                        break;
+                    default:
+                        audioPlayer.playLevelMusic("forest");
+                        rightPanel.setTheTime(25);
+                        rightPanel.resetTimerLabel();
+                        break;
+                }
+            }
 
         } else {
             World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
-
-
-            // for Testing purposes
-            /*
-            try {
-                nextWorld2Level(5, 3);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            audioPlayer.playLevelMusic("forest");
+            rightPanel.setTheTime(25);
+            rightPanel.resetTimerLabel();
+            if (fromCheckpoint) {
+                switch (checkpoint.getNumber()) {
+                    case 1:
+                        try {
+                            nextWorld1Level(1, 3);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case 2:
+                        try {
+                            nextWorld2Level(1, 3);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case 3:
+                        nextWorld3Level(1, 3);
+                        break;
+                    case 4:
+                        nextWorld4Level(1, 3);
+                        break;
+                    case 5:
+                        nextWorld5Level(1, 3);
+                        break;
+                    case 6:
+                        nextWorld6Level(1, 3);
+                        break;
+                    default:
+                        audioPlayer.playLevelMusic("forest");
+                        rightPanel.setTheTime(25);
+                        rightPanel.resetTimerLabel();
+                        break;
+                }
             }
-
-             */
-
-
-
 
         }
 
-
-        // TODO: lägg in check här för world1Template eller KeyBoardCampaign!
-        //keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
-        //TODO: samma här för både vanlig och keyboard
     }
 
 
@@ -315,6 +385,7 @@ public class MainProgram extends Application {
                 break;
             case 5:
                 nextWorld2Level(1, heartCrystals);
+                checkpoint.setNumber(2);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -380,6 +451,7 @@ public class MainProgram extends Application {
                 }
                 break;
             case 6:
+                checkpoint.setNumber(3);
                 nextWorld3Level(1, heartCrystals);
                 break;
             default:
@@ -448,6 +520,7 @@ public class MainProgram extends Application {
                 break;
             case 6:
                 nextWorld4Level(1, heartCrystals);
+                checkpoint.setNumber(4);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -515,7 +588,9 @@ public class MainProgram extends Application {
                 }
                 break;
             case 6:
+                checkpoint.setNumber(5);
                 nextWorld5Level(1, heartCrystals);
+
                 break;
             default:
                 throw new IllegalArgumentException("Invalid level: " + level);
@@ -583,6 +658,7 @@ public class MainProgram extends Application {
                 }
                 break;
             case 6:
+                checkpoint.setNumber(6);
                 nextWorld6Level(1, heartCrystals);
                 break;
             default:

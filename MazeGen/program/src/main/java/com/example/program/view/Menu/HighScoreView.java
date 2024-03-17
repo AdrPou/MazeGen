@@ -3,6 +3,7 @@ package com.example.program.view.Menu;
 import com.example.program.control.MainProgram;
 import com.example.program.model.HighScore;
 import com.example.program.view.AudioPlayer;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -36,6 +37,7 @@ public class HighScoreView extends VBox {
     public void displayHighScores() {
         Label title = new Label("Leaderboard");
         title.getStyleClass().add("title-label");
+        VBox.setMargin(title, new Insets(-120, 0, 0, 0));
 
         getChildren().add(title);
         // Skapa en label för varje highscore

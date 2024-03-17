@@ -105,11 +105,11 @@ public class World2Template extends World1Template {
         ghost6V.setOnMouseEntered(e -> enteredGhost(e));
 
         add(ghost1V,10,0);
-        add(ghost2V,9,0);
+        //add(ghost2V,9,0);
         add(ghost3V,8,0);
-        add(ghost4V, 1, 0);
+        //add(ghost4V, 1, 0);
         add(ghost5V, 2, 0);
-        add(ghost6V, 3, 0);
+        //add(ghost6V, 3, 0);
 
         Polyline line1 = new Polyline();
         Polyline line2 = new Polyline();

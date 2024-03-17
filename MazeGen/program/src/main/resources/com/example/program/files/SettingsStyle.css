@@ -32,3 +32,19 @@
    -fx-spacing: 50px;
 
 }
+
+/* Style for active button */
+.toggleButton {
+    -fx-background-color: #4CAF50; /* Green background for active state */
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 16px;
+}
+
+/* Style for inactive button */
+.toggleButtonInactive {
+    -fx-background-color: #D3D3D3; /* Subdued color for inactive state */
+    -fx-text-fill: #696969;
+}
+
+
