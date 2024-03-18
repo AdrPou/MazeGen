@@ -52,6 +52,7 @@ public class MainProgram extends Application {
     private int totalScore = 0;
     private KeyboardPlayer player;
     private TemplateKeyboard templateKeyboard;
+    private KeyBoardCampaign keyboardCampaign;
     private static final String BASE_PATH = "/com/example/program/files/";
     private boolean keyboardIsOn; // To know if keyboard is on or not so that nextLevel is created for KeyboardTemplate
     private String[] scores;
@@ -178,7 +179,7 @@ public class MainProgram extends Application {
      *
      * @throws FileNotFoundException if file not found.
      */
-    public void changeToCampaign() throws FileNotFoundException, InterruptedException {
+    public String changeToCampaign() throws FileNotFoundException, InterruptedException {
         if (keyboardIsOn) {
             KeyBoardCampaign keyboardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25); // TODO changed level for testing purposes
             mainPaneCampaign.setCenter(keyboardCampaign);
@@ -222,9 +223,9 @@ public class MainProgram extends Application {
                         break;
                 }
             }
-
+            return "campaign";
         } else {
-            World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
+            World1Template world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25, 5);
             mainPaneCampaign.setCenter(world1Template);
             setupCampaignAfterInitializationOfTemplate();
             audioPlayer.playLevelMusic("forest");
@@ -265,9 +266,8 @@ public class MainProgram extends Application {
                         break;
                 }
             }
-
+            return "campaign";
         }
-
     }
 
 
@@ -739,6 +739,7 @@ public class MainProgram extends Application {
         launch(args);
     }
 
+
     public void setKeyboardControl(boolean b) {
         keyboardIsOn = b;
     }
@@ -750,4 +751,5 @@ public class MainProgram extends Application {
     public void setHighScoreView(HighScoreView highScoreView) {
         this.highScoreView = highScoreView;
     }
+
 }

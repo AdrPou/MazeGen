@@ -127,5 +127,20 @@ public class Setting extends VBox {
     public boolean getToggleButtonKeyboard() {
         return toggleButtonKeyboard.isDisabled();
     }
+    public boolean getToggleButtonMouse() {return toggleButtonMouse.isDisabled();}
+    public double getVolume(){
+        return audioPlayer.getVolume();
+    }
 
+    public ImageView getSoundView() {
+        return soundView;
+    }
+
+    public ImageView getKeyboardView() {
+        return keyboardView;
+    }
+
+    public ImageView getBackView() {
+        return backView;
+    }
 }

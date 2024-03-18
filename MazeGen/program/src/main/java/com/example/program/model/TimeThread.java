@@ -53,6 +53,14 @@ public class TimeThread extends Thread {
         this.gameOver = gameOver;
     }
 
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
     public synchronized void pauseTime() {
         isPaused = true; // Set the pause flag
     }
@@ -62,3 +70,4 @@ public class TimeThread extends Thread {
         notifyAll(); // Notify to resume
     }
 }
+

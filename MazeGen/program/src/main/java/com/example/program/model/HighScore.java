@@ -10,19 +10,18 @@ import java.util.Scanner;
  */
 public class HighScore {
 
-    private final String[] name = new String[10];
-    private final int[] score = new int[10];
+    private String[] name = new String[10];
+    private int[] score = new int[10];
     private final String[] list = new String[10];
     private int place = 1;
-    private final String path = "MazeGen\\program\\src\\main\\java\\files\\HighScoreList.txt";
-    //private final String path = "/Users/adamleijman/Kurser/År2/DA489A_Systemutveckling2/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
-
+    //private final String path = "MazeGen\\program\\src\\main\\java\\files\\HighScoreList.txt";
+    private final String path = "/Users/adamleijman/Desktop/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
 
 
     /**
      * Inputs a new person and time to the highScoreList.
      *
-     * @param name the name of the person.
+     * @param name  the name of the person.
      * @param score how long it took to win.
      */
     public void writeToList(String[] name, int[] score) {
@@ -72,7 +71,6 @@ public class HighScore {
     }
 
 
-
     public boolean checkNewScore(int newScore) {
         // Find the position of the new score
         int newPosition = 0;
@@ -104,5 +102,19 @@ public class HighScore {
         }
     }
 
+    public String[] getName() {
+        return name;
+    }
 
+    public void setName(String[] name) {
+        this.name = name;
+    }
+
+    public int[] getScore() {
+        return score;
+    }
+
+    public void setScore(int[] score) {
+        this.score = score;
+    }
 }

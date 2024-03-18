@@ -53,4 +53,20 @@ class MenuTest {
         randomize = menu.getRandomize();
         assertNotNull(randomize);
     }
+
+    @Test
+    public void testHelpImageLoaded(){
+        Menu menu = new Menu(new MainProgram(), new AudioPlayer(), null);
+        menu.setupImages();
+        Image help = menu.getHelp();
+        assertNotNull(help);
+    }
+
+    @Test
+    public void testHighScoreImageLoaded(){
+        Menu menu = new Menu(new MainProgram(), new AudioPlayer(), null);
+        menu.setupImages();
+        Image highScore = menu.getHighScore();
+        assertNotNull(highScore);
+    }
 }
