@@ -326,7 +326,9 @@ public class MainProgram extends Application {
     public void gameOver() {
         System.out.println("Game Over");
         highScore.checkNewScore(totalScore);
-        highScoreView.displayHighScores();
+        if(highScoreView != null) {
+            highScoreView.displayHighScores();
+        }
         GameOverScreen gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
     }
