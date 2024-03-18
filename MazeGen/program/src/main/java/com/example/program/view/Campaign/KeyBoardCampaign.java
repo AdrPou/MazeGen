@@ -611,22 +611,24 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void showFlashWall(){
-        Pane rootPane = (Pane) playerLabel.getScene().getRoot();
-        Rectangle dimOverlay = new Rectangle();
-        dimOverlay.setFill(Color.WHITE);
-        dimOverlay.setWidth(playerLabel.getScene().getWidth());
-        dimOverlay.setHeight(playerLabel.getScene().getHeight());
-        dimOverlay.setOpacity(0.0); // Start fully transparent
+        if (playerLabel.getScene() != null) {
+            Pane rootPane = (Pane) playerLabel.getScene().getRoot();
+            Rectangle dimOverlay = new Rectangle();
+            dimOverlay.setFill(Color.WHITE);
+            dimOverlay.setWidth(playerLabel.getScene().getWidth());
+            dimOverlay.setHeight(playerLabel.getScene().getHeight());
+            dimOverlay.setOpacity(0.0); // Start fully transparent
 
-        rootPane.getChildren().add(dimOverlay);
+            rootPane.getChildren().add(dimOverlay);
 
-        FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
-        fade.setFromValue(0.0);
-        fade.setToValue(0.75); // Adjust opacity to desired level
-        fade.setAutoReverse(true);
-        fade.setCycleCount(2); // Fades in and out once
-        fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
-        fade.play();
+            FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
+            fade.setFromValue(0.0);
+            fade.setToValue(0.75); // Adjust opacity to desired level
+            fade.setAutoReverse(true);
+            fade.setCycleCount(2); // Fades in and out once
+            fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
+            fade.play();
+        }
     }
 
     public void showFlashGhost(){
