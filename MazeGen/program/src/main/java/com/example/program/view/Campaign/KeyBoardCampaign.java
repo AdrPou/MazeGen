@@ -556,31 +556,34 @@ public class KeyBoardCampaign extends GridPane {
         for (ImageView ghost : ghosts) {
             Bounds boundsGhost = ghost.localToScene(ghost.getBoundsInLocal()); // Accurately get each ghost's bounds
             if (boundsPlayer.intersects(boundsGhost)) {
-                System.out.println("Collision detected");
                 collisionDetected = true;
                 break; // Exit loop after first collision detected
             }
         }
 
         if (collisionDetected) {
-            Platform.runLater(() -> {
-                player.move(startX, startY);
-                updatePlayerImage(startX, startY);
-                showFlashGhost();
-                if (heartCrystals > 0) {
-                    rightPanel.pauseClock();
-                    time.pauseTime();
-                    heartCrystals--;
-                    rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-                    audioPlayer.playDeathSound();
-                }
-                if (heartCrystals == 0) {
-                    gameOver();
-                }
-            });
+            if (gameStarted && !gameOver){
+                Platform.runLater(() -> {
+                    player.move(startX, startY);
+                    updatePlayerImage(startX, startY);
+                    if (heartCrystals > 0) {
+                        showFlashGhost();
+                        rightPanel.pauseClock();
+                        time.pauseTime();
+                        heartCrystals--;
+                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                        audioPlayer.playDeathSound();
+                    }
+                    if (heartCrystals == 0) {
+                        showFlashGhost();
+                        gameOver();
+                    }
+                });
+        }
         }
         return gameOver;
     }
+
 
     public boolean hitWall(int newX, int newY) {
 
@@ -627,22 +630,25 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void showFlashGhost(){
-        Pane rootPane = (Pane) playerLabel.getScene().getRoot();
-        Rectangle dimOverlay = new Rectangle();
-        dimOverlay.setFill(Color.BLACK);
-        dimOverlay.setWidth(playerLabel.getScene().getWidth());
-        dimOverlay.setHeight(playerLabel.getScene().getHeight());
-        dimOverlay.setOpacity(0.0); // Start fully transparent
 
-        rootPane.getChildren().add(dimOverlay);
+            Pane rootPane = (Pane) playerLabel.getScene().getRoot();
+            if (rootPane != null) {
+                Rectangle dimOverlay = new Rectangle();
+                dimOverlay.setFill(Color.BLACK);
+                dimOverlay.setWidth(playerLabel.getScene().getWidth());
+                dimOverlay.setHeight(playerLabel.getScene().getHeight());
+                dimOverlay.setOpacity(0.0); // Start fully transparent
 
-        FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
-        fade.setFromValue(0.0);
-        fade.setToValue(0.75); // Adjust opacity to desired level
-        fade.setAutoReverse(true);
-        fade.setCycleCount(2); // Fades in and out once
-        fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
-        fade.play();
+                rootPane.getChildren().add(dimOverlay);
+
+                FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
+                fade.setFromValue(0.0);
+                fade.setToValue(0.75); // Adjust opacity to desired level
+                fade.setAutoReverse(true);
+                fade.setCycleCount(2); // Fades in and out once
+                fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
+                fade.play();
+            }
     }
 
     public void checkCollectibles(int x, int y) { // TODO ska kunna plocka upp hjärtan
