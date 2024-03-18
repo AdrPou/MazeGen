@@ -2,6 +2,7 @@ package com.example.program.view.Campaign;
 
 import com.example.program.control.MainProgram;
 import com.example.program.model.KeyboardPlayer;
+import com.example.program.model.Maps.World1Maps;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Bounds;
@@ -11,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.event.EventHandler;
@@ -23,7 +25,9 @@ import com.example.program.view.AudioPlayer;
 import com.example.program.view.Menu.RightPanel;
 
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -109,7 +113,6 @@ public class KeyBoardCampaign extends GridPane {
         setBackground();
         setupImages(world);
         setupBorders();
-        System.out.println("Setting up level");
         setupLevel();
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
@@ -462,7 +465,7 @@ public class KeyBoardCampaign extends GridPane {
         }
     }
 
-    public int getLevelLength() {
+    public int getLevel() {
         return level.length;
     }
 
@@ -488,10 +491,10 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void handleKeyPressed(KeyEvent event) throws FileNotFoundException, InterruptedException {
-        if(gameOver) {
+        if (gameOver) {
             return;
         }
-        if(!gameStarted){
+        if (!gameStarted) {
             startLevelKeyboard(1, 1);
         }
 
@@ -505,7 +508,6 @@ public class KeyBoardCampaign extends GridPane {
 
         switch (keyCode) {
             case UP:
-                System.out.println("UP");
                 newY--;
                 break;
             case DOWN:
@@ -531,10 +533,8 @@ public class KeyBoardCampaign extends GridPane {
                 rightPanel.removePickaxe();
                 audioPlayer.playBreakableWallSound();
             }
-            System.out.println("Hit breakable wall");
             return;
         } else if (hitWall(newX, newY)) {
-            System.out.println("Hit wall");
             return;
         }
 
@@ -556,31 +556,34 @@ public class KeyBoardCampaign extends GridPane {
         for (ImageView ghost : ghosts) {
             Bounds boundsGhost = ghost.localToScene(ghost.getBoundsInLocal()); // Accurately get each ghost's bounds
             if (boundsPlayer.intersects(boundsGhost)) {
-                System.out.println("Collision detected");
                 collisionDetected = true;
                 break; // Exit loop after first collision detected
             }
         }
 
         if (collisionDetected) {
-            Platform.runLater(() -> {
-                player.move(startX, startY);
-                updatePlayerImage(startX, startY);
-                showFlashGhost();
-                if (heartCrystals > 0) {
-                    rightPanel.pauseClock();
-                    time.pauseTime();
-                    heartCrystals--;
-                    rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-                    audioPlayer.playDeathSound();
-                }
-                if (heartCrystals == 0) {
-                    gameOver();
-                }
-            });
+            if (gameStarted && !gameOver){
+                Platform.runLater(() -> {
+                    player.move(startX, startY);
+                    updatePlayerImage(startX, startY);
+                    if (heartCrystals > 0) {
+                        showFlashGhost();
+                        rightPanel.pauseClock();
+                        time.pauseTime();
+                        heartCrystals--;
+                        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+                        audioPlayer.playDeathSound();
+                    }
+                    if (heartCrystals == 0) {
+                        showFlashGhost();
+                        gameOver();
+                    }
+                });
+        }
         }
         return gameOver;
     }
+
 
     public boolean hitWall(int newX, int newY) {
 
@@ -608,30 +611,9 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void showFlashWall(){
-        if (playerLabel.getScene() != null) {
-            Pane rootPane = (Pane) playerLabel.getScene().getRoot();
-            Rectangle dimOverlay = new Rectangle();
-            dimOverlay.setFill(Color.WHITE);
-            dimOverlay.setWidth(playerLabel.getScene().getWidth());
-            dimOverlay.setHeight(playerLabel.getScene().getHeight());
-            dimOverlay.setOpacity(0.0); // Start fully transparent
-
-            rootPane.getChildren().add(dimOverlay);
-
-            FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
-            fade.setFromValue(0.0);
-            fade.setToValue(0.75); // Adjust opacity to desired level
-            fade.setAutoReverse(true);
-            fade.setCycleCount(2); // Fades in and out once
-            fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
-            fade.play();
-        }
-    }
-
-    public void showFlashGhost(){
         Pane rootPane = (Pane) playerLabel.getScene().getRoot();
         Rectangle dimOverlay = new Rectangle();
-        dimOverlay.setFill(Color.BLACK);
+        dimOverlay.setFill(Color.WHITE);
         dimOverlay.setWidth(playerLabel.getScene().getWidth());
         dimOverlay.setHeight(playerLabel.getScene().getHeight());
         dimOverlay.setOpacity(0.0); // Start fully transparent
@@ -645,7 +627,28 @@ public class KeyBoardCampaign extends GridPane {
         fade.setCycleCount(2); // Fades in and out once
         fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
         fade.play();
+    }
 
+    public void showFlashGhost(){
+
+            Pane rootPane = (Pane) playerLabel.getScene().getRoot();
+            if (rootPane != null) {
+                Rectangle dimOverlay = new Rectangle();
+                dimOverlay.setFill(Color.BLACK);
+                dimOverlay.setWidth(playerLabel.getScene().getWidth());
+                dimOverlay.setHeight(playerLabel.getScene().getHeight());
+                dimOverlay.setOpacity(0.0); // Start fully transparent
+
+                rootPane.getChildren().add(dimOverlay);
+
+                FadeTransition fade = new FadeTransition(Duration.seconds(0.25), dimOverlay);
+                fade.setFromValue(0.0);
+                fade.setToValue(0.75); // Adjust opacity to desired level
+                fade.setAutoReverse(true);
+                fade.setCycleCount(2); // Fades in and out once
+                fade.setOnFinished(event -> rootPane.getChildren().remove(dimOverlay));
+                fade.play();
+            }
     }
 
     public void checkCollectibles(int x, int y) { // TODO ska kunna plocka upp hjärtan
@@ -698,13 +701,12 @@ public class KeyBoardCampaign extends GridPane {
     }
 
     public void setPlayerOnStart(int x, int y) {
-        System.out.println("Setting player on start " + x + ", " + y);
         if (level[y - 1][x - 1] == 2) {
             updatePlayerImage(x, y);
         }
     }
 
-    public void  checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
+    public void checkReachedGoal(int x, int y) throws InterruptedException, FileNotFoundException {
         if ((level[y - 1][x - 1] == 3) && (allCollectiblesObtained)) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
@@ -715,8 +717,8 @@ public class KeyBoardCampaign extends GridPane {
             // gameStarted = true;
             time.setGameOver(true);
             time = null;
-        }
 
+        }
     }
 
     public void nextLevelKeyboard(int x, int y) throws FileNotFoundException, InterruptedException {
@@ -758,7 +760,6 @@ public class KeyBoardCampaign extends GridPane {
         totalTimeStarted = true;
         audioPlayer.playStartSound();
         startButtonPressed = true;
-        System.out.println("Game started");
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -825,6 +826,5 @@ public class KeyBoardCampaign extends GridPane {
             }
         }
     }
-
 
 }
