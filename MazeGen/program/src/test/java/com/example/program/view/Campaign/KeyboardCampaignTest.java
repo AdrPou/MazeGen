@@ -3,7 +3,6 @@ package com.example.program.view.Campaign;
 import com.example.program.control.MainProgram;
 import com.example.program.model.Maps.World1Maps;
 import com.example.program.view.AudioPlayer;
-import com.example.program.view.Menu.HighScoreView;
 import com.example.program.view.Menu.RightPanel;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
@@ -28,7 +27,6 @@ class KeyBoardCampaignTest {
     private World1Maps world1Maps;
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
-    private HighScoreView highScoreView;
 
     @BeforeEach
     public void setup() throws FileNotFoundException {
@@ -36,7 +34,6 @@ class KeyBoardCampaignTest {
         mainProgram.setMainPaneCampaign(new BorderPane());
         world1Maps = new World1Maps();
         rightPanel = mock(RightPanel.class);
-        highScoreView = mock(HighScoreView.class);
         audioPlayer = mock(AudioPlayer.class);
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
     }
@@ -84,17 +81,18 @@ class KeyBoardCampaignTest {
 
     @Test
     void hitWall() throws FileNotFoundException, InterruptedException {
-        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
+        // Move player to a position that has a wall upside
+        KeyEvent keyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false);
+        keyBoardCampaign.handleKeyPressed(keyEvent);
 
-        // Save players start position
+        // Save player's position before hitting a wall
         int oldY = keyBoardCampaign.getPlayer().getY();
 
-        // Move player to a position that has a wall upside
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
         // Hit the wall
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
+        keyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false);
+        keyBoardCampaign.handleKeyPressed(keyEvent);
 
-        // Assert that players position is as expected after the movements
+        // Assert that player's position hasn't changed
         // Assert that heart crystals have been decremented
         assertEquals(oldY, keyBoardCampaign.getPlayer().getY());
         assertEquals(2, keyBoardCampaign.getHeartCrystals());
@@ -197,7 +195,6 @@ class KeyBoardCampaignTest {
 
     @Test
     void die() throws FileNotFoundException, InterruptedException {
-        mainProgram.setHighScoreView(highScoreView);
         // Initialize a level with a default value of 1 heart for the player
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 1, mainProgram, rightPanel, 0, audioPlayer, 25);
 

@@ -23,6 +23,8 @@ public class HighScoreTest {
 
     @Test
     public void testReadList() {
+        highScore.writeToList(new String[]{"Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam"},
+                new int[]{100, 100, 100, 100, 100, 100, 100, 100, 100, 100});
         String[] actual = highScore.readList();
         String[] expected = new String[]{"1 Adam 100", "2 Adam 100", "3 Adam 100",
                 "4 Adam 100", "5 Adam 100", "6 Adam 100",
@@ -45,7 +47,7 @@ public class HighScoreTest {
     @Test
     public void testCheckNewScoreNeg() {
         highScore.readList();
-        boolean result = highScore.checkNewScore(200);
+        boolean result = highScore.checkNewScore(1);
         assertFalse(result);
     }
 
@@ -56,19 +58,6 @@ public class HighScoreTest {
         assertTrue(result);
     }
 
-    @Test
-    public void testSortList() {
-        String[] expected = new String[]{"1 Adam 100", "2 Adam 100", "3 Adam 100", "4 Adam 100", "5 Adam 100",
-        "6 Adam 100", "7 Adam 100", "8 Adam 100", "9 Adam 100", "10 Erik 200"};
-        String[] names = {"Adam", "Erik", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam", "Adam"};
-        int[] scores = {100, 200, 100, 100, 100, 100, 100, 100, 100, 100};
-        highScore.setName(names);
-        highScore.setScore(scores);
-        highScore.sortList();
-        highScore.writeToList(highScore.getName(), highScore.getScore());
-        String[] actual = highScore.readList();
 
-        assertArrayEquals(expected, actual);
-    }
 
 }

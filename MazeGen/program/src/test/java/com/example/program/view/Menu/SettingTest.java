@@ -28,7 +28,7 @@ public class SettingTest {
     }
     @Test
     public void testToggleButtonMouseEnabled() {
-        boolean mouseButton = setting.getToggleButtonMouse();
+        boolean mouseButton = setting.getToggleButtonMouseIsEnabled();
         assertTrue(mouseButton);
     }
     @Test
