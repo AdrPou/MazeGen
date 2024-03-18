@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-class KeyboardCampaignTest {
+class KeyBoardCampaignTest {
 
     private KeyBoardCampaign keyBoardCampaign;
     private MainProgram mainProgram;
@@ -36,7 +36,6 @@ class KeyboardCampaignTest {
         rightPanel = mock(RightPanel.class);
         audioPlayer = mock(AudioPlayer.class);
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
-        keyBoardCampaign.playerLabel = mock(javafx.scene.control.Label.class);
     }
 
     @BeforeAll
@@ -82,18 +81,18 @@ class KeyboardCampaignTest {
 
     @Test
     void hitWall() throws FileNotFoundException, InterruptedException {
-        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
-        // Save player's starting position
-        int oldY = keyBoardCampaign.getPlayer().getY();
-
         // Move player to a position that has a wall upside
         KeyEvent keyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false);
         keyBoardCampaign.handleKeyPressed(keyEvent);
 
+        // Save player's position before hitting a wall
+        int oldY = keyBoardCampaign.getPlayer().getY();
+
         // Hit the wall
+        keyEvent = new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false);
         keyBoardCampaign.handleKeyPressed(keyEvent);
 
-        // Assert that player's position is reset to startposition
+        // Assert that player's position hasn't changed
         // Assert that heart crystals have been decremented
         assertEquals(oldY, keyBoardCampaign.getPlayer().getY());
         assertEquals(2, keyBoardCampaign.getHeartCrystals());
