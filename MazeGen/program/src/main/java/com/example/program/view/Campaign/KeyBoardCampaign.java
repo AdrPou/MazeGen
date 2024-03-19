@@ -793,6 +793,10 @@ public class KeyBoardCampaign extends GridPane {
         return gameOver;
     }
 
+    public int getWorld() {
+        return world;
+    }
+
     public class GhostThread extends Thread {
         private KeyBoardCampaign keyBoardCampaign;
         private List<ImageView> ghosts;
