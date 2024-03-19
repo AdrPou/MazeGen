@@ -189,6 +189,7 @@ public class MainProgram extends Application {
             audioPlayer.playLevelMusic("forest");
             rightPanel.setTheTime(25);
             rightPanel.resetTimerLabel();
+            rightPanel.changeLevelCounter("11");
             if(fromCheckpoint) {
                 switch (checkpoint.getNumber()) {
                     case 1:
@@ -232,6 +233,7 @@ public class MainProgram extends Application {
             audioPlayer.playLevelMusic("forest");
             rightPanel.setTheTime(25);
             rightPanel.resetTimerLabel();
+            rightPanel.changeLevelCounter("11");
             if (fromCheckpoint) {
                 switch (checkpoint.getNumber()) {
                     case 1:
