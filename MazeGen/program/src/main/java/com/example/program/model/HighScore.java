@@ -14,8 +14,8 @@ public class HighScore {
     private int[] score = new int[10];
     private final String[] list = new String[10];
     private int place = 1;
-    //private final String path = "MazeGen/program/src/main/java/files/HighScoreList.txt";
-    private final String path = "src/main/java/files/HighScoreList.txt";
+    private final String path = "MazeGen/program/src/main/java/files/HighScoreList.txt";
+    //private final String path = "src/main/java/files/HighScoreList.txt";
 
 
     /**
