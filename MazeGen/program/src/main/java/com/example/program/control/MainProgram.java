@@ -23,6 +23,7 @@ import com.example.program.model.MazeGeneration.MazeGenerator;
 import com.example.program.view.Menu.*;
 import com.example.program.view.WorldIntroAnimation;
 
+import javax.swing.*;
 import java.io.FileNotFoundException;
 
 /**
@@ -325,7 +326,9 @@ public class MainProgram extends Application {
      */
     public void gameOver() {
         System.out.println("Game Over");
-        highScore.checkNewScore(totalScore);
+        SwingUtilities.invokeLater(() -> {
+            highScore.checkNewScore(totalScore);
+        });
         if(highScoreView != null) {
             highScoreView.displayHighScores();
         }

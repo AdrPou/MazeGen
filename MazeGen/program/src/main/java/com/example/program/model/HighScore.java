@@ -14,8 +14,8 @@ public class HighScore {
     private int[] score = new int[10];
     private final String[] list = new String[10];
     private int place = 1;
-    private final String path = "MazeGen\\program\\src\\main\\java\\files\\HighScoreList.txt";
-    //private final String path = "/Users/adamleijman/Desktop/MazeGen/MazeGen/program/src/main/resources/com/example/program/files/HighScoreList.txt";
+    //private final String path = "MazeGen/program/src/main/java/files/HighScoreList.txt";
+    private final String path = "src/main/java/files/HighScoreList.txt";
 
 
     /**
@@ -88,7 +88,6 @@ public class HighScore {
                 score[i] = score[i - 1];
                 name[i] = name[i - 1];
             }
-
             // Insert the new score
             score[newPosition] = newScore;
             name[newPosition] = newName;
