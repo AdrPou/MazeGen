@@ -20,7 +20,7 @@ import java.lang.reflect.Field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-class KeyBoardCampaignTest {
+class KeyboardCampaignTest {
 
     private KeyBoardCampaign keyBoardCampaign;
     private MainProgram mainProgram;
@@ -49,6 +49,7 @@ class KeyBoardCampaignTest {
         Platform.exit();
     }
 
+    // ANV2.0
     @Test
     public void testMovingUp() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -56,6 +57,7 @@ class KeyBoardCampaignTest {
         assertEquals(7, keyBoardCampaign.getPlayer().getY());
     }
 
+    // ANV2.0
     @Test
     public void testMovingDown() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -64,6 +66,7 @@ class KeyBoardCampaignTest {
         assertEquals(8, keyBoardCampaign.getPlayer().getY());
     }
 
+    // ANV2.0
     @Test
     public void testMovingLeft() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -72,6 +75,7 @@ class KeyBoardCampaignTest {
         assertEquals(1, keyBoardCampaign.getPlayer().getX());
     }
 
+    // ANV2.0
     @Test
     public void testMovingRight() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -80,6 +84,7 @@ class KeyBoardCampaignTest {
         assertEquals(2, keyBoardCampaign.getPlayer().getX());
     }
 
+    // ANV2.2
     @Test
     void goOutsideZone() throws FileNotFoundException, InterruptedException {
         // Save player's position before trying to go outside the zone
@@ -94,6 +99,7 @@ class KeyBoardCampaignTest {
         assertEquals(2, keyBoardCampaign.getHeartCrystals());
     }
 
+    // ANV2.2 & LOG2.0
     @Test
     void hitWall() throws FileNotFoundException, InterruptedException {
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -113,6 +119,7 @@ class KeyBoardCampaignTest {
     }
 
 
+    // ANV2.2 & LOG5.3
     @Test
     void hitGhost() throws FileNotFoundException, InterruptedException {
         // Initialize a level with a ghost, with a default value of 3 hearts for the player
@@ -126,6 +133,7 @@ class KeyBoardCampaignTest {
         assertNotEquals(3, keyBoardCampaign.getHeartCrystals());
     }
 
+    // ANV2.1
     @Test
     void pickupCollectible() throws FileNotFoundException, InterruptedException {
         // Move a player to a position that has a collectible
@@ -136,6 +144,7 @@ class KeyBoardCampaignTest {
         assertEquals(1, keyBoardCampaign.getCollectiblesObtained());
     }
 
+    // ANV2.1
     @Test
     void pickupHeartCollectible() throws FileNotFoundException, InterruptedException {
         // Initialize a level with a heart collectible and give the player only 2 hearts
@@ -150,6 +159,7 @@ class KeyBoardCampaignTest {
     }
 
 
+    // ANV2.1
     @Test
     void pickupPickaxeCollectible() throws FileNotFoundException, InterruptedException {
         // Initialize a level with an axe collectible
@@ -162,29 +172,6 @@ class KeyBoardCampaignTest {
         // Assert that axe collectible is obtained / axe has been incremented
         assertTrue(keyBoardCampaign.isPickaxeObtained());
     }
-
-/*
-    @Test
-    void checkGoal() throws FileNotFoundException, InterruptedException, NoSuchFieldException, IllegalAccessException {
-        mainProgram.setRightPanel(rightPanel);
-        // Initialize a level with a goal
-        keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel11(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
-
-        Field field = KeyBoardCampaign.class.getDeclaredField("allCollectiblesObtained");
-        field.setAccessible(true);
-        field.set(keyBoardCampaign, true);
-
-        // Move a player to a position that has a goal
-        keyBoardCampaign.getPlayer().move(7,2);
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.RIGHT, false, false, false, false));
-        keyBoardCampaign.handleKeyPressed(new KeyEvent(KeyEvent.KEY_PRESSED, "", "", KeyCode.UP, false, false, false, false));
-
-
-        // Assert that the level is completed
-        assertEquals(2, keyBoardCampaign.getCurrentLevel());
-    }
- */
-
 
 
     @Test
@@ -207,6 +194,7 @@ class KeyBoardCampaignTest {
         assertFalse(keyBoardCampaign.isPickaxeObtained());
     }
 
+    // LOG2.1
     @Test
     void die() throws FileNotFoundException, InterruptedException {
         // Initialize a level with a default value of 1 heart for the player
@@ -219,6 +207,7 @@ class KeyBoardCampaignTest {
         assertTrue(keyBoardCampaign.isGameOver());
     }
 
+    // LOG6.1
     @Test
     void checkIfCampaignIsMinimum5Worlds() throws FileNotFoundException {
         // Initialize level 5
@@ -230,7 +219,7 @@ class KeyBoardCampaignTest {
 
     }
 
-
+    // LOG6.2
     @Test
     void checkIfCampaignWorldsIsIncrementsByTwo() throws FileNotFoundException {
         // Initialize all levels
@@ -239,6 +228,7 @@ class KeyBoardCampaignTest {
         World4Maps world4Maps = new World4Maps();
         World5Maps world5Maps = new World5Maps();
         World6Maps world6Maps = new World6Maps();
+
 
         // Check if each level is incremented by 2
         keyBoardCampaign = new KeyBoardCampaign(world1Maps.getLevel14(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
@@ -254,5 +244,6 @@ class KeyBoardCampaignTest {
         keyBoardCampaign = new KeyBoardCampaign(world6Maps.getLevel61(), 1, 3, mainProgram, rightPanel, 0, audioPlayer, 25);
         assertEquals(18, keyBoardCampaign.getLevel());
     }
+
 
 }
